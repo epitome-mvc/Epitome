@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-    var Epitome = exports.Epitome,
+    var Epitome = typeof require == 'function' ? require('Epitome') : exports.Epitome,
         Model = Epitome.Model;
 
     // define CRUD mapping.
