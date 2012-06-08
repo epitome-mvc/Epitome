@@ -1,5 +1,6 @@
 ;(function(exports) {
 
+    // get the Epitome module
     var Epitome = typeof require == 'function' ? require('Epitome') : exports.Epitome,
         Model = Epitome.Model;
 
@@ -11,6 +12,7 @@
         'delete': 'DELETE'
     };
 
+    // deocrate the original object by adding a new property Sync
     Model.Sync = new Class({
 
         Extends: Model,
@@ -114,7 +116,7 @@
         }
     });
 
-    // Expose the class for AMD, CommonJS and browsers
+    // return the original Module. You can also return Model.Sync if you like.
     if(typeof define === 'function' && define.amd) {
         define(function() {
             return Epitome;
