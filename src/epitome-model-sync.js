@@ -1,7 +1,7 @@
 ;(function(exports) {
 
     // get the Epitome module
-    var Epitome = typeof require == 'function' ? require('Epitome') : exports.Epitome,
+    var Epitome = typeof require == 'function' ? require('epitome-model') : exports.Epitome,
         Model = Epitome.Model;
 
     // define CRUD mapping.
@@ -118,7 +118,7 @@
 
     // return the original Module. You can also return Model.Sync if you like.
     if(typeof define === 'function' && define.amd) {
-        define(function() {
+        define('epitome-model-sync', function() {
             return Epitome;
         });
     }

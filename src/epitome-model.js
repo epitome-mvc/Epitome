@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-    var Epitome = {};
+    var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome;
 
     Epitome.Model = new Class({
 
@@ -79,7 +79,7 @@
 
     // Expose the class for AMD, CommonJS and browsers
     if(typeof define === 'function' && define.amd) {
-        define('Epitome', function() {
+        define('epitome-model', function() {
             return Epitome;
         });
     }
