@@ -79,7 +79,7 @@
 
     // Expose the class for AMD, CommonJS and browsers
     if(typeof define === 'function' && define.amd) {
-        define(function() {
+        define('Epitome', function() {
             return Epitome;
         });
     }
