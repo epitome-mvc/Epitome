@@ -5,21 +5,22 @@
     // decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
     Function.extend({
         monitorEvents: function(listener, orig) {
-            // two arguments. that = subscriber class to also get the event. orig = orig scope.
-            var self = this,
-                orig = orig || this; // sucky.
+            // two arguments. `@listener = subscriber class to also get the event. `@orig` = orig scope.
+            var self = this; // the original func is `this`
 
+            // this is brave, may affect scope in edge cases: `.fireEvent.apply(otherobj, args)`
+            orig = orig || this;
+
+            // has the events class been mixed in?
             if (!(listener && listener.fireEvent))
                 return this;
 
             return function(type, args, delay) {
-                // console.warn('monitor is running');
-
-                // now pass orig bound to orig scope, or at least function.
+                // now pass orig bound to orig scope, or at least the function.
                 self.apply(orig, arguments);
 
-                // let controller know and place instance. HATE IT.
-                listener.models[orig.cid] && listener.fireEvent(type, Array.flatten([orig, args]), delay);
+                // let controller know and place instance. Make sure model is managed still!
+                listener.getModelByCID(orig.cid) && listener.fireEvent(type, Array.flatten([orig, args]), delay);
             };
         }
     });
@@ -45,7 +46,7 @@
             if (exists)
                 return this.fireEvent('add:error', model);
 
-            // decorate fireEvent by making it local.
+            // decorate `fireEvent` by making it local on the model instance.
             model.fireEvent = Function.monitorEvents.apply(model.fireEvent, [this, model]);
 
             // assign a cid.
@@ -59,7 +60,7 @@
         },
 
         removeModel: function(model) {
-            // restore fireEvent to one from prototype, aka, Event.prototype.fireEvent
+            // restore `fireEvent` to one from prototype, aka, `Event.prototype.fireEvent`
             delete model.fireEvent;
 
             // remove from collection of managed models
