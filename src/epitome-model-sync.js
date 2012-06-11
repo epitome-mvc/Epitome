@@ -116,13 +116,12 @@
         }
     });
 
-    // return the original Module. You can also return Model.Sync if you like.
-    if(typeof define === 'function' && define.amd) {
+    if (typeof define === 'function' && define.amd) {
         define('epitome-model-sync', function() {
             return Epitome;
         });
     }
-    else if(typeof module === 'object') {
+    else if (typeof module === 'object') {
         module.exports = Epitome;
     }
     else {
