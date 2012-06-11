@@ -4,12 +4,12 @@
     var Epitome = {};
 
     // Expose the class for AMD, CommonJS and browsers
-    if(typeof define === 'function' && define.amd) {
+    if (typeof define === 'function' && define.amd) {
         define('epitome', function() {
             return Epitome;
         });
     }
-    else if(typeof module === 'object') {
+    else if (typeof module === 'object') {
         module.exports = Epitome;
     }
     else {
