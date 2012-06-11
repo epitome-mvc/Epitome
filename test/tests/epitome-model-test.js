@@ -58,7 +58,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
         this.model.set(this.dataAfter);
     },
 
-    'Expect a model to fire change event for each property passed': function() {
+    'Expect a model to fire change event for each property passed >': function() {
         var spy = this.spy();
         this.model.addEvent('change', function() {
             spy();
@@ -68,20 +68,20 @@ buster.testCase('Basic Epitome model creation with initial data >', {
         buster.refute.calledThrice(spy);
     },
 
-    'Expect a key that is not on model to be null': function() {
+    'Expect a key that is not on model to be null >': function() {
         buster.assert.equals(this.model.get('foobar'), undefined);
     },
 
-    'Expect a that gets set to null to be removed from model': function() {
+    'Expect a that gets set to null to be removed from model >': function() {
         this.model.set('foo', null);
         buster.assert.equals(this.model.get('foo'), undefined);
     },
 
-    'Expect model.toJSON to return an object': function() {
+    'Expect model.toJSON to return an object >': function() {
         buster.assert.equals(typeOf(this.model.toJSON()), 'object');
     },
 
-    'Expect model.toJSON to return a dereferenced object': function() {
+    'Expect model.toJSON to return a dereferenced object >': function() {
         var json = this.model.toJSON(),
             testStr = 'testing';
 
