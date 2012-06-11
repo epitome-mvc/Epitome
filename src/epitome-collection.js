@@ -5,10 +5,11 @@
     // decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
     Function.extend({
         monitorModelEvents: function(listener, orig) {
-            // two arguments.
-            // `@listener` - subscriber class to also get the event.
-            // `@orig` - orig model instance for scope.
-            var self = this; // the original func is `this`
+            // `@listener` - subscriber class to also get the event, required.
+            // `@orig` - orig model instance for scope, required.
+
+            var self = this;
+            // the original func is `this`, now saved ref.
 
             // this is brave, may affect scope in edge cases: `.fireEvent.apply(otherobj, args)`
             orig = orig || this;
