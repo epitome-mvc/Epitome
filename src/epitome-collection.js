@@ -5,7 +5,7 @@
     // decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
     Function.extend({
         monitorEvents: function(listener, orig) {
-            // two arguments. `@listener = subscriber class to also get the event. `@orig` = orig scope.
+            // two arguments. `@listener` = subscriber class to also get the event. `@orig` = orig scope.
             var self = this; // the original func is `this`
 
             // this is brave, may affect scope in edge cases: `.fireEvent.apply(otherobj, args)`
