@@ -4,8 +4,10 @@
 
     // decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
     Function.extend({
-        monitorEvents: function(listener, orig) {
-            // two arguments. `@listener` = subscriber class to also get the event. `@orig` = orig scope.
+        monitorModelEvents: function(listener, orig) {
+            // two arguments.
+            // `@listener` - subscriber class to also get the event.
+            // `@orig` - orig model instance for scope.
             var self = this; // the original func is `this`
 
             // this is brave, may affect scope in edge cases: `.fireEvent.apply(otherobj, args)`
@@ -47,7 +49,7 @@
                 return this.fireEvent('add:error', model);
 
             // decorate `fireEvent` by making it local on the model instance.
-            model.fireEvent = Function.monitorEvents.apply(model.fireEvent, [this, model]);
+            model.fireEvent = Function.monitorModelEvents.apply(model.fireEvent, [this, model]);
 
             // assign a cid.
             model.cid = model.cid || model.get('id') || String.uniqueID();
