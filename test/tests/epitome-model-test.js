@@ -68,7 +68,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
         buster.refute.calledThrice(spy);
     },
 
-    'Expect a key that is not on model to be null >': function() {
+    'Expect a key that is not on model to be undefined >': function() {
         buster.assert.equals(this.model.get('foobar'), undefined);
     },
 
