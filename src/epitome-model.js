@@ -19,6 +19,9 @@
         initialize: function(obj, options) {
             // constructor for Model class.
 
+            // are there any defaults passed? better to have them on the proto.
+            options && options.defaults && (this.options.defaults = Object.merge(this.options.defaults, options.defaults));
+
             // initial obj should pass on a setter (this will fail for now).
             obj && typeOf(obj) === 'object' && this.set(Object.merge(this.options.defaults, obj));
 

@@ -17,14 +17,20 @@ buster.testCase('Basic Epitome model creation with initial data >', {
             charlie: 'winning'
         };
 
+        this.options = {
+            'onChange:foo': function() {
+               self.initialEvents = true;
+            },
+            defaults: {
+                foo: 'not bar',
+                name: 'dimitar'
+            }
+        };
+
         this.initialEvents = false;
         var self = this;
 
-        this.model = new Epitome.Model(this.dataInitial, {
-            'onChange:foo': function() {
-                self.initialEvents = true;
-            }
-        });
+        this.model = new Epitome.Model(this.dataInitial, this.options);
     },
 
     tearDown: function() {
@@ -33,6 +39,20 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
     'Expect a model to be created >': function() {
         buster.assert.isTrue(instanceOf(this.model, Epitome.Model));
+    },
+
+    'Expect the _attributes object to contain the sent values >': function() {
+        var testVal = 123;
+        this.model.set('testing', testVal);
+        buster.assert.equals(testVal, this.model._attributes['testing']);
+    },
+
+    'Expect the model to have the default value if not overridden >': function() {
+        buster.assert.equals(this.model.get('name'), this.options.defaults.name);
+    },
+
+    'Expect the model to have the default value overridden by model object >': function() {
+        buster.refute.equals(this.model.get('foo'), this.options.defaults.foo);
     },
 
     'Expect a model not to fire initial change events on set >': function() {
