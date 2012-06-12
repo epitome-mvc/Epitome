@@ -68,6 +68,21 @@ buster.testCase('Basic Epitome model creation with initial data >', {
         buster.refute.called(spy);
     },
 
+    'Expect a model change on non-primitive values that serialize to the same not to fire >': function() {
+        var spy = this.spy();
+        this.model.set('obj', {
+            foo: 'bar'
+        });
+        this.model.addEvent('change', function() {
+            spy();
+        });
+        this.model.set('obj', {
+            foo: 'bar'
+        });
+        buster.refute.called(spy);
+    },
+
+
     'Expect a model change to fire if values have changed >': function(done) {
         var self = this;
         this.model.addEvent('change:bar', function(val) {
