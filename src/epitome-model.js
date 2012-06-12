@@ -50,7 +50,7 @@
 
 
             // no change? this is crude and works for primitives.
-            if (this._attributes[key] && this._attributes[key] === value)
+            if (this._attributes[key] && Epitome.isEqual(this._attributes[key], value))
                 return this;
 
             if (value === null) {
