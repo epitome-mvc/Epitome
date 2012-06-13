@@ -37,7 +37,21 @@ dchristoff@Dimitars-iMac:~/projects/Epitome (master):
 > buster server &
 buster-server running on http://localhost:1111
 dchristoff@Dimitars-iMac:~/projects/Epitome (master):
-> buster test
-Firefox 13.0, OS X 10.7 (Lion): .........
-1 test case, 9 tests, 9 assertions, 0 failures, 0 errors, 0 timeouts
+> buster test -r specification
+Firefox 13.0, OS X 10.7 (Lion)
+  ✓ Basic Epitome model creation with initial data > Expect a model to be created >
+  ✓ Basic Epitome model creation with initial data > Expect the _attributes object to contain the sent values >
+  ✓ Basic Epitome model creation with initial data > Expect the model to have the default value if not overridden >
+  ✓ Basic Epitome model creation with initial data > Expect the model to have the default value overridden by model object >
+  ✓ Basic Epitome model creation with initial data > Expect a model not to fire initial change events on set >
+  ✓ Basic Epitome model creation with initial data > Expect a model change not to fire if values have not changed >
+  ✓ Basic Epitome model creation with initial data > Expect a model change on non-primitive values that serialize to the same not to fire >
+  ✓ Basic Epitome model creation with initial data > Expect a model change to fire if values have changed >
+  ✓ Basic Epitome model creation with initial data > Expect a model to fire change event for each property passed >
+  ✓ Basic Epitome model creation with initial data > Expect a that gets set to null to be removed from model >
+  ✓ Basic Epitome model creation with initial data > Expect a key that is not on model to be undefined >
+  ✓ Basic Epitome model creation with initial data > Expect model.toJSON to return an object >
+  ✓ Basic Epitome model creation with initial data > Expect model.toJSON to return a dereferenced object >
+1 test case, 13 tests, 13 assertions, 0 failures, 0 errors, 0 timeouts
+Finished in 0.113s
 ```
