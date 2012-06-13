@@ -45,7 +45,7 @@
 
         addModel: function(model) {
             // subscribe to all events.
-            var exists = this._models.getModelByCID(model.cid);
+            var exists = this.getModelByCID(model.cid);
             if (exists)
                 return this.fireEvent('add:error', model);
 
