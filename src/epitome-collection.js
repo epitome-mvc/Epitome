@@ -36,10 +36,10 @@
 
         initialize: function(models, options) {
             this.setOptions(options);
-            this.setUp(models);
+            models && this.setUp(models);
         },
 
-        setUp: function() {
+        setUp: function(models) {
             Array.each(models, this.addModel.bind(this));
         },
 
@@ -49,7 +49,7 @@
             if (exists)
                 return this.fireEvent('add:error', model);
 
-            // decorate `fireEvent` by making it local on the model instance.
+            // decorate `fireEvent` by making it local on the model instance. we are a quiet subscriber
             model.fireEvent = Function.monitorModelEvents.apply(model.fireEvent, [this, model]);
 
             // assign a cid.
@@ -59,7 +59,7 @@
             this._models.push(model);
 
             // let somebody know.
-            return this.fireEvent('add', model);
+            return this.fireEvent('add', [model, model.cid]);
         },
 
         removeModel: function(model) {
@@ -70,7 +70,7 @@
             Array.erase(this._models, model);
 
             // let somebody know we lost one.
-            return this.fireEvent('remove', model);
+            return this.fireEvent('remove', [model, model.cid]);
         },
 
         getModelByCID: function(cid) {
@@ -78,7 +78,7 @@
             var last = null;
 
             Array.some(this._models, function(el) {
-                return last = el.cid == cid;
+                return el.cid == cid && (last = el);
             });
 
             return last;
