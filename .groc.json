@@ -1,4 +1,4 @@
 {
-  "glob": ["src/*.js", "README.md"],
+  "glob": ["src/*.js", "README.md", "test/README.md", "test/buster.js", "test/tests/*.js"],
   "github": true
 }
