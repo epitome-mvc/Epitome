@@ -3,13 +3,14 @@ Epitome
 
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
-Epitome is an experimental Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
+An experimental Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
 
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
 Licence: MIT
 
 Groc `Documentation` is available here: [http://dimitarchristoff.github.com/Epitome/](http://dimitarchristoff.github.com/Epitome/)
+
 A default `.groc.json` file is added so you can just run `groc` in the root to freshen.
 
 The creation and logic employed in the writing of Epitome has been documented in these blog posts:
@@ -33,7 +34,7 @@ The core module is called Epitome and it has the following structure:
 - `Epitome.View` - view rendered, using whatever 3-rd party templating engine (not done)
 - `Epitome.Plugins` - A free-type Object of methods/extensions that can be implemented into Models, like validation (not done)
 
-Tests via Buster.js can be found in `/tests/` - check the README.md there for more info.
+Tests via [Buster.js](http;//busterjs.org) can be found in `/tests/` - check the README.md there for more info.
 
 Support
 =======
