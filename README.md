@@ -1,7 +1,9 @@
 Epitome
 =======
 
-Epitome is a poor man's Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
+> _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
+
+Epitome is an experimental Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
 
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
