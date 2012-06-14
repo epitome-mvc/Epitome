@@ -1,7 +1,10 @@
 Epitome
 =======
 
-Epitome is a poor man's Model/View/* for MooTools, created by Dimitar Christoff and used in part at QMetric Group.
+Epitome is a poor man's Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
+
+![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo.png)
+
 Licence: MIT
 
 Groc `Documentation` is available here: [http://dimitarchristoff.github.com/Epitome/](http://dimitarchristoff.github.com/Epitome/)
@@ -24,7 +27,7 @@ The core module is called Epitome and it has the following structure:
 - `Epitome.isEqual` - a module for comparing values, borrowed from _.js
 - `Epitome.Model` - the model itself
 - `Epitome.Model.Sync` - a plugin for keeping your model in sync with a REST endpoint.
-- `Epitome.Collection` - a pseudo controller, Observing all model events (not done)
+- `Epitome.Collection` - a pseudo controller, Observing all model events (not done, WIP)
 - `Epitome.View` - view rendered, using whatever 3-rd party templating engine (not done)
 - `Epitome.Plugins` - A free-type Object of methods/extensions that can be implemented into Models, like validation (not done)
 
@@ -33,7 +36,7 @@ Tests via Buster.js can be found in `/tests/` - check the README.md there for mo
 Support
 =======
 
-This is not a working repository in the sense that it's not being released as a product you can use. It's more of an educational
+This is not a working repository in the sense that it's not being released as a product you can use. It's more of an _educational_
 experience documenting the process involved in creating a MV* (MVP/MVVM) library on top of MooTools. There are over 100
 MV* libraries out there and the last thing anyone needs is another abandon-ware product.
 
