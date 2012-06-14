@@ -122,6 +122,15 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
         json.foo = testStr;
         buster.refute.equals(this.model.get('foo'), json.foo);
+    },
+
+    'Expect model to fire a change passing all changed properties as an object >': function() {
+        var self = this;
+        this.model.addEvent('change', function(changed) {
+            buster.assert.equals(changed, self.dataMany);
+        });
+
+        this.model.set(this.dataMany);
     }
 
 });

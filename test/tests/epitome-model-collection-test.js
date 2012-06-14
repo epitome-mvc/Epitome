@@ -48,7 +48,6 @@ buster.testCase('Basic Epitome empty collection creation >', {
         this.collection.removeModel(this.model);
     },
 
-
     'Expect to be able to add models to the collection': function() {
         var models = this.collection._models.length;
         this.collection.addModel(this.model);
@@ -56,10 +55,10 @@ buster.testCase('Basic Epitome empty collection creation >', {
     },
 
     'Expect to be able to remove models from the collection': function() {
-        var models = this.collection._models.length;
+        var modelsCount = this.collection._models.length;
         this.collection.addModel(this.model);
         this.collection.removeModel(this.model);
-        buster.assert.equals(this.collection._models.length, models);
+        buster.assert.equals(this.collection._models.length, modelsCount);
     }
 
 
@@ -86,8 +85,9 @@ buster.testCase('Basic Epitome collection with a model creation >', {
             hello: 'there'
         });
 
-        this.collection = new this.Collection([this.model]);
+        this.models = [this.model];
 
+        this.collection = new this.Collection(this.models);
     },
 
     tearDown: function() {
@@ -95,14 +95,25 @@ buster.testCase('Basic Epitome collection with a model creation >', {
         this.collection.removeEvents('remove');
     },
 
-    'Expect models to be 1': function() {
-        buster.assert.equals(this.collection._models.length, 1);
+    'Expect models to be equal to number passed in constructor >': function() {
+        buster.assert.equals(this.collection._models.length, this.models.length);
     },
 
     'Expect onChange on a model to fire for collection >': function() {
+        var self = this;
+        this.collection.addEvent('change', function(model, props) {
+            buster.assert.equals(model, self.model);
+        });
         this.model.set('foo', 'bar');
-        buster.assert(true);
-    }
+    },
 
+    'Expect any Event on any model to fire for collection observer >': function() {
+        var self = this,
+            event = String.uniqueID();
+        this.collection.addEvent(event, function(model) {
+            buster.assert.equals(model, self.model);
+        });
+        this.model.fireEvent(event);
+    }
 
 });
