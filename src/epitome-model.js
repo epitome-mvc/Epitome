@@ -42,7 +42,7 @@
         // private, real setter functions, not on prototype, see note above
         _set: function(key, value) {
             // needs to be bound the the instance.
-            if (!key || typeof value === undefined) return this;
+            if (!key || typeof value === 'undefined') return this;
 
             // custom setter - see bit further down
             if (this.properties[key] && this.properties[key]['set'])
@@ -71,7 +71,7 @@
 
         get: function(key) {
             // and the overload getter
-            return (key && typeof this._attributes[key] !== undefined)
+            return (key && typeof this._attributes[key] !== 'undefined')
                 ? this.properties[key] && this.properties[key]['get'] ? this.properties[key]['get'].call(this) : this._attributes[key] : null;
         }.overloadGetter(),
 

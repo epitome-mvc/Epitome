@@ -32,6 +32,9 @@
 
         Implements: [Options,Events],
 
+        // base model is just Epitome.Model
+        model: Epitome.Model,
+
         _models: [],
 
         initialize: function(models, options) {
