@@ -3,7 +3,7 @@ Epitome
 
 Epitome is a poor man's Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
 
-![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo.png)
+![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
 Licence: MIT
 
