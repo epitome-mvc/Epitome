@@ -36,7 +36,7 @@
             this.propertiesChanged = [];
             this._set.apply(this, arguments);
             // if any properties did change, fire a change event with the array.
-            this.propertiesChanged.length && this.fireEvent('change', this.propertiesChanged);
+            this.propertiesChanged.length && this.fireEvent('change', this.get(this.propertiesChanged));
         },
 
         // private, real setter functions, not on prototype, see note above
