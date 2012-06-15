@@ -2,8 +2,7 @@
 
     // get the Epitome module
     var Epitome = typeof require == 'function' ? require('epitome-model') : exports.Epitome,
-        Model = Epitome.Model,
-        Collection = typeof require == 'function' ? require('epitome-collection-sync') : exports.Epitome.Collection.Sync;
+        Model = Epitome.Model;
 
     // define CRUD mapping.
     var methodMap = {
