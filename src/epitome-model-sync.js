@@ -3,7 +3,7 @@
     // get the Epitome module
     var Epitome = typeof require == 'function' ? require('epitome-model') : exports.Epitome,
         Model = Epitome.Model,
-        Collection = Epitome.Collection;
+        Collection = typeof require == 'function' ? require('epitome-collection-sync') : exports.Epitome.Collection.Sync;
 
     // define CRUD mapping.
     var methodMap = {
@@ -108,19 +108,12 @@
             // saves model or accepts a key/value pair/object, sets to model and then saves.
             if (key) {
                 var ktype = typeOf(key),
-                    canSet = ktype == 'object' || (ktype == 'string' && typeof value != undefined);
+                    canSet = ktype == 'object' || (ktype == 'string' && typeof value != 'undefined');
 
                 canSet && this._set.apply(this, arguments);
             }
 
             this.update();
-        }
-    });
-
-    // also, now that we have sync, we need to allow sync via a collection.
-    Collection.implement({
-        sync: function() {
-            // tbc
         }
     });
 
