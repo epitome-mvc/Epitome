@@ -28,6 +28,7 @@
                 // normal convention - not in the model!
                 set: function(value) {
                     this.urlRoot = value;
+                    delete this._attributes['urlRoot'];
                 },
                 get: function() {
                     // make sure we return a sensible url.
