@@ -130,6 +130,49 @@ buster.testCase('Basic Epitome model creation with initial data >', {
         });
 
         this.model.set(this.dataMany);
+    },
+
+    'Expect model accessor `get` to fire instead of normal model get >': function() {
+        var spy = this.spy();
+
+        this.model.properties = Object.merge({
+            foo: {
+                get: function() {
+                    spy();
+                    return "intercept";
+                }
+            }
+        }, this.model.properties);
+
+        this.model.get('foo');
+        buster.assert.calledOnce(spy);
+    },
+
+    'Expect model accessor `get` to prefer custom value over model value >': function() {
+        var newFoo = 'not old foo';
+
+        this.model.properties = Object.merge({
+            foo: {
+                get: function() {
+                    return newFoo;
+                }
+            }
+        }, this.model.properties);
+
+        buster.assert.equals(this.model.get('foo'), newFoo);
+    },
+
+    'Expect model accessor `set` to fire instead of model set, passing the value >': function() {
+        var spy = this.spy();
+
+        this.model.properties = Object.merge({
+            foo: {
+                set: spy
+            }
+        }, this.model.properties);
+
+        this.model.set('foo', 'bar');
+        buster.assert.calledWith(spy, 'bar');
     }
 
 });
