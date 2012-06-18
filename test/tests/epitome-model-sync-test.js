@@ -34,6 +34,7 @@ buster.testCase('Epitome model sync >', {
 
     tearDown: function() {
         this.model.removeEvents('change');
+        // this.model._attributes = {};
     },
 
     'Expect the model to have a request >': function() {
@@ -47,9 +48,31 @@ buster.testCase('Epitome model sync >', {
     'Expect a fetch to return our model >': function(done) {
 
         this.model.addEvent('sync', function(response, method, data) {
-            buster.assert(true);
+            buster.refute.isNull(response);
             done();
         });
+        this.model.fetch();
+    },
+
+    'Expect a fetch to return our model id as per static response.json >': function(done) {
+        var id = this.model.get('id');
+
+        this.model.addEvent('sync', function(response, method, data) {
+            buster.assert.equals(response.id, id);
+            done();
+        });
+        this.model.fetch();
+    },
+
+    'Expect a fetch update our model properties to as per static response.json and fire change events >': function(done) {
+        var oldFoo = this.model.get('foo');
+
+        this.model.addEvent('change:foo', function(newValue) {
+            buster.refute.equals(newValue, oldFoo);
+            done();
+        });
+
+        // a change event will occur if foo differs after fetch
         this.model.fetch();
     }
 });

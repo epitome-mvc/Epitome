@@ -1,3 +1,4 @@
 {
-    "id": "1234-5123/response.json"
+    "id": "1234-5123/response.json",
+    "foo": "has to change"
 }
