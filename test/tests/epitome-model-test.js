@@ -19,7 +19,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
         this.options = {
             'onChange:foo': function() {
-               self.initialEvents = true;
+                self.initialEvents = true;
             },
             defaults: {
                 foo: 'not bar',
@@ -28,7 +28,6 @@ buster.testCase('Basic Epitome model creation with initial data >', {
         };
 
         this.initialEvents = false;
-        var self = this;
 
         this.model = new Epitome.Model(this.dataInitial, this.options);
     },

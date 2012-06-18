@@ -12,7 +12,7 @@
         'delete': 'DELETE'
     };
 
-    // deocrate the original object by adding a new property Sync
+    // decorate the original object by adding a new property Sync
     Model.Sync = new Class({
 
         Extends: Model,
@@ -65,6 +65,8 @@
 
             // call the request class' corresponding method (mootools does that).
             this.request[method](model);
+
+            return this;
         },
 
         setupSync: function() {
@@ -87,32 +89,56 @@
                     this.sync(protoMethod, model, options);
                 };
             });
+
+            return this;
         },
+
+        _throwAwaySyncEvent: function(eventName, callback) {
+            // a pseudo :once event for each sync that sets the model to response and can do more callbacks.
+
+            // normally, methods that implement this will be the only ones to auto sync the model to server version.
+            eventName = eventName || 'sync';
+
+            var self = this,
+                throwAway = {};
+
+            throwAway[eventName] = function(responseObj) {
+                if (responseObj && typeof responseObj == 'object') {
+                    self.set(responseObj);
+                    callback && callback.apply(self, responseObj);
+                }
+
+                // remove this one-off event.
+                self.removeEvents(throwAway);
+            };
+
+            return this.addEvents(throwAway);
+        }.protect(),
 
         fetch: function() {
             // perform a .read and then set returned object key/value pairs to model.
-            var self = this,
-                throwAway = {
-                    sync: function(responseObj) {
-                        self.set(responseObj);
-                        self.removeEvents(throwAway);
-                    }
-                };
-
-            this.addEvents(throwAway);
+            this._throwAwaySyncEvent();
             this.read();
+
+            return this;
         },
 
         save: function(key, value) {
             // saves model or accepts a key/value pair/object, sets to model and then saves.
             if (key) {
+                // if key is an object, go to overloadSetter.
                 var ktype = typeOf(key),
                     canSet = ktype == 'object' || (ktype == 'string' && typeof value != 'undefined');
 
                 canSet && this._set.apply(this, arguments);
             }
 
+            // we want to set this.
+            this._throwAwaySyncEvent();
             this.update();
+            this.fireEvent('save');
+
+            return this;
         }
     });
 
