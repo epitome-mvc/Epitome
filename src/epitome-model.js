@@ -70,9 +70,15 @@
         }.overloadSetter(),   // mootools abstracts overloading to allow object iteration
 
         get: function(key) {
-            // and the overload getter
-            return (key && typeof this._attributes[key] !== 'undefined')
-                ? this.properties[key] && this.properties[key]['get'] ? this.properties[key]['get'].call(this) : this._attributes[key] : null;
+            // overload getter, 2 paths...
+
+            // custom accessors take precedence and have no reliance on item being in attributes
+            if (key && this.properties[key] && this.properties[key]['get']) {
+                return this.properties[key]['get'].call(this);
+            }
+
+            // else, return from attributes or return null when undefined.
+            return (key && typeof this._attributes[key] !== 'undefined') ? this._attributes[key] : null;
         }.overloadGetter(),
 
         toJSON: function() {
