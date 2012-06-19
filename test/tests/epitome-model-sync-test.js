@@ -34,6 +34,11 @@ buster.testCase('Epitome model sync >', {
 
     tearDown: function() {
         this.model.removeEvents('change');
+        this.model.removeEvents('sync');
+        this.model.removeEvents('update');
+        this.model.removeEvents('create');
+
+        this.model.isNewModel = true;
         // this.model._attributes = {};
     },
 
@@ -52,6 +57,30 @@ buster.testCase('Epitome model sync >', {
             done();
         });
         this.model.fetch();
+    },
+
+    'Expect a save to `create` our model >': function(done) {
+        this.model.addEvent('create', function() {
+            buster.assert(true);
+            done();
+        });
+        this.model.save();
+    },
+
+    'Expect a second save to `update` our model >': function(done) {
+        var model = this.model;
+
+        model.addEvents({
+            'update': function() {
+                buster.assert(true);
+                done();
+            },
+            'create': function() {
+                this.save.delay(500, this);
+            }
+        });
+
+        model.save();
     },
 
     'Expect a fetch to return our model id as per static response.json >': function(done) {

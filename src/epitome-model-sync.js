@@ -126,6 +126,8 @@
 
         save: function(key, value) {
             // saves model or accepts a key/value pair/object, sets to model and then saves.
+            var method = ['update','create'][+this.isNew()];
+
             if (key) {
                 // if key is an object, go to overloadSetter.
                 var ktype = typeOf(key),
@@ -135,11 +137,24 @@
             }
 
             // we want to set this.
-            this._throwAwaySyncEvent();
-            this.update();
-            this.fireEvent('save');
+            this._throwAwaySyncEvent('sync', function() {
+                this.fireEvent('save');
+                this.fireEvent(method);
+            });
+
+
+            // create first time we sync, update after.
+            this[method]();
+            this.isNewModel = false;
 
             return this;
+        },
+
+        isNew: function() {
+            if (typeof this.isNewModel === 'undefined')
+                this.isNewModel = true;
+
+            return this.isNewModel;
         }
     });
 
