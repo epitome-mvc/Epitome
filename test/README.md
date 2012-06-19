@@ -24,9 +24,24 @@ Once you have captured your target browsers, just run:
 
 Or even better:
 
-    # buster autotest
+    # buster autotest -r specification
 
-Standalone testing via `buster test` w/o browser capture is not supported yet, though you could probably try jsdom or phantom.js - edit buster-test.js config and give it a go. Also, you'd need the server only version of mootools.
+Standalone testing via `buster test` w/o browser capture is not supported yet, though you could probably try jsdom or phantom.js - edit buster-test.js config and give it a go. Also, you'd need the server only version of mootools and you'd need to feature-detect XHR and disable the model sync tests, see http://busterjs.org/docs/overview/
+
+Something like this can work:
+```javascript
+buster.testCase('Epitome model sync >', {
+    requiresSupportFor: {
+        'XHR': typeof(XMLHttpRequest) != 'undefined'
+    },
+
+    'setUp': function() {
+        // ..
+    },
+
+    // ...
+});
+```
 
 Auto-testing is experimental but fairly good for MacOSX at present. You can see it in action on our blog here: http://tech.qmetric.co.uk/running-automated-javascript-testing-with-buster-js-autotest_123.html
 
