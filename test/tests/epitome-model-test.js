@@ -106,10 +106,34 @@ buster.testCase('Basic Epitome model creation with initial data >', {
         buster.assert.isNull(this.model.get('foobar'));
     },
 
-    'Expect a that gets set to null to be removed from model >': function() {
+    'Expect a that setting to null removes from model >': function() {
         this.model.set('foo', null);
         buster.assert.isNull(this.model.get('foo'));
     },
+
+    'Expect .unset() removes from model >': function() {
+        this.model.unset('foo');
+        buster.assert.isNull(this.model.get('foo'));
+    },
+
+    'Expect .unset([array]) removes all keys from model >': function() {
+        var keys = Object.keys(this.dataMany),
+            data;
+
+        // put some values in
+        this.model.set(this.dataMany);
+
+        // remove them
+        this.model.unset(keys);
+
+        // see what's left, should be null,null,null so an empty array.
+        data = Object.values(this.model.get(keys)).filter(function(el) {
+            return el !== null;
+        });
+
+        buster.assert.equals(data.length, 0);
+    },
+
 
     'Expect model.toJSON to return an object >': function() {
         buster.assert.equals(typeOf(this.model.toJSON()), 'object');

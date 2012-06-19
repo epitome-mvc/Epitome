@@ -81,6 +81,24 @@
             return (key && typeof this._attributes[key] !== 'undefined') ? this._attributes[key] : null;
         }.overloadGetter(),
 
+        unset: function() {
+            // can remove keys from model, passed on as multiple string arguments or an array of string keys
+            var keys = Array.prototype.slice.apply(arguments),
+                obj = {},
+                len = keys.length;
+
+            if (!len)
+                return this;
+
+            Array.each(Array.flatten(keys), function(key) {
+                obj[key] = null;
+            });
+
+            this.set(obj);
+
+            return this;
+        },
+
         toJSON: function() {
             return Object.clone(this._attributes);
         }
