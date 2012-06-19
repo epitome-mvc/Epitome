@@ -39,13 +39,17 @@ var testInstance = new testModel({
 });
 
 
-console.log(testInstance.toJSON())
+console.log(testInstance.toJSON());
 
 // careful - here be dragons. shared single request instance
 // this should be event-driven and not chained, but it's an example of the api.
 
 // get a model from the server
 testInstance.fetch();
+
+// we need to reset the isModelNew or it will not work with the next 2 tests.
+// logic is, if a model has been fetched, it is not new.
+testInstance.isModelNew = false;
 
 // do some changes
 testInstance.set('foo', 'bar');

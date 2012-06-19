@@ -118,7 +118,10 @@
 
         fetch: function() {
             // perform a .read and then set returned object key/value pairs to model.
-            this._throwAwaySyncEvent();
+            this._throwAwaySyncEvent('sync', function() {
+                this.fireEvent('fetch');
+                this.isNewModel = false;
+            });
             this.read();
 
             return this;
