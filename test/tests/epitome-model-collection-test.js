@@ -84,17 +84,23 @@ buster.testCase('Basic Epitome empty collection creation >', {
         this.collection.removeModel(this.model);
     },
 
-    'Expect to be able to add models to the collection': function() {
+    'Expect to be able to add models to the collection >': function() {
         var models = this.collection._models.length;
         this.collection.addModel(this.model);
         buster.assert.equals(this.collection._models.length, models + 1);
     },
 
-    'Expect to be able to remove models from the collection': function() {
+    'Expect to be able to remove models from the collection >': function() {
         var modelsCount = this.collection._models.length;
         this.collection.addModel(this.model);
         this.collection.removeModel(this.model);
         buster.assert.equals(this.collection._models.length, modelsCount);
+    },
+
+    '// Expect models added to the collection to pass a reference to the collection in model.collections >': function() {
+        // this breaks by creating a circular reference.
+        this.collection.addModel(this.model);
+        buster.assert.isTrue(this.model.collections.contains(this.collection));
     }
 
 });
@@ -149,6 +155,27 @@ buster.testCase('Basic Epitome collection with a model creation >', {
             buster.assert.equals(model, self.model);
         });
         this.model.fireEvent(event);
+    }
+});
+
+
+buster.testCase('Basic Epitome collection array methods >', {
+    setUp: function() {
+        this.Collection = new Class({
+            Extends: Epitome.Collection
+        });
+
+        this.model = new Epitome.Model({
+            hello: 'there'
+        });
+
+        this.models = [this.model];
+
+        this.collection = new this.Collection(this.models);
+    },
+
+    tearDown: function() {
+        this.collection.removeEvents();
     },
 
     'Expect toJSON to return an array of all models\' dereferenced objects >': function() {
