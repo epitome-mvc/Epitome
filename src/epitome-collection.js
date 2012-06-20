@@ -46,20 +46,35 @@
             Array.each(models, this.addModel.bind(this));
         },
 
-        addModel: function(model) {
-            // subscribe to all events.
-            var exists = this.getModelByCID(model.cid);
-            if (exists)
-                return this.fireEvent('add:error', model);
+        addModel: function(model, replace) {
+            // add a new model to collection
+            var exists;
 
-            // decorate `fireEvent` by making it local on the model instance. we are a quiet subscriber
-            model.fireEvent = Function.monitorModelEvents.apply(model.fireEvent, [this, model]);
+            // if it's just an object, make it a model first
+            if (typeOf(model) == 'object' && !instanceOf(model, this.model)) {
+                model = new this.model(model);
+            }
 
             // assign a cid.
             model.cid = model.cid || model.get('id') || String.uniqueID();
 
+            // already in the collection?
+            exists = this.getModelByCID(model.cid);
+
+            // if not asked to replace, bail out.
+            if (exists && replace !== true)
+                return this.fireEvent('add:error', model);
+
+            // replace an existing model when requested
+            exists && replace === true && (this._models[this._models.indexOf(model)] = model);
+
+            // decorate `fireEvent` by making it local on the model instance. we are a quiet subscriber
+            model.fireEvent = Function.monitorModelEvents.apply(model.fireEvent, [this, model]);
+
             // add to models array.
             this._models.push(model);
+
+            this.length = this._models.length;
 
             // let somebody know.
             return this.fireEvent('add', [model, model.cid]);
@@ -71,6 +86,8 @@
 
             // remove from collection of managed models
             Array.erase(this._models, model);
+
+            this.length = this._models.length;
 
             // let somebody know we lost one.
             return this.fireEvent('remove', [model, model.cid]);
@@ -85,6 +102,14 @@
             });
 
             return last;
+        },
+
+        toJSON: function() {
+            // get the toJSON of all models.
+            var getJSON = function(model) {
+                return model.toJSON();
+            };
+            return Array.map(this._models, getJSON);
         }
     });
 

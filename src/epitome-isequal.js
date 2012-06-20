@@ -17,6 +17,7 @@
             // this fixes FF returning [xpconnect wrapped native prototype] for all w/ MooTools
             var typeA = typeOf(a),
                 typeB = typeOf(b);
+
             if (typeA != typeB) return false;
 
             switch (typeA) {

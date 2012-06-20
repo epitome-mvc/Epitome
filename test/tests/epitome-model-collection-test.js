@@ -39,6 +39,33 @@ buster.testCase('Basic Epitome empty collection creation >', {
         this.collection.addModel(this.model);
     },
 
+    'Expect not to be able to add the same model twice to the collection >': function() {
+        this.collection.addModel(this.model);
+        this.collection.addModel(this.model);
+        buster.assert.equals(this.collection.length, 1);
+    },
+
+    'Expect adding a model with the same cid twice to fire an add:error event >': function() {
+        var spy = this.spy();
+        this.collection.addEvent('add:error', spy);
+        this.collection.addModel(this.model);
+        this.collection.addModel(this.model);
+        buster.assert.calledWith(spy, this.model);
+    },
+
+    'Expect adding a model with the same cid with a replace flag to work >': function() {
+        var spy = this.spy(),
+            fakeModel = new Epitome.Model({
+                id: 'hello'
+            });
+
+        this.model.set('id', 'hello');
+        this.collection.addModel(this.model);
+        this.collection.addEvent('add', spy);
+        this.collection.addModel(fakeModel, true);
+        buster.assert.calledWith(spy, fakeModel);
+    },
+
     'Expect removing models to collection to fire onRemove event >': function() {
         var self = this;
         this.collection.addModel(this.model);
@@ -60,7 +87,6 @@ buster.testCase('Basic Epitome empty collection creation >', {
         this.collection.removeModel(this.model);
         buster.assert.equals(this.collection._models.length, modelsCount);
     }
-
 
 });
 
@@ -114,6 +140,11 @@ buster.testCase('Basic Epitome collection with a model creation >', {
             buster.assert.equals(model, self.model);
         });
         this.model.fireEvent(event);
+    },
+
+    'Expect toJSON to return an array of all models\' dereferenced objects': function() {
+        buster.assert.equals(this.collection.toJSON().length, this.collection.length);
     }
+
 
 });
