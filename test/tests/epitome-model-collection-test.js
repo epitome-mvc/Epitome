@@ -66,6 +66,15 @@ buster.testCase('Basic Epitome empty collection creation >', {
         buster.assert.calledWith(spy, fakeModel);
     },
 
+    'Expect adding a model via an object only to create a model and add it >': function() {
+        var data = {
+            id: 'hello'
+        };
+
+        this.collection.addModel(data);
+        buster.assert.isTrue(instanceOf(this.collection.getModelByCID(data.id), this.collection.model));
+    },
+
     'Expect removing models to collection to fire onRemove event >': function() {
         var self = this;
         this.collection.addModel(this.model);
