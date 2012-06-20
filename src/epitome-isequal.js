@@ -9,27 +9,28 @@
         if (a === b) return a !== 0 || 1 / a == 1 / b;
         // A strict comparison is necessary because `null == undefined`.
         if (a == null || b == null) return a === b;
-        // Compare `[[Class]]` names.
-        var className = toString.call(a);
-        if (className != toString.call(b)) return false;
+
+        // go to mootools types.
+        var className = typeOf(a);
+        if (className != typeOf(b)) return false;
         switch (className) {
             // Strings, numbers, dates, and booleans are compared by value.
-            case '[object String]':
+            case 'string':
                 // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
                 // equivalent to `new String("5")`.
                 return a == String(b);
-            case '[object Number]':
+            case 'number':
                 // `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
                 // other numeric values.
                 return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
-            case '[object Date]':
-            case '[object Boolean]':
+            case 'date':
+            case 'boolean':
                 // Coerce dates and booleans to numeric primitive values. Dates are compared by their
                 // millisecond representations. Note that invalid dates with millisecond representations
                 // of `NaN` are not equivalent.
                 return +a == +b;
             // RegExps are compared by their source patterns and flags.
-            case '[object RegExp]':
+            case 'regexp':
                 return a.source == b.source &&
                     a.global == b.global &&
                     a.multiline == b.multiline &&
@@ -48,7 +49,7 @@
         stack.push(a);
         var size = 0, result = true;
         // Recursively compare objects and arrays.
-        if (className == '[object Array]') {
+        if (className == 'array') {
             // Compare array lengths to determine if a deep comparison is necessary.
             size = a.length;
             result = size == b.length;
@@ -56,7 +57,7 @@
                 // Deep compare the contents, ignoring non-numeric properties.
                 while (size--) {
                     // Ensure commutative equality for sparse arrays.
-                    if (!(result = size in a == size in b && eq(a[size], b[size], stack))) break;
+                    if (!(result = size in a == size in b && Epitome.isEqual(a[size], b[size], stack))) break;
                 }
             }
         } else {
