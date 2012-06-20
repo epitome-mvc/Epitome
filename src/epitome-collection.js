@@ -1,6 +1,7 @@
 ;(function(exports) {
 
-    var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome;
+    var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome,
+        methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom'];
 
     // decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
     Function.extend({
@@ -28,7 +29,7 @@
         }
     });
 
-    Epitome.Collection = new Class({
+    var Collection = Epitome.Collection = new Class({
 
         Implements: [Options,Events],
 
@@ -111,6 +112,12 @@
             };
             return Array.map(this._models, getJSON);
         }
+    });
+
+    Array.each(methodMap, function(method) {
+        Collection.implement(method, function() {
+            return Array.prototype[method].apply(this._models, arguments);
+        });
     });
 
 

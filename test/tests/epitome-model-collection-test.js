@@ -151,9 +151,54 @@ buster.testCase('Basic Epitome collection with a model creation >', {
         this.model.fireEvent(event);
     },
 
-    'Expect toJSON to return an array of all models\' dereferenced objects': function() {
+    'Expect toJSON to return an array of all models\' dereferenced objects >': function() {
         buster.assert.equals(this.collection.toJSON().length, this.collection.length);
+    },
+
+    'Expect Array method .each to work on the collection >': function() {
+        var spy = this.spy();
+
+        this.collection.each(spy);
+        buster.assert.calledWith(spy, this.model, 0);
+    },
+
+    'Expect Array method .invoke to work on the collection >': function() {
+        this.collection.invoke('set', {
+            testing: 123
+        });
+        buster.assert.equals(this.model.get('testing'), 123);
+    },
+
+    'Expect Array method .map to work on the collection >': function() {
+        this.collection.map(function(el, index) {
+            el.cid = index;
+        });
+        buster.assert.equals(this.model.cid, 0);
+    },
+
+    'Expect Array method .filter to work on the collection >': function() {
+        var cid = 'testsftw';
+
+        this.collection.addModel({
+            id: cid
+        });
+
+        var models = this.collection.filter(function(el) {
+            return el.cid == cid;
+        });
+
+        buster.assert.equals(models.length, 1)
+    },
+
+    'Expect Array method .contains to work on the collection >': function() {
+        buster.assert.isTrue(this.collection.contains(this.model));
+    },
+
+    'Expect Array method .indexOf to work on the collection >': function() {
+        buster.assert.equals(this.collection.indexOf(this.model), 0);
+    },
+
+    'Expect Array method .getRandom to work on the collection >': function() {
+        buster.assert.equals(this.collection.getRandom(), this.model);
     }
-
-
 });
