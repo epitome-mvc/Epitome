@@ -1,41 +1,41 @@
 // define a prototype for our model. You can just make an instance of Model but this is cleaner
 var testModel = new Class({
 
-    Extends: Epitome.Model.Sync,
+	Extends: Epitome.Model.Sync,
 
-    options: {
-        defaults: {
-            urlRoot: 'data/',
-            id: '1231231'
-        }
-    }
+	options: {
+		defaults: {
+			urlRoot: 'data/',
+			id: '1231231'
+		}
+	}
 });
 
 
 
 var testInstance = new testModel({
-    initial: 'data'
+	initial: 'data'
 }, {
-    onChange: function() {
-        console.log(arguments);
-    },
-    'onChange:foo': function(value) {
-        console.log('foo is happening!', value);
-    },
-    onSync: function(resp, method) {
-        console.log('hi, you just did a ' + method);
-    },
-    onSave: function() {
-        console.log('saved');
-    },
-    onUpdate: function() {
-        console.log('updated');
-        // final data...
-        console.log(this.toJSON())
-    },
-    onCreate: function() {
-        console.log('created for the first time');
-    }
+	onChange: function() {
+		console.log(arguments);
+	},
+	'onChange:foo': function(value) {
+		console.log('foo is happening!', value);
+	},
+	onSync: function(resp, method) {
+		console.log('hi, you just did a ' + method);
+	},
+	onSave: function() {
+		console.log('saved');
+	},
+	onUpdate: function() {
+		console.log('updated');
+		// final data...
+		console.log(this.toJSON())
+	},
+	onCreate: function() {
+		console.log('created for the first time');
+	}
 });
 
 
