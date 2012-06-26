@@ -2,7 +2,8 @@
 
 	// get the Epitome module
 	var Epitome = typeof require == 'function' ? require('epitome-model') : exports.Epitome,
-		Model = Epitome.Model;
+		Model = Epitome.Model,
+		syncPseudo = 'sync:';
 
 	// define CRUD mapping.
 	var methodMap = {
@@ -95,14 +96,14 @@
 				emulation: this.options.emulateREST,
 				onRequest: incrementRequestId,
 				onCancel: function() {
-					this.removeEvents('sync:' + rid);
+					this.removeEvents(syncPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
 					self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
-					self.fireEvent('sync:' + rid, [responseObj]);
+					self.fireEvent(syncPseudo + rid, [responseObj]);
 				},
 				onFailure: function() {
-					self.fireEvent('sync:error', [this.options.method, this.options.url, this.options.data]);
+					self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
 				}
 			});
 
@@ -121,7 +122,7 @@
 			// a pseudo :once event for each sync that sets the model to response and can do more callbacks.
 
 			// normally, methods that implement this will be the only ones to auto sync the model to server version.
-			eventName = eventName || 'sync:' + this.getRequestId();
+			eventName = eventName || syncPseudo + this.getRequestId();
 
 			var self = this,
 				throwAway = {};
@@ -141,7 +142,7 @@
 
 		fetch: function() {
 			// perform a .read and then set returned object key/value pairs to model.
-			this._throwAwaySyncEvent('sync:' + this.getRequestId(), function() {
+			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
 				this.fireEvent('fetch');
 				this.isNewModel = false;
 			});
@@ -163,7 +164,7 @@
 			}
 
 			// we want to set this.
-			this._throwAwaySyncEvent('sync:' + this.getRequestId(), function() {
+			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
 				this.fireEvent('save');
 				this.fireEvent(method);
 			});
