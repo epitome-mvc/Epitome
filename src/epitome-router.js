@@ -1,4 +1,5 @@
 ;(function(exports) {
+	//todo: add pushstate support instead of hashchange but keep hashes for routing.
 
 	// get the Epitome module
 	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome,
@@ -203,3 +204,4 @@
 		exports.Epitome = Epitome;
 	}
 }(this));
+
