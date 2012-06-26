@@ -39,6 +39,10 @@
             }
         },
 
+        options: {
+            RESTemulation: false
+        },
+
         initialize: function(obj, options) {
             // needs to happen first before events are added,
             // in case we have custom accessors in the model object.
@@ -76,13 +80,20 @@
                 // one request at a time
                 link: 'chain',
                 url: this.get('urlRoot'),
+                emulation: this.options.RESTemulation,
+                onRequest: function() {
+                    self.request.rid++;
+                },
                 onSuccess: function(responseObj) {
                     self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
+                    self.fireEvent('sync' + self.request.rid, [responseObj]);
                 },
                 onFailure: function() {
                     self.fireEvent('sync:error', [this.options.method, this.options.url, this.options.data]);
                 }
             });
+
+            this.request.rid = 0;
 
             // export crud methods to model.
             Object.each(methodMap, function(requestMethod, protoMethod) {
@@ -98,7 +109,7 @@
             // a pseudo :once event for each sync that sets the model to response and can do more callbacks.
 
             // normally, methods that implement this will be the only ones to auto sync the model to server version.
-            eventName = eventName || 'sync';
+            eventName = eventName || 'sync:' + (this.request.rid + 1);
 
             var self = this,
                 throwAway = {};
@@ -118,7 +129,7 @@
 
         fetch: function() {
             // perform a .read and then set returned object key/value pairs to model.
-            this._throwAwaySyncEvent('sync', function() {
+            this._throwAwaySyncEvent('sync:' + (this.request.rid + 1), function() {
                 this.fireEvent('fetch');
                 this.isNewModel = false;
             });
@@ -140,7 +151,7 @@
             }
 
             // we want to set this.
-            this._throwAwaySyncEvent('sync', function() {
+            this._throwAwaySyncEvent('sync:' + (this.request.rid + 1), function() {
                 this.fireEvent('save');
                 this.fireEvent(method);
             });

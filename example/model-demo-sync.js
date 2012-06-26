@@ -45,7 +45,7 @@ console.log(testInstance.toJSON());
 // this should be event-driven and not chained, but it's an example of the api.
 
 // get a model from the server
-testInstance.fetch();
+testInstance.read();
 
 // we need to reset the isModelNew or it will not work with the next 2 tests.
 // logic is, if a model has been fetched, it is not new.
@@ -55,7 +55,10 @@ testInstance.isModelNew = false;
 testInstance.set('foo', 'bar');
 
 // first save, should fire a create
-testInstance.save.delay(1000, testInstance);
+testInstance.create.delay(1000, testInstance);
 
 // second save is an update
-testInstance.save.delay(3000, testInstance);
+testInstance.update.delay(3000, testInstance);
+
+// and now a delete
+testInstance.delete.delay(5000, testInstance);
