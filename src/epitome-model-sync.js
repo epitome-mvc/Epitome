@@ -40,7 +40,8 @@
         },
 
         options: {
-            RESTemulation: false
+	        // by default, HTTP emulation is enabled for mootools request class. we want it off.
+            emulateREST: false
         },
 
         initialize: function(obj, options) {
@@ -75,25 +76,36 @@
         },
 
         setupSync: function() {
-            var self = this;
+            var self = this,
+	            rid = 0,
+	            incrementRequestId = function() {
+		            // request ids are unique and private. private to up them.
+		            rid++;
+	            };
+
+	        // public methods - next likely is current rid + 1
+	        this.getRequestId = function() {
+		        return rid + 1;
+	        };
+
             this.request = new Request.JSON({
                 // one request at a time
                 link: 'chain',
                 url: this.get('urlRoot'),
-                emulation: this.options.RESTemulation,
-                onRequest: function() {
-                    self.request.rid++;
-                },
+                emulation: this.options.emulateREST,
+                onRequest: incrementRequestId,
+	            onCancel: function() {
+		            this.removeEvents('sync:' + rid);
+	            },
                 onSuccess: function(responseObj) {
                     self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
-                    self.fireEvent('sync' + self.request.rid, [responseObj]);
+                    self.fireEvent('sync:' + rid, [responseObj]);
                 },
                 onFailure: function() {
                     self.fireEvent('sync:error', [this.options.method, this.options.url, this.options.data]);
                 }
             });
 
-            this.request.rid = 0;
 
             // export crud methods to model.
             Object.each(methodMap, function(requestMethod, protoMethod) {
@@ -105,11 +117,11 @@
             return this;
         },
 
-        _throwAwaySyncEvent: function(eventName, callback) {
+	    _throwAwaySyncEvent: function(eventName, callback) {
             // a pseudo :once event for each sync that sets the model to response and can do more callbacks.
 
             // normally, methods that implement this will be the only ones to auto sync the model to server version.
-            eventName = eventName || 'sync:' + (this.request.rid + 1);
+            eventName = eventName || 'sync:' + this.getRequestId();
 
             var self = this,
                 throwAway = {};
@@ -129,7 +141,7 @@
 
         fetch: function() {
             // perform a .read and then set returned object key/value pairs to model.
-            this._throwAwaySyncEvent('sync:' + (this.request.rid + 1), function() {
+            this._throwAwaySyncEvent('sync:' + this.getRequestId(), function() {
                 this.fireEvent('fetch');
                 this.isNewModel = false;
             });
@@ -151,7 +163,7 @@
             }
 
             // we want to set this.
-            this._throwAwaySyncEvent('sync:' + (this.request.rid + 1), function() {
+            this._throwAwaySyncEvent('sync:' + this.getRequestId(), function() {
                 this.fireEvent('save');
                 this.fireEvent(method);
             });
