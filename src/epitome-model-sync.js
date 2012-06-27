@@ -52,9 +52,9 @@
 			this.parent(obj, options);
 		},
 
-		sync: function(method, model, options) {
+		sync: function(method, model) {
 			// internal low level api that works with the model request instance.
-			options = options || {};
+			var options = {};
 
 			// determine what to call or do a read by default.
 			method = method && methodMap[method] ? methodMap[method] : methodMap['read'];
@@ -110,8 +110,8 @@
 
 			// export crud methods to model.
 			Object.each(methodMap, function(requestMethod, protoMethod) {
-				self[protoMethod] = function(model, options) {
-					this.sync(protoMethod, model, options);
+				self[protoMethod] = function(model) {
+					this.sync(protoMethod, model);
 				};
 			});
 
