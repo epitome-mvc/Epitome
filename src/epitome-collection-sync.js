@@ -1,7 +1,8 @@
 ;(function(exports) {
 
 	var Epitome = typeof require == 'function' ? require('epitome-collection') : exports.Epitome,
-		noUrl = 'no-urlRoot-set';
+		noUrl = 'no-urlRoot-set',
+		syncPseudo = 'sync:';
 
 	//this file is not functional.
 
@@ -43,6 +44,7 @@
 					this.removeEvents(syncPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
+					self.processModels(responseObj);
 					self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
 					self.fireEvent(syncPseudo + rid, [responseObj]);
 				},
@@ -54,7 +56,12 @@
 
 		sync: function() {
 
+		},
+
+		processModels: function() {
+
 		}
+
 
 	});
 

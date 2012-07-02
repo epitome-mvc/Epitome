@@ -101,6 +101,24 @@ buster.testCase('Basic Epitome empty collection creation >', {
 		// this breaks by creating a circular reference.
 		this.collection.addModel(this.model);
 		buster.assert.isTrue(this.model.collections.contains(this.collection));
+	},
+
+	'Expect to be able to get a model from collection by id': function() {
+		var fakeModel = new Epitome.Model({
+			id: 'hello'
+		});
+
+		this.collection.addModel(fakeModel);
+		buster.assert.equals(fakeModel, this.collection.getModelById(fakeModel.get('id')));
+	},
+
+	'Expect to be able to get a model from collection by cid': function() {
+		var fakeModel = new Epitome.Model({
+			id: 'hello'
+		});
+
+		this.collection.addModel(fakeModel);
+		buster.assert.equals(fakeModel, this.collection.getModelByCID(fakeModel.get('id')));
 	}
 
 });

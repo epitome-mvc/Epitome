@@ -95,11 +95,22 @@
 		},
 
 		getModelByCID: function(cid) {
+			// return a model based upon a cid search
+			var last = null;
+
+			this.some(function(el) {
+				return el.cid == cid && (last = el);
+			});
+
+			return last;
+		},
+
+		getModelById: function(id) {
 			// return a model based upon an id search
 			var last = null;
 
-			Array.some(this._models, function(el) {
-				return el.cid == cid && (last = el);
+			this.some(function(el) {
+				return el.get('id') == id && (last = el);
 			});
 
 			return last;

@@ -22,7 +22,10 @@ config['Browser tests'] = {
 		'src/epitome-collection.js',
 
 		// extending extras
-		'src/epitome-model-sync.js'
+		'src/epitome-model-sync.js',
+
+		// controller/collection
+		'src/epitome-collection-sync.js'
 	],
 
 	tests: [

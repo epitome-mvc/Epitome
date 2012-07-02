@@ -22,7 +22,11 @@
 			id: {
 				get: function() {
 					// always need an id, even if we don't have one.
-					return this._attributes.id || (this._attributes.id = String.uniqueID());
+					var id = this._attributes.id || (this._attributes.id = String.uniqueID());
+					// always need a collection id.
+					this.cid || (this.cid = id);
+
+					return id;
 				}
 			},
 			urlRoot: {
