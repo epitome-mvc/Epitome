@@ -20,7 +20,23 @@ var testView = new Class({
 });
 
 
-var testCollection = new Epitome.Collection([{
+var testModel = new Class({
+
+	Extends: Epitome.Model.Sync,
+
+	defaults: {
+		urlRoot: '/blah'
+	}
+});
+
+var testCollectionProto = new Class({
+
+	Extends: Epitome.Collection,
+
+	model: testModel
+});
+
+var testCollection = new testCollectionProto([{
 	id: 1,
 	title: 'Task one',
 	task: 'Do me first'
@@ -74,9 +90,11 @@ var testInstance = new testView({
 	},
 
 	onChangeFirst: function(e, el) {
-		testCollection.getRandom().set({
+		var model = testCollection.getRandom();
+		model.set({
 			title: String.uniqueID()
 		});
+		model.save();
 	}
 });
 
