@@ -7,33 +7,37 @@ var testView = new Class({
 		var views = [],
 			self = this;
 
+		var controls = this.element.getElement('div.task-controls').dispose();
+
 		this.empty();
 		this.collection.each(function(model) {
 			views.push(self.template(model.toJSON()));
 		});
 
-		this.element.set('html', views.join(''));
+		this.element.set('html', views.join('')).adopt(controls);
 	}
 
 });
 
 
+var testCollection = new Epitome.Collection([{
+	id: 1,
+	title: 'Task one',
+	task: 'Do me first'
+}, {
+	id: 2,
+	title: 'Task two',
+	task: 'Do me next'
+}, {
+	id: 3,
+	title: 'Task three',
+	task: 'Do me last'
+}]);
+
 
 var testInstance = new testView({
 
-	collection: new Epitome.Collection([{
-		id: 1,
-		title: 'Task one',
-		task: 'Do me first'
-	}, {
-		id: 2,
-		title: 'Task two',
-		task: 'Do me next'
-	}, {
-		id: 3,
-		title: 'Task three',
-		task: 'Do me last'
-	}]),
+	collection: testCollection,
 
 	element: 'demo',
 
@@ -41,7 +45,15 @@ var testInstance = new testView({
 
 	// event binding
 	events: {
-		'click:relay(a.task-remove)': 'removeTask'
+		'click:relay(a.task-remove)': 'removeTask',
+		'click:relay(button.task-create)': 'newTask',
+		'click:relay(button.change-one)': 'changeFirst'
+	},
+
+	onReady: function() {
+		this.collection.addEvents({
+			'change': this.render.bind(this)
+		});
 	},
 
 	onRemoveTask: function(e, el) {
@@ -51,6 +63,20 @@ var testInstance = new testView({
 
 		this.collection.removeModel(model);
 		this.render();
+	},
+
+	onNewTask: function(e, el) {
+		testCollection.addModel({
+			id: Number.random(1000, 100000),
+			title: 'New Task',
+			task: 'Some text'
+		});
+	},
+
+	onChangeFirst: function(e, el) {
+		testCollection.getRandom().set({
+			title: String.uniqueID()
+		});
 	}
 });
 

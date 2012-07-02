@@ -38,7 +38,7 @@
 			}
 
 			this.setOptions(options);
-			return this;
+			return this.fireEvent('ready');
 		},
 
 		attachEvents: function(events) {

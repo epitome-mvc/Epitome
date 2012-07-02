@@ -78,7 +78,7 @@
 			this.length = this._models.length;
 
 			// let somebody know.
-			return this.fireEvent('add', [model, model.cid]);
+			return this.fireEvent('add', [model, model.cid]).fireEvent('change', [model, model.cid]);
 		},
 
 		removeModel: function(model) {
