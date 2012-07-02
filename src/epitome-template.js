@@ -26,14 +26,12 @@
 		}
 	});
 
-	Epitome.extend({
-		template: {
-			// return a compiled template via string sub.
-			compile: function(html, data) {
-				return html.substitute(data);
-			}
+	Epitome.Template = {
+		// return a compiled template via string sub.
+		compile: function(html, data) {
+			return html.substitute(data);
 		}
-	});
+	};
 
 	if (typeof define === 'function' && define.amd) {
 		define('epitome-template', function() {
