@@ -2,7 +2,6 @@
 
 	var Epitome = typeof require == 'function' ? require('epitome-template') : exports.Epitome;
 
-
 	Epitome.View = new Class({
 
 		Implements: [Options, Events],
@@ -33,8 +32,12 @@
 				delete options.events;
 			}
 
+			if (options.collection) {
+				this.collection = options.collection;
+				delete options.collection;
+			}
+
 			this.setOptions(options);
-			this.template = this.options.template;
 			return this;
 		},
 
@@ -48,19 +51,28 @@
 
 		},
 
+		template: function(data) {
+			return Epitome.Template.compile(this.options.template, data)
+		},
+
 		render: function() {
-			this.element.set('html', Epitome.Template.compile(this.options.template, this.options.data));
+			this.element.set('html', this.template(this.options.data));
 			return this;
+		},
+
+		empty: function() {
+			this.element.empty();
+			return this.fireEvent('empty');
 		},
 
 		dispose: function() {
 			this.element.dispose();
-			return this;
+			return this.fireEvent('dispose');
 		},
 
 		destroy: function() {
 			this.element.destroy();
-			return this;
+			return this.fireEvent('destroy');
 		}
 
 	});
