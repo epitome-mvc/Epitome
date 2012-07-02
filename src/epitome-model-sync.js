@@ -103,8 +103,9 @@
 					this.removeEvents(syncPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
-					self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
+					responseObj = self.parse && self.parse(responseObj);
 					self.fireEvent(syncPseudo + rid, [responseObj]);
+					self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
 				},
 				onFailure: function() {
 					self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
@@ -144,6 +145,11 @@
 			return this.addEvents(throwAway);
 		}.protect(),
 
+		parse: function(resp) {
+			// pre-processor for json object from response.
+			return resp;
+		},
+
 		fetch: function() {
 			// perform a .read and then set returned object key/value pairs to model.
 			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
@@ -179,6 +185,15 @@
 			this.isNewModel = false;
 
 			return this;
+		},
+
+		destroy: function() {
+			// destroy the model, send delete to server
+			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
+				this.empty();
+				this.fireEvent('destroy');
+				//todo: remove model from any collections it may be a member of.
+			});
 		},
 
 		isNew: function() {

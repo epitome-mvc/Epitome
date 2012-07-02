@@ -103,5 +103,51 @@ buster.testCase('Epitome model sync >', {
 
 		// a change event will occur if foo differs after fetch
 		this.model.fetch();
+	},
+
+	'Expect the pre-processing parser to get the object before the model does after a sync >': function(done) {
+
+		var protoModel = new Class({
+
+			Extends: Epitome.Model.Sync,
+
+			parse: function(obj) {
+				buster.assert(true);
+				done();
+			}
+		});
+
+		var protoInstance = new protoModel(this.dataInitial, this.options);
+		protoInstance.fetch();
+	},
+
+	'Expect the pre-processing parser to precede model sets/changes >': function(done) {
+
+		var spy = this.spy(),
+			protoModel = new Class({
+
+				Extends: Epitome.Model.Sync,
+
+				parse: function(obj) {
+					delete obj.foo;
+					return obj
+				}
+			});
+
+		var protoInstance = new protoModel(this.dataInitial, {
+			onFetch: function() {
+				buster.refute.called(spy);
+				done();
+			}
+		});
+
+		// it should change but for the processor disallowing it. mocker sends
+		protoInstance.set('foo', 'changeme');
+
+		// add the spy which should not work.
+		protoInstance.addEvent('change:foo', spy);
+
+		// this will get an object with id and foo properties. if it works, should NOT change foo as pre-processor removes it
+		protoInstance.fetch();
 	}
 });

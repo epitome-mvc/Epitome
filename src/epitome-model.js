@@ -101,6 +101,17 @@
 
 		toJSON: function() {
 			return Object.clone(this._attributes);
+		},
+
+		destroy: function() {
+			// destroy the model
+			this.empty();
+			this.fireEvent('destroy');
+		},
+
+		empty: function() {
+			this._attributes = {};
+			this.fireEvent('empty');
 		}
 	});
 
