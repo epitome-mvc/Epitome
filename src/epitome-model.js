@@ -22,9 +22,9 @@
 			// are there any defaults passed? better to have them on the proto.
 			options && options.defaults && (this.options.defaults = Object.merge(this.options.defaults, options.defaults));
 
-			// initial obj should pass on a setter (this will fail for now).
-			obj = obj || {};
-			obj && typeOf(obj) === 'object' && this.set(Object.merge(this.options.defaults, obj));
+			// initial obj should pass on to the setter.
+			obj = obj && typeOf(obj) === 'object' ? obj : {};
+			this.set(Object.merge(this.options.defaults, obj));
 
 			// merge options overload, will now add the events.
 			this.setOptions(options);
