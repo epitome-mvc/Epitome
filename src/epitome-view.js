@@ -25,7 +25,7 @@
 			// constructor like function.
 
 			// deal with collection first to avoid reference errors with object.clone / merge for setOptions
-			if (options.collection) {
+			if (options && options.collection) {
 				this.setCollection(options.collection);
 				delete options.collection;
 			}
@@ -53,7 +53,7 @@
 
 		setElement: function(el, events) {
 			// set the element and clean-up old one
-			this.element && this.detachEvents() && this.destroy() && console.log('arse');
+			this.element && this.detachEvents() && this.destroy();
 			this.element = document.id(el);
 			events && this.attachEvents(events);
 
