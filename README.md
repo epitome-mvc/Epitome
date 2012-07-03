@@ -29,11 +29,11 @@ The core module is called Epitome and it has the following structure:
 
 - `Epitome.isEqual` - a module for comparing values, borrowed from _.js
 - `Epitome.Model` - the model itself
-- `Epitome.Collection` - a pseudo controller, Observing all model events (not done, WIP)
+- `Epitome.Collection` - a pseudo model controller, Observing all model events (works but may change)
+- `Epitome.Collection.Sync` - extends the collection to fetch RESTfully (not finished)
 - `Epitome.Model.Sync` - a plugin for keeping your model and collections in sync via REST endpoints
-- `Epitome.View` - view rendered, using whatever 3-rd party templating engine (not done)
-- `Epitome.Template` - a pseudo templating plugin (not done, WIP)
-- `Epitome.Plugins` - a free-type Object of methods/extensions that can be implemented into Models, like validation (not done)
+- `Epitome.View` - view rendered, using whatever 3-rd party templating engine (works but may change)
+- `Epitome.Template` - a pseudo templating interface, currently via a custom MooTools `String.substitute(obj)`
 
 Tests via [Buster.js](http;//busterjs.org) can be found in `/tests/` - check the README.md there for more info.
 
