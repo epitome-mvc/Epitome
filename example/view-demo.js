@@ -71,9 +71,10 @@ var testInstance = new testView({
 	},
 
 	onReady: function() {
-		this.collection.addEvents({
-			'change': this.render.bind(this)
-		});
+	},
+
+	'onChange:collection': function() {
+		this.render();
 	},
 
 	onRemoveTask: function(e, el) {

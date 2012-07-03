@@ -12,6 +12,9 @@
 		// optional, a collection may be bound to the view
 		collection: null,
 
+		// optional, a model may be bound to the view
+		model: null,
+
 		// preset stuff like template and the event map
 		options: {
 			template: "",
@@ -62,7 +65,44 @@
 
 		setCollection: function(collection) {
 			// a collection should be a real collection.
-			instanceOf(collection, Epitome.Collection) && (this.collection = collection);
+			var self = this,
+				eventProxy = function(type) {
+					return function() {
+						self.fireEvent(type + ':collection', arguments);
+					}
+				};
+
+			if (instanceOf(collection, Epitome.Collection)) {
+				this.collection = collection;
+				// listen in for changes.
+				this.collection.addEvents({
+					'change': eventProxy('change'),
+					'add': eventProxy('add'),
+					'remove': eventProxy('remove')
+				});
+			}
+
+			return this;
+		},
+
+		setModel: function(model) {
+			// a model should be an Epitome model
+			var self = this,
+				eventProxy = function(type) {
+					return function() {
+						self.fireEvent(type + ':model', arguments);
+					}
+				};
+
+			if (instanceOf(model, Epitome.Model)) {
+				this.model = model;
+				// listen in for changes.
+				this.model.addEvents({
+					'change': eventProxy('change'),
+					'destroy': eventProxy('destroy'),
+					'empty': eventProxy('empty')
+				});
+			}
 
 			return this;
 		},
