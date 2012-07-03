@@ -29,7 +29,8 @@ var testModel = new Class({
 	options: {
 		defaults: {
 			urlRoot: 'data'
-		}
+		},
+		emulateREST: !true
 	}
 });
 
@@ -76,6 +77,7 @@ var testInstance = new testView({
 			model = this.collection.getModelById(id);
 
 		this.collection.removeModel(model);
+		model.delete();
 		this.render();
 	},
 
