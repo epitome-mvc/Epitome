@@ -103,13 +103,19 @@
 			return Object.clone(this._attributes);
 		},
 
-		destroy: function() {
-			// destroy the model
-			this.empty();
-			this.fireEvent('destroy');
-		},
-
 		empty: function() {
+			// empty the model and fire change event
+			var keys = Object.keys(this.toJSON()),
+				self = this;
+
+			// let the instance know.
+			this.fireEvent('change', [keys]);
+
+			// fire change for all keys in the model.
+			Array.each(keys, function(key) {
+				self.fireEvent('change:' + key, null);
+			});
+
 			this._attributes = {};
 			this.fireEvent('empty');
 		}
