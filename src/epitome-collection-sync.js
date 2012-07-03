@@ -2,7 +2,7 @@
 
 	var Epitome = typeof require == 'function' ? require('epitome-collection') : exports.Epitome,
 		noUrl = 'no-urlRoot-set',
-		syncPseudo = 'sync:';
+		eventPseudo = 'fetch:';
 
 	//this file is not functional.
 
@@ -11,8 +11,7 @@
 		Extends: Epitome.Collection,
 
 		options: {
-			urlRoot: noUrl,
-			emulateREST: false
+			urlRoot: noUrl
 		},
 
 		initialize: function(models, options) {
@@ -41,26 +40,63 @@
 				emulation: this.options.emulateREST,
 				onRequest: incrementRequestId,
 				onCancel: function() {
-					this.removeEvents(syncPseudo + rid);
+					this.removeEvents(eventPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
+					self.fireEvent('fetch', [responseObj, this.options.method, this.options.data]);
+					self.fireEvent(eventPseudo + rid, [responseObj]);
 					self.processModels(responseObj);
-					self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
-					self.fireEvent(syncPseudo + rid, [responseObj]);
 				},
 				onFailure: function() {
-					self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+					self.fireEvent(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+				}
+			});
+
+			return this;
+		},
+
+		fetch: function(refresh) {
+			this._throwAwayEvent(function(models) {
+				this.fireEvent('fetch', [models])
+			});
+
+			this.request.get();
+
+			// dangerous. async stuff coming.
+			return this;
+		},
+
+		processModels: function(models) {
+			var self = this;
+			Array.each(models, function(model) {
+				var exists = model.id && self.getModelById(model.id);
+				if (exists) {
+					model.set(model);
+				}
+				else {
+					self.addModel(model);
 				}
 			});
 		},
 
-		sync: function() {
+		_throwAwayEvent: function(callback) {
+			// this is a one-off event that will ensure a fetch event fires only once per .fetch
+			var eventName = eventPseudo + this.getRequestId(),
+				self = this,
+				throwAway = {};
 
-		},
+			if (!callback || typeof callback !== 'function')
+				return;
 
-		processModels: function() {
+			throwAway[eventName] = function(responseObj) {
+				callback.apply(self, responseObj);
 
-		}
+				// remove this one-off event.
+				self.removeEvents(throwAway);
+			};
+
+			return this.addEvents(throwAway);
+		}.protect()
 
 
 	});

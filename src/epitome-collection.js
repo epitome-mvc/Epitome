@@ -45,6 +45,8 @@
 
 		setUp: function(models) {
 			Array.each(models, this.addModel.bind(this));
+
+			return this;
 		},
 
 		addModel: function(model, replace) {
@@ -128,7 +130,6 @@
 			};
 			return Array.map(this._models, getJSON);
 		}
-
 
 	});
 
