@@ -33,6 +33,12 @@
 				delete options.collection;
 			}
 
+			// deal with model as well
+			if (options && options.model) {
+				this.setModel(options.model);
+				delete options.model;
+			}
+
 			// now we can hopefully setOptions safely.
 			this.setOptions(options);
 
