@@ -24,8 +24,10 @@ var testModel = new Class({
 
 	Extends: Epitome.Model.Sync,
 
-	defaults: {
-		urlRoot: '/blah'
+	options: {
+		defaults: {
+			urlRoot: '/blah'
+		}
 	}
 });
 
@@ -94,6 +96,7 @@ var testInstance = new testView({
 		model.set({
 			title: String.uniqueID()
 		});
+
 		model.save();
 	}
 });
