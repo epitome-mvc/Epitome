@@ -4,14 +4,18 @@ Epitome
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
 An experimental Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
+Licence: MIT
 
-BUT IS IT MVC?
+BUT, IS IT MVC?
+===============
 
 > &lt;jiggliemon> MVD, Model View Don'task
 
-Licence: MIT
+Documentation
+=============
 
-Groc `Documentation` is available here: [http://dimitarchristoff.github.com/Epitome/](http://dimitarchristoff.github.com/Epitome/)
+Epitome is largely undocumented with a lot of inline comments added to help you read the source code better.
+A Groc generated _'Documentation'_ is available here: [http://dimitarchristoff.github.com/Epitome/](http://dimitarchristoff.github.com/Epitome/)
 
 A default `.groc.json` file is added so you can just run `groc` in the root to freshen.
 
