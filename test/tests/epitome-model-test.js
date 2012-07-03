@@ -199,15 +199,6 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 		buster.assert.calledWith(spy, 'bar');
 	},
 
-	'Expect a destroy to fire the event and empty the model >': function() {
-
-		this.model.addEvent('destroy', function() {
-			buster.assert.equals(this._attributes, {});
-		});
-
-		this.model.destroy();
-	},
-
 	'Expect empty to fire the event and empty the model >': function() {
 
 		this.model.addEvent('empty', function() {
@@ -215,7 +206,17 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 		});
 
 		this.model.empty();
-	}
+	},
 
+	'Expect empty to fire the change event with all model properties >': function() {
+
+		var keys = Object.keys(this.model.toJSON());
+
+		this.model.addEvent('change', function(properties) {
+			buster.assert.equals(properties, keys);
+		});
+
+		this.model.empty();
+	}
 
 });
