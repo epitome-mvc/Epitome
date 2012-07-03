@@ -1,24 +1,29 @@
 buster.testRunner.timeout = 1000;
 
 buster.testCase('Basic Epitome empty collection via sync creation >', {
-	setUp: function() {
-		this.Collection = new Class({
+	setUp: function(done) {
+
+		var testModel = new Class({
+			Extends: Epitome.Model.Sync
+		});
+
+		this.CollectionProto = new Class({
+
 			Extends: Epitome.Collection.Sync,
 
-			foo: function() {
-
+			options: {
+				urlRoot: 'example/data/collection/response.json'
 			},
 
-			onChange: function() {
-				console.log('hai')
+			model: testModel
+		});
+
+		this.collection = new this.CollectionProto(null, {
+			onFetch: function() {
+				done();
 			}
 		});
-
-		this.collection = new this.Collection();
-		this.model = new Epitome.Model({
-			hello: 'there'
-		});
-
+		this.collection.fetch();
 	},
 
 	tearDown: function() {
@@ -30,8 +35,12 @@ buster.testCase('Basic Epitome empty collection via sync creation >', {
 		buster.assert.isTrue(instanceOf(this.collection, Epitome.Collection.Sync));
 	},
 
-	'Expect a collection to have sync >': function() {
-		buster.assert.isTrue(typeof this.collection.sync !== 'undefined');
+	'Expect a collection to have fetch >': function() {
+		buster.assert.isTrue(typeof this.collection.fetch === 'function');
 	},
+
+	'Expect models in collection not to be 0 >': function() {
+		buster.assert.equals(this.collection._models.length, 10);
+	}
 
 });

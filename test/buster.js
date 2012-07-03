@@ -41,6 +41,7 @@ config['Browser tests'] = {
 
 	resources: [
 		// used as a static response json stub for model.sync
-		'example/data/1234-5123/*'
+		'example/data/1234-5123/*',
+		'example/data/collection/*'
 	]
 };

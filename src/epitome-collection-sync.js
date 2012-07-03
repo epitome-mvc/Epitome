@@ -43,9 +43,8 @@
 					this.removeEvents(eventPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
-					self.fireEvent('fetch', [responseObj, this.options.method, this.options.data]);
-					self.fireEvent(eventPseudo + rid, [responseObj]);
 					self.processModels(responseObj);
+					self.fireEvent(eventPseudo + rid, [responseObj]);
 				},
 				onFailure: function() {
 					self.fireEvent(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
