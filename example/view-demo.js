@@ -15,6 +15,8 @@ var testView = new Class({
 		});
 
 		this.element.set('html', views.join('')).adopt(controls);
+		this.parent();
+		return this;
 	}
 
 });
