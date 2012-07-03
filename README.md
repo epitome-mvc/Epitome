@@ -15,7 +15,7 @@ Documentation
 =============
 
 Epitome is largely undocumented with a lot of inline comments added to help you read the source code better.
-A Groc generated _'Documentation'_ is available here: [http://dimitarchristoff.github.com/Epitome/](http://dimitarchristoff.github.com/Epitome/)
+A [Groc](http://nevir.github.com/groc/)-generated _'Documentation'_ is available here: [http://dimitarchristoff.github.com/Epitome/](http://dimitarchristoff.github.com/Epitome/)
 
 A default `.groc.json` file is added so you can just run `groc` in the root to freshen.
 
