@@ -23,6 +23,7 @@
 			options && options.defaults && (this.options.defaults = Object.merge(this.options.defaults, options.defaults));
 
 			// initial obj should pass on a setter (this will fail for now).
+			obj = obj || {};
 			obj && typeOf(obj) === 'object' && this.set(Object.merge(this.options.defaults, obj));
 
 			// merge options overload, will now add the events.
