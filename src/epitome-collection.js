@@ -1,7 +1,7 @@
 ;(function(exports) {
 
 	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome,
-		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom'];
+		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
 
 	// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
 	Function.extend({
@@ -105,6 +105,11 @@
 			return last;
 		},
 
+		getModel: function(index) {
+			// return a model based upon the index in the array
+			return this._models[index];
+		},
+
 		getModelById: function(id) {
 			// return a model based upon an id search
 			var last = null;
@@ -123,6 +128,8 @@
 			};
 			return Array.map(this._models, getJSON);
 		}
+
+
 	});
 
 	Array.each(methodMap, function(method) {
