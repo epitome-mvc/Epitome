@@ -9,8 +9,6 @@ BUT IS IT MVC?
 
 > &lt;jiggliemon> MVD, Model View Don'task
 
-![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
-
 Licence: MIT
 
 Groc `Documentation` is available here: [http://dimitarchristoff.github.com/Epitome/](http://dimitarchristoff.github.com/Epitome/)
@@ -53,6 +51,8 @@ back to the project if you can, pull requests are more than welcome.
 
 Credits
 =======
+
+![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
 - Inspiration from Backbone.js
 - Ideas from Garrick Cheung and Addy Osmani
