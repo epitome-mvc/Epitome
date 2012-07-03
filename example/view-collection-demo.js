@@ -28,31 +28,24 @@ var testModel = new Class({
 
 	options: {
 		defaults: {
-			urlRoot: '/blah'
+			urlRoot: 'data'
 		}
 	}
 });
 
 var testCollectionProto = new Class({
 
-	Extends: Epitome.Collection,
+	Extends: Epitome.Collection.Sync,
+
+	options: {
+		urlRoot: 'data/collection/response.json'
+	},
 
 	model: testModel
 });
 
-var testCollection = new testCollectionProto([{
-	id: 1,
-	title: 'Task one',
-	task: 'Do me first'
-}, {
-	id: 2,
-	title: 'Task two',
-	task: 'Do me next'
-}, {
-	id: 3,
-	title: 'Task three',
-	task: 'Do me last'
-}]);
+var testCollection = new testCollectionProto();
+testCollection.fetch();
 
 
 var testInstance = new testView({
