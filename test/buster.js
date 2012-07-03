@@ -25,7 +25,10 @@ config['Browser tests'] = {
 		'src/epitome-model-sync.js',
 
 		// controller/collection
-		'src/epitome-collection-sync.js'
+		'src/epitome-collection-sync.js',
+
+		// view
+		'src/epitome-view.js'
 	],
 
 	tests: [
