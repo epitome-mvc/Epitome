@@ -129,6 +129,11 @@
 				return model.toJSON();
 			};
 			return Array.map(this._models, getJSON);
+		},
+
+		empty: function() {
+			this._models = [];
+			return this.fireEvent('empty');
 		}
 
 	});

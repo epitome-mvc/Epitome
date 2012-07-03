@@ -43,7 +43,6 @@
 					this.removeEvents(eventPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
-					self.processModels(responseObj);
 					self.fireEvent(eventPseudo + rid, [responseObj]);
 				},
 				onFailure: function() {
@@ -55,7 +54,19 @@
 		},
 
 		fetch: function(refresh) {
+			// get a list of models. `@refresh (boolean)` will empty collection first
+
+			// set the onSuccess event for this fetch call
 			this._throwAwayEvent(function(models) {
+				if (refresh) {
+					this.empty();
+					Array.each(responseObj, this.addModel.bind(this));
+				}
+				else {
+					this.processModels(responseObj);
+				}
+
+				// finaly fire the event to instance
 				this.fireEvent('fetch', [models])
 			});
 
@@ -66,11 +77,15 @@
 		},
 
 		processModels: function(models) {
+			// deals with newly arrived objects which can either update existing models or be added as new models
+			// `@models (array or objects)`, not actual model instances
 			var self = this;
+
 			Array.each(models, function(model) {
 				var exists = model.id && self.getModelById(model.id);
+
 				if (exists) {
-					model.set(model);
+					exists.set(model);
 				}
 				else {
 					self.addModel(model);
@@ -79,7 +94,7 @@
 		},
 
 		_throwAwayEvent: function(callback) {
-			// this is a one-off event that will ensure a fetch event fires only once per .fetch
+			// this is a one-off event that will ensure a fetch event fires only once per `.fetch`
 			var eventName = eventPseudo + this.getRequestId(),
 				self = this,
 				throwAway = {};
