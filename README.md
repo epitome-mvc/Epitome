@@ -7,7 +7,7 @@ An experimental Model/View/* for MooTools, created by Dimitar Christoff of QMetr
 
 BUT IS IT MVC?
 
-> <jiggliemon> MVD, Model View Don'task
+> <<jiggliemon>> MVD, Model View Don'task
 
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
