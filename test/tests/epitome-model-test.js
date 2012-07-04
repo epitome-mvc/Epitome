@@ -6,6 +6,8 @@ buster.testRunner.timeout = 1000;
 
 buster.testCase('Basic Epitome model creation with initial data >', {
 	setUp: function() {
+		var self = this;
+
 		this.dataInitial = {
 			foo: 'bar',
 			id: '1234-5123'
