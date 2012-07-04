@@ -43,7 +43,7 @@
 					this.removeEvents(eventPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
-					self.fireEvent(eventPseudo + rid, [responseObj]);
+					self.fireEvent(eventPseudo + rid, [[responseObj]]);
 				},
 				onFailure: function() {
 					self.fireEvent(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
@@ -63,7 +63,7 @@
 					Array.each(models, this.addModel.bind(this));
 				}
 				else {
-					this.processModels(responseObj);
+					this.processModels(models);
 				}
 
 				// finaly fire the event to instance

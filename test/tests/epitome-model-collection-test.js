@@ -97,12 +97,6 @@ buster.testCase('Basic Epitome empty collection creation >', {
 		buster.assert.equals(this.collection._models.length, modelsCount);
 	},
 
-	'// Expect models added to the collection to pass a reference to the collection in model.collections >': function() {
-		// this breaks by creating a circular reference.
-		this.collection.addModel(this.model);
-		buster.assert.isTrue(this.model.collections.contains(this.collection));
-	},
-
 	'Expect to be able to get a model from collection by id': function() {
 		var fakeModel = new Epitome.Model({
 			id: 'hello'
