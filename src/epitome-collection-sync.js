@@ -60,7 +60,7 @@
 			this._throwAwayEvent(function(models) {
 				if (refresh) {
 					this.empty();
-					Array.each(responseObj, this.addModel.bind(this));
+					Array.each(models, this.addModel.bind(this));
 				}
 				else {
 					this.processModels(responseObj);
