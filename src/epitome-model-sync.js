@@ -1,7 +1,7 @@
 ;(function(exports) {
 
 	// get the Epitome module
-	var Epitome = typeof require == 'function' ? require('epitome-model') : exports.Epitome,
+	var Epitome = typeof require == 'function' ? require('./epitome-model') : exports.Epitome,
 		Model = Epitome.Model,
 		syncPseudo = 'sync:';
 

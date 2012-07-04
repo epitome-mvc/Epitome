@@ -1,3 +1,7 @@
+if (!Epitome && typeof require === 'function') {
+	var Epitome = require('../../src/epitome');
+}
+
 buster.testRunner.timeout = 1000;
 
 buster.testCase('Basic Epitome empty collection creation >', {

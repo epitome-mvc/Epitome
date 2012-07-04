@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome,
+	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
 		eq = Epitome.isEqual = function(a, b, stack) {
 			// this is a modified version of eq func from _.js
 

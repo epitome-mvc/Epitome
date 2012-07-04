@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-	var Epitome = typeof require == 'function' ? require('epitome-collection') : exports.Epitome,
+	var Epitome = typeof require == 'function' ? require('./epitome-collection') : exports.Epitome,
 		noUrl = 'no-urlRoot-set',
 		eventPseudo = 'fetch:';
 

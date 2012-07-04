@@ -1,3 +1,7 @@
+if (!Epitome && typeof require === 'function') {
+	var Epitome = require('../../src/epitome');
+}
+
 buster.testCase('Epitome.isEqual assertions >', {
 
 	'Expect no positives for objects with same length (bug in _.js)': function() {

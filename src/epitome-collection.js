@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome,
+	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
 		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast', 'reverse'];
 
 	// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...

@@ -1,6 +1,5 @@
 buster.testRunner.timeout = 1000;
 
-
 buster.testCase('Epitome model sync >', {
 	setUp: function() {
 		this.dataInitial = {

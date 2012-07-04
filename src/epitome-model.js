@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome;
+	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome;
 
 	Epitome.Model = new Class({
 
@@ -115,7 +115,7 @@
 			// fire change for all keys in the model.
 			Array.each(keys, function(key) {
 				self.fireEvent('change:' + key, null);
-			});
+			}, this);
 
 			this._attributes = {};
 			this.fireEvent('empty');

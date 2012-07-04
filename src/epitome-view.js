@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-	var Epitome = typeof require == 'function' ? require('epitome-template') : exports.Epitome;
+	var Epitome = typeof require == 'function' ? require('./epitome-template') : exports.Epitome;
 
 	Epitome.View = new Class({
 

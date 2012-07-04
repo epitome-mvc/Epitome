@@ -45,3 +45,37 @@ config['Browser tests'] = {
 		'example/data/collection/*'
 	]
 };
+
+
+config['Node tests'] = {
+	rootPath: '../',
+
+	environment: 'node',
+
+	libs: [
+		'test/lib/mootools-core-1.4.5-server.js'
+	],
+
+	sources: [
+		// core
+		'src/epitome.js',
+		// utils
+		'src/epitome-isequal.js',
+		// model core
+		'src/epitome-model.js',
+		// controller/collection
+		'src/epitome-collection.js',
+
+		// template
+		'src/epitome-template.js'
+	],
+
+	tests: [
+		// find matching test specs as above sources
+		'test/tests/epitome-isequal-test.js',
+
+		'test/tests/epitome-model-test.js',
+
+		'test/tests/epitome-collection-test.js'
+	]
+};

@@ -1,6 +1,6 @@
 ;(function(exports) {
 
-	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome;
+	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome;
 
 	// improve the default substitute so it's deep.
 	String.implement({

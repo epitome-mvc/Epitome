@@ -2,7 +2,7 @@
 	//todo: add pushstate support instead of hashchange but keep hashes for routing.
 
 	// get the Epitome module
-	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome,
+	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
 		hc = 'hashchange',
 		hcSupported = ('on' + hc) in window,
 		eventHosts = [window, document],
