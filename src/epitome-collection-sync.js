@@ -43,6 +43,7 @@
 					this.removeEvents(eventPseudo + rid);
 				},
 				onSuccess: function(responseObj) {
+					responseObj = self.parse && self.parse(responseObj);
 					self.fireEvent(eventPseudo + rid, [[responseObj]]);
 				},
 				onFailure: function() {
@@ -51,6 +52,11 @@
 			});
 
 			return this;
+		},
+
+		parse: function(resp) {
+			// pre-processor for json object from response.
+			return resp;
 		},
 
 		fetch: function(refresh) {
