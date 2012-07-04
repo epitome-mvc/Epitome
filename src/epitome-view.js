@@ -48,16 +48,8 @@
 				delete this.options.element;
 			}
 
-			// call the ready func if defined.
-			this.ready && this.ready();
-
 			// let the instance know
 			return this.fireEvent('ready');
-		},
-
-		ready: function() {
-			// set this in your own constructor to run after setup.
-			return this;
 		},
 
 		setElement: function(el, events) {
@@ -129,15 +121,17 @@
 
 		detachEvents: function() {
 			// remove attached events from an element
-			var events = this.element.retrieve('sttachedEvents');
+			var events = this.element.retrieve('attachedEvents');
 			events && this.element.removeEvents(events).eliminate('attachedEvents');
 
 			return this;
 		},
 
-		template: function(data) {
+		template: function(data, template) {
 			// refactor this to work with any other template engine in your constructor
-			return Epitome.Template.compile(this.options.template, data)
+			template = template || this.options.template;
+
+			return Epitome.Template.compile(template, data)
 		},
 
 		render: function() {
