@@ -46,7 +46,7 @@ config['Browser tests'] = {
 	]
 };
 
-
+/*
 config['Node tests'] = {
 	rootPath: '../',
 
@@ -79,3 +79,4 @@ config['Node tests'] = {
 		'test/tests/epitome-collection-test.js'
 	]
 };
+*/
