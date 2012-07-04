@@ -35,13 +35,53 @@ The core module is called Epitome and it has the following structure:
 
 - `Epitome.isEqual` - a module for comparing values, borrowed from _.js
 - `Epitome.Model` - the model itself
+- `Epitome.Model.Sync` - a plugin for keeping your model and collections in sync via REST endpoints
 - `Epitome.Collection` - a pseudo model controller, Observing all model events (works but may change)
 - `Epitome.Collection.Sync` - extends the collection to fetch RESTfully (not finished)
-- `Epitome.Model.Sync` - a plugin for keeping your model and collections in sync via REST endpoints
-- `Epitome.View` - view rendered, using whatever 3-rd party templating engine (works but may change)
 - `Epitome.Template` - a pseudo templating interface, currently via a custom MooTools `String.substitute(obj)`
+- `Epitome.View` - view rendered, using whatever 3-rd party templating engine (works but may change)
+- `Epitome.Router` - a pseudo controller for structuring app based upon hashchange
 
-Tests via [Buster.js](http;//busterjs.org) can be found in `/tests/` - check the README.md there for more info.
+Building
+========
+
+Have a look inside of the simple `app.build.js` you can use for `r.js` (require.js optimiser).
+
+Typically, you'd create a new production build by running:
+```sh
+dchristoff@Dimitars-iMac:~/projects/Epitome (master):
+> r.js -o app.build.js
+
+Tracing dependencies for: epitome
+Uglifying file: /Users/dchristoff/projects/Epitome/build/Epitome.js
+
+/Users/dchristoff/projects/Epitome/build/Epitome.js
+----------------
+/Users/dchristoff/projects/Epitome/src/epitome.js
+/Users/dchristoff/projects/Epitome/src/epitome-isequal.js
+/Users/dchristoff/projects/Epitome/src/epitome-model.js
+/Users/dchristoff/projects/Epitome/src/epitome-model-sync.js
+/Users/dchristoff/projects/Epitome/src/epitome-collection.js
+/Users/dchristoff/projects/Epitome/src/epitome-collection-sync.js
+/Users/dchristoff/projects/Epitome/src/epitome-template.js
+/Users/dchristoff/projects/Epitome/src/epitome-view.js
+/Users/dchristoff/projects/Epitome/src/epitome-router.js
+```
+
+Install requirejs via npm, if you haven't:
+```
+npm install -g requirejs
+```
+
+Alternatively, grab r.js and put it inside the project, then do `node r.js -o app.build.js`
+
+Testing
+=======
+
+Tests are currently separated in 2 groups: node tests and browser tests. The distinction is that under node only,
+it uses `mootools-server` and lacks `Request` or `Element`, so only unit tests will run.
+
+Testing is run via [Buster.js](http;//busterjs.org) can be found in `/tests/` - check the README.md there for more info.
 
 Support
 =======
