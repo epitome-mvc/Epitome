@@ -47,6 +47,16 @@ Auto-testing is experimental but fairly good for MacOSX at present. You can see 
 
 **nb** please note that when in capture mode via `buster server`, IE7 and IE8 will fire an exception - which is to do with lack of `Object.create`, referenced in one of buster's dependencies `bundle.js`. As a work-around, an es5-shim has been provided that makes tests run in IE7/8 as well.
 
+The following console output is just an example, there are currently the following tests:
+```
+Browser: 8 test cases, 72 tests, 72 assertions, 0 failures, 0 errors, 0 timeouts
+Node: 5 test cases, 54 tests, 54 assertions, 0 failures, 0 errors, 0 timeout
+```
+
+There is no XHR subsystem in node and no DOMElement either so testing of view and sync modules is not supported when you have not captured a browser.
+
+When running tests, it goes something like this:
+
 ```sh
 dchristoff@Dimitars-iMac:~/projects/Epitome (master):
 > buster server &
@@ -63,33 +73,9 @@ Firefox 13.0.1, OS X 10.7 (Lion)
   ✓ Basic Epitome empty collection creation > Expect removing models to collection to fire onRemove event >
   ✓ Basic Epitome empty collection creation > Expect to be able to add models to the collection
   ✓ Basic Epitome empty collection creation > Expect to be able to remove models from the collection
-Firefox 13.0.1, OS X 10.7 (Lion)
-  ✓ Epitome model sync > Expect the model to have a request >
-  ✓ Epitome model sync > Expect the urlRoot to return correctly >
-  ✓ Epitome model sync > Expect a fetch to return our model >
-  ✓ Epitome model sync > Expect a save to `create` our model >
-  ✓ Epitome model sync > Expect a second save to `update` our model >
-  ✓ Epitome model sync > Expect a fetch to return our model id as per static response.json >
-  ✓ Epitome model sync > Expect a fetch update our model properties to as per static response.json and fire change events >
-Firefox 13.0.1, OS X 10.7 (Lion)
-  ✓ Basic Epitome model creation with initial data > Expect the _attributes object to contain the sent values >
-  ✓ Basic Epitome model creation with initial data > Expect a model to be created >
-  ✓ Basic Epitome model creation with initial data > Expect the model to have the default value if not overridden >
-  ✓ Basic Epitome model creation with initial data > Expect the model to have the default value overridden by model object >
-  ✓ Basic Epitome model creation with initial data > Expect a model change not to fire if values have not changed >
-  ✓ Basic Epitome model creation with initial data > Expect a model not to fire initial change events on set >
-  ✓ Basic Epitome model creation with initial data > Expect a model change on non-primitive values that serialize to the same not to fire >
-  ✓ Basic Epitome model creation with initial data > Expect a model to fire change event for each property passed >
-  ✓ Basic Epitome model creation with initial data > Expect a model change to fire if values have changed >
-  ✓ Basic Epitome model creation with initial data > Expect a key that is not on model to be null >
-  ✓ Basic Epitome model creation with initial data > Expect a that setting to null removes from model >
-  ✓ Basic Epitome model creation with initial data > Expect .unset() removes from model >
-  ✓ Basic Epitome model creation with initial data > Expect .unset([array]) removes all keys from model >
-  ✓ Basic Epitome model creation with initial data > Expect model.toJSON to return an object >
-  ✓ Basic Epitome model creation with initial data > Expect model.toJSON to return a dereferenced object >
-  ✓ Basic Epitome model creation with initial data > Expect model to fire a change passing all changed properties as an object >
-  ✓ Basic Epitome model creation with initial data > Expect model accessor `get` to prefer custom value over model value >
-  ✓ Basic Epitome model creation with initial data > Expect model accessor `get` to fire instead of normal model get >
-  ✓ Basic Epitome model creation with initial data > Expect model accessor `set` to fire instead of model set, passing the value >
-4 test cases, 34 tests, 34 assertions, 0 failures, 0 errors, 0 timeouts
+
+  [...]
+
+
+8 test cases, 72 tests, 72 assertions, 0 failures, 0 errors, 0 timeouts
 ```
