@@ -1,3 +1,8 @@
+if (typeof require === 'function') {
+	var Epitome = require('../../src/epitome'),
+		buster = require('buster');
+}
+
 buster.testRunner.timeout = 1000;
 
 buster.testCase('Basic Epitome view test >', {

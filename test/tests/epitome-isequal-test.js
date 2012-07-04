@@ -1,5 +1,6 @@
-if (!Epitome && typeof require === 'function') {
-	var Epitome = require('../../src/epitome');
+if (typeof require === 'function') {
+	var Epitome = require('../../src/epitome'),
+		buster = require('buster');
 }
 
 buster.testCase('Epitome.isEqual assertions >', {
