@@ -1,7 +1,7 @@
 ;(function(exports) {
 
 	var Epitome = typeof require == 'function' ? require('epitome') : exports.Epitome,
-		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
+		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast', 'reverse'];
 
 	// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
 	Function.extend({
@@ -107,11 +107,6 @@
 			return last;
 		},
 
-		getModel: function(index) {
-			// return a model based upon the index in the array
-			return this._models[index];
-		},
-
 		getModelById: function(id) {
 			// return a model based upon an id search
 			var last = null;
@@ -121,6 +116,11 @@
 			});
 
 			return last;
+		},
+
+		getModel: function(index) {
+			// return a model based upon the index in the array
+			return this._models[index];
 		},
 
 		toJSON: function() {
@@ -134,6 +134,43 @@
 		empty: function() {
 			this._models = [];
 			return this.fireEvent('empty');
+		},
+
+		sort: function(how) {
+			// no arg. natural sort
+			if (!how) {
+				this._models.sort();
+				return this.fireEvent('sort');
+			}
+
+			// callback function
+			if (typeof how === 'function') {
+				this.model.sort(how);
+				return this.fireEvent('sort');
+			}
+
+			// string keys, supports `:asc` (default) and `:desc` order
+			var type = 'asc',
+				pseudos = how.split(':'),
+				key = pseudos[0];
+
+			// do we have order defined? override type.
+			pseudos[1] && (type = pseudos[1]);
+
+			this._models.sort(function(a, b) {
+				var map = {
+					asc: a.get(key) > b.get(key),
+					desc: a.get(key) < b.get(key)
+				};
+
+				// unknown types are ascending
+				if (typeof map[type] == 'undefined')
+					type = 'asc';
+
+				return map[type];
+			});
+
+			return this.fireEvent('sort');
 		}
 
 	});
