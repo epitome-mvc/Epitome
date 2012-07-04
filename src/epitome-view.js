@@ -76,7 +76,8 @@
 				this.collection.addEvents({
 					'change': eventProxy('change'),
 					'add': eventProxy('add'),
-					'remove': eventProxy('remove')
+					'remove': eventProxy('remove'),
+					'sort': eventProxy('sort')
 				});
 			}
 
