@@ -67,6 +67,10 @@ var testInstance = new testView({
 	onReady: function() {
 	},
 
+	'onSort:collection': function() {
+		this.render();
+	},
+
 	'onChange:collection': function() {
 		this.render();
 	},
