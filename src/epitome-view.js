@@ -75,6 +75,7 @@
 				// listen in for changes.
 				this.collection.addEvents({
 					'change': eventProxy('change'),
+					'fetch': eventProxy('fetch'),
 					'add': eventProxy('add'),
 					'remove': eventProxy('remove'),
 					'sort': eventProxy('sort')
