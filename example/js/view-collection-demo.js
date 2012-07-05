@@ -55,7 +55,7 @@ var testInstance = new testView({
 
 	element: 'demo',
 
-	template: '<div class="task" data-id="{id}"><div class="floatRight"><a href="#" class="task-remove">x remove</a></div><div class="task-title">{title}</div><div class="task-body">{task}</div><div class="clear"></div></div>',
+	template: '<div class="task" data-id="<%=id%>"><div class="floatRight"><a href="#" class="task-remove">x remove</a></div><div class="task-title"><%=title%></div><div class="task-body"><%=task%></div><div class="clear"></div></div>',
 
 	// event binding
 	events: {
