@@ -21,7 +21,7 @@ buster.testCase('Basic Epitome view test >', {
 				Extends: Epitome.View,
 
 				options: {
-					template: 'This is a {name} {type} render app',
+					template: 'This is a <%=name%> <%=type%> render app',
 					element: this.element,
 					events: {
 						click: 'handleClick'
