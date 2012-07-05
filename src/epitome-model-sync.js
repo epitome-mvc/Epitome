@@ -190,7 +190,7 @@
 		destroy: function() {
 			// destroy the model, send delete to server
 			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
-				this.empty();
+				this._attributes = {};
 				this.fireEvent('destroy');
 				//todo: remove model from any collections it may be a member of.
 			});

@@ -119,6 +119,12 @@
 
 			this._attributes = {};
 			this.fireEvent('empty');
+		},
+
+		destroy: function() {
+			// destroy the model, send delete to server
+			this._attributes = {};
+			this.fireEvent('destroy');
 		}
 	});
 

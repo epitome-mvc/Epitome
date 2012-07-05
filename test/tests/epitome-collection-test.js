@@ -172,6 +172,16 @@ buster.testCase('Basic Epitome collection with a model creation >', {
 			buster.assert.equals(model, self.model);
 		});
 		this.model.fireEvent(event);
+	},
+
+	'Expect a model that has been destroyed to be removed from the collection >': function() {
+		var temp = new Epitome.Model({
+			id: 'hai'
+		});
+
+		this.collection.addModel(temp);
+		temp.destroy();
+		buster.refute.equals(temp, this.collection.getModelById('hai'));
 	}
 });
 

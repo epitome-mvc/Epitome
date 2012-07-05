@@ -46,6 +46,9 @@
 		setUp: function(models) {
 			Array.each(models, this.addModel.bind(this));
 
+			// if a model is destroyed, remove from the collection
+			this.addEvent('destroy', this.removeModel.bind(this));
+
 			return this;
 		},
 
