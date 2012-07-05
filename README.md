@@ -38,7 +38,7 @@ The core module is called Epitome and it has the following structure:
 - `Epitome.Model.Sync` - a plugin for keeping your model and collections in sync via REST endpoints
 - `Epitome.Collection` - a pseudo model controller, Observing all model events (works but may change)
 - `Epitome.Collection.Sync` - extends the collection to fetch RESTfully (not finished)
-- `Epitome.Template` - a pseudo templating interface, currently via a custom MooTools `String.substitute(obj)`
+- `Epitome.Template` - based upon _.js and jresig work but safer, `<%=key%>` or `<% logic %>`
 - `Epitome.View` - view rendered, using whatever 3-rd party templating engine (works but may change)
 - `Epitome.Router` - a pseudo controller for structuring app based upon hashchange
 
