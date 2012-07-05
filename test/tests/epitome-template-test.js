@@ -41,6 +41,11 @@ buster.testCase('Basic Epitome template test >', {
 	'Expect logic in templates to display correctly >': function() {
 		var compiled = this.templateEngine.template(this.templateLogic, this.dataLogic);
 		buster.assert.equals(compiled, this.expectLogic);
+	},
+
+	'Expect a compiled template to be a re-usable function >': function() {
+		var compiled = this.templateEngine.template(this.templateLogic);
+		buster.assert.isFunction(compiled);
 	}
 
 });

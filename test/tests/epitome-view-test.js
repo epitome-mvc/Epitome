@@ -57,6 +57,16 @@ buster.testCase('Basic Epitome view test >', {
 		buster.assert.called(spy);
 	},
 
+	'Expect the .template to change based upon data >': function() {
+		var data1 = this.view.template(this.data),
+			data2 = this.view.template({
+				name: 'foo',
+				type: 'fail'
+			});
+
+		buster.refute.equals(data1, data2);
+	},
+
 	'Expect the view to render the compiled template >': function(done) {
 		this.view.addEvent('render', function() {
 			buster.assert.equals(this.element.get('html'), 'This is a View test render app');

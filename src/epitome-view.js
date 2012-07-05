@@ -134,9 +134,9 @@
 			template = template || this.options.template;
 
 			// instantiate a template engine when needed
-			var compiler = this.Template || new Epitome.Template();
+			var compiler = this.Template || (this.Template = new Epitome.Template());
 
-			return compiler.template(template, data)
+			return compiler.template(template, data);
 		},
 
 		render: function() {
