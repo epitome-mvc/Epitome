@@ -1,0 +1,16 @@
+{
+    "author" : "DimitarChristoff",
+    "name" : "Epitome",
+    "description" : "Epitome MV* for MooTools",
+    "version" : "0.0.1",
+    "scripts" : {
+        "test" : "node_modules/.bin/buster-test"
+    },
+    "dependencies" : {
+        "buster" : "~0.5.0",
+        "mootools-client" : "1.4.5"
+    },
+    "engines" : {
+        "node" : "~0.6"
+    }
+}

@@ -6,6 +6,8 @@ Epitome
 An experimental Model/View/* for MooTools, created by Dimitar Christoff of QMetric Group.
 Licence: MIT
 
+[![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master)](http://travis-ci.org/DimitarChristoff/Epitome)
+
 BUT, IS IT MVC?
 ===============
 
