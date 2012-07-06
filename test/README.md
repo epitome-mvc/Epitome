@@ -1,6 +1,8 @@
 Testing via Buster.js
 ---------------------
 
+[![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master)](http://travis-ci.org/DimitarChristoff/Epitome)
+
 [buster-test.js](http://busterjs.org) is a new up-and-coming javascript testing framework in development.
 
 It features standalone static testing or CI testing via node with browser capture.
