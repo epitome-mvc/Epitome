@@ -1,5 +1,11 @@
 {
     "author" : "DimitarChristoff",
+    "contributors": [
+        {
+            "name": "Dimitar Christoff",
+            "email": "christoff@gmail.com"
+        }
+    ],
     "name" : "epitome",
     "description" : "Epitome MV* for MooTools",
     "version" : "0.0.1",
@@ -15,7 +21,7 @@
         "epitome",
         "mvc"
     ],
-    "main": "./build/Epitome.js",
+    "main": "./Epitome-min.js",
     "license": "MIT",
     "dependencies" : {
         "buster" : "~0.6.0"

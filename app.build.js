@@ -1,7 +1,7 @@
 ({
 	baseUrl: './src/',
 	optimize: 'uglify',
-	out:'./build/Epitome.js',
+	out:'./Epitome-min.js',
 	name:'epitome',
 	include:[
 		'epitome',
