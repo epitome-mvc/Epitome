@@ -1,7 +1,7 @@
 ;(function(exports) {
 
 	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
-		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast', 'reverse'];
+		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
 
 	// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
 	Function.extend({
@@ -172,6 +172,13 @@
 
 				return map[type];
 			});
+
+			return this.fireEvent('sort');
+		},
+
+		reverse: function() {
+			// reversing is just sorting in reverse.
+			Array.reverse(this._models);
 
 			return this.fireEvent('sort');
 		}

@@ -254,5 +254,120 @@ buster.testCase('Basic Epitome collection array methods >', {
 
 	'Expect Array method .getRandom to work on the collection >': function() {
 		buster.assert.equals(this.collection.getRandom(), this.model);
+	},
+
+	'Expect Array method .reverse to reverse the order of models in the collection >': function() {
+		this.collection.empty();
+
+		this.collection.addModel({
+			id: 300,
+			name: 'A'
+		});
+
+		this.collection.addModel({
+			id: 200,
+			name: 'B'
+		});
+
+		this.collection.addModel({
+			id: 400,
+			name: 'C'
+		});
+
+		this.collection.reverse();
+
+		var changed = this.collection.toJSON().map(function(el) {
+			return el.name;
+		}).join(','); // should be "C,B,A"
+
+		buster.assert.equals(changed, 'C,B,A');
+	},
+
+	'Expect .sort("key") to sort the collection by that model property >': function() {
+		this.collection.empty();
+
+		this.collection.addModel({
+			id: 300,
+			name: 'A'
+		});
+
+		this.collection.addModel({
+			id: 200,
+			name: 'B'
+		});
+
+		this.collection.addModel({
+			id: 400,
+			name: 'C'
+		});
+
+		var current = this.collection.toJSON().map(function(el) {
+			return el.name;
+		}).join(','); // should be "A,B,C"
+
+		this.collection.sort('id');
+
+		var changed = this.collection.toJSON().map(function(el) {
+			return el.name;
+		}).join(','); // should be "B,A,C"
+
+		buster.refute.equals(current, changed);
+	},
+
+	'Expect .sort("key:desc") to sort the collection by that model property in reverse >': function() {
+		this.collection.empty();
+
+		this.collection.addModel({
+			id: 300,
+			name: 'A'
+		});
+
+		this.collection.addModel({
+			id: 200,
+			name: 'B'
+		});
+
+		this.collection.addModel({
+			id: 400,
+			name: 'C'
+		});
+
+		this.collection.sort('id:desc');
+
+		var changed = this.collection.toJSON().map(function(el) {
+			return el.name;
+		}).join(','); // should be "C,A,B"
+
+		buster.assert.equals(changed, 'C,A,B');
+	},
+
+	'Expect .reverse to sort the array in reverse and fire a sort event >': function(done) {
+		this.collection.empty();
+
+		this.collection.addModel({
+			id: 300,
+			name: 'A'
+		});
+
+		this.collection.addModel({
+			id: 200,
+			name: 'B'
+		});
+
+		this.collection.addModel({
+			id: 400,
+			name: 'C'
+		});
+
+		this.collection.addEvent('sort', function() {
+			var changed = this.toJSON().map(function(el) {
+				return el.name;
+			}).join(','); // should be "C,B,A"
+
+			buster.assert.equals(changed, 'C,B,A');
+			done();
+		});
+
+		this.collection.reverse();
 	}
 });
