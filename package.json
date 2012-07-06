@@ -6,6 +6,17 @@
     "scripts" : {
         "test" : "node_modules/.bin/buster-test"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DimitarChristoff/Epitome"
+    },
+    "keywords": [
+        "mootools",
+        "epitome",
+        "mvc"
+    ],
+    "main": "./build/Epitome.js",
+    "license": "MIT",
     "dependencies" : {
         "buster" : "~0.6.0"
     },
