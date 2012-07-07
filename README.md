@@ -64,10 +64,10 @@ the core components are very similar to the ones found in Backbone.js
 - `Epitome.isEqual` - a module for comparing values, borrowed from _.js
 - `Epitome.Model` - the model itself
 - `Epitome.Model.Sync` - a plugin for keeping your model and collections in sync via REST endpoints
-- `Epitome.Collection` - a pseudo model controller, Observing all model events (works but may change)
-- `Epitome.Collection.Sync` - extends the collection to fetch RESTfully (not finished)
+- `Epitome.Collection` - an Array-like model collection, observing all model events
+- `Epitome.Collection.Sync` - extends the collection to fetch and reset if needed
 - `Epitome.Template` - based upon _.js and jresig work but safer, `<%=key%>` or `<% logic %>`
-- `Epitome.View` - view rendered, using whatever 3-rd party templating engine (works but may change)
+- `Epitome.View` - a simple structure which can bind to models, collections or nothing at all
 - `Epitome.Router` - a pseudo controller, based upon hashchange
 
 Building
@@ -102,6 +102,11 @@ npm install -g requirejs
 ```
 
 Alternatively, grab r.js and put it inside the project, then do `node r.js -o app.build.js`
+
+An npm package is also available:
+```
+npm install epitome
+```
 
 Testing
 =======
