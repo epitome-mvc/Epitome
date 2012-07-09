@@ -8,19 +8,20 @@ var testModel = new Class({
 new testModel({
 	initial: 'data',
 	id: 'hai'
-}).create();
+}).store();
 
 // should read the initial data from the old model
 testInstance = new testModel({
 	id: 'hai'
 }, {
-	onRead: function() {
-		console.log('read', this.toJSON())
+	onRetrieve: function(model) {
+		console.log('read from storage', model)
 	},
-	onDestroy: function() {
+	onEliminate: function() {
 		console.log('model removed from storage');
+		console.log(this.retrieve());
 	},
-	onUpdate: function(model) {
+	onStore: function(model) {
 		console.log('saved into storage', model);
 	}
 });
@@ -31,12 +32,12 @@ testInstance = new testModel({
 // this should be event-driven and not chained, but it's an example of the api.
 
 // get a model from the server
-testInstance.read();
+testInstance.retrieve();
 
 testInstance.set('hai', 'back');
 
-testInstance.update();
+testInstance.store();
 
 console.log(testInstance.get('initial'));
 
-testInstance.destroy.delay(10000, testInstance);
+testInstance.eliminate.delay(10000, testInstance);
