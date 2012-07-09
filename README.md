@@ -8,6 +8,12 @@ and the Event observer patterns that come out of the box.
 
 An example model creation with prototyping looks like this:
 ```javascript
+// if using AMD...
+var Epitome (typeof require === 'function')
+    ? require('epitome-model-sync')
+    : this.Epitome;
+
+// user class
 var User = new Class({
     Extends: Epitome.Model.Sync,
     options: {
