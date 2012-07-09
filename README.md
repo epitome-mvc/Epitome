@@ -8,39 +8,37 @@ and the Event observer patterns that come out of the box.
 
 An example model creation with prototyping looks like this:
 
-```
-// if using AMD...
-var Epitome (typeof require === 'function')
-    ? require('epitome-model-sync')
-    : this.Epitome;
+    // if using AMD...
+    var Epitome (typeof require === 'function')
+        ? require('epitome-model-sync')
+        : this.Epitome;
 
-// user class
-var User = new Class({
-    Extends: Epitome.Model.Sync,
-    options: {
-        defaults: {
-            urlRoot: '/user/'
+    // user class
+    var User = new Class({
+        Extends: Epitome.Model.Sync,
+        options: {
+            defaults: {
+                urlRoot: '/user/'
+            }
         }
-    }
-});
+    });
 
-var userModel = new User({
-    id: '1',
-    name: 'Bobby'
-}, {
-    onChange: function(key, value) {
-        console.log('you changed ' + key + ' to ' + value);
-    },
-    "onChange:name": function(value) {
-        console.log('you changed your name to ' + value);
-    }
-});
+    var userModel = new User({
+        id: '1',
+        name: 'Bobby'
+    }, {
+        onChange: function(key, value) {
+            console.log('you changed ' + key + ' to ' + value);
+        },
+        "onChange:name": function(value) {
+            console.log('you changed your name to ' + value);
+        }
+    });
 
-userModel.set({
-    surname: 'Roberts',
-    name: 'Bob'
-});
-```
+    userModel.set({
+        surname: 'Roberts',
+        name: 'Bob'
+    });
 
 BUT, IS IT MVC?
 ===============
@@ -83,37 +81,35 @@ Building
 You can create a minified concatenated version of Epitome. Have a look inside of the simple `app.build.js` you can use for `r.js` (require.js optimiser).
 
 Typically, you'd create a new production build by running:
-```sh
-dchristoff@Dimitars-iMac:/projects/Epitome (master):
-> r.js -o app.build.js
 
-Tracing dependencies for: epitome
-Uglifying file: /projects/Epitome/build/Epitome.js
+    dchristoff@Dimitars-iMac:/projects/Epitome (master):
+    > r.js -o app.build.js
 
-/projects/Epitome/build/Epitome.js
-----------------
-/projects/Epitome/src/epitome.js
-/projects/Epitome/src/epitome-isequal.js
-/projects/Epitome/src/epitome-model.js
-/projects/Epitome/src/epitome-model-sync.js
-/projects/Epitome/src/epitome-collection.js
-/projects/Epitome/src/epitome-collection-sync.js
-/projects/Epitome/src/epitome-template.js
-/projects/Epitome/src/epitome-view.js
-/projects/Epitome/src/epitome-router.js
-```
+    Tracing dependencies for: epitome
+    Uglifying file: /projects/Epitome/build/Epitome.js
+
+    /projects/Epitome/build/Epitome.js
+    ----------------
+    /projects/Epitome/src/epitome.js
+    /projects/Epitome/src/epitome-isequal.js
+    /projects/Epitome/src/epitome-model.js
+    /projects/Epitome/src/epitome-model-sync.js
+    /projects/Epitome/src/epitome-collection.js
+    /projects/Epitome/src/epitome-collection-sync.js
+    /projects/Epitome/src/epitome-template.js
+    /projects/Epitome/src/epitome-view.js
+    /projects/Epitome/src/epitome-router.js
 
 Install requirejs via npm, if you haven't:
-```
-npm install -g requirejs
-```
+
+    npm install -g requirejs
 
 Alternatively, grab r.js and put it inside the project, then do `node r.js -o app.build.js`
 
 An npm package is also available:
-```
-npm install epitome
-```
+
+    npm install epitome
+
 
 Testing
 =======
