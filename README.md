@@ -138,7 +138,9 @@ create the request in a branch and write tests / fix existing tests before you s
 Credits and licensing
 =====================
 
-Epitome is developed for use of QMetric Group Limited.
+Built by QMetric Group Limited.
+
+Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar)
 
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
