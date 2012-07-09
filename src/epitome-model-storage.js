@@ -169,9 +169,6 @@
 					this.set(model);
 				}
 
-				if (typeof model === 'undefined')
-					model = null;
-
 				this.fireEvent('retrieve', model);
 
 				return model;
