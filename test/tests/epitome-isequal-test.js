@@ -60,6 +60,14 @@ buster.testCase('Epitome.isEqual assertions >', {
 		buster.assert.isTrue(Epitome.isEqual(a, b));
 	},
 
+	'Expect two de-referenced arrays to be equal': function() {
+		var a = [1,2,3,4],
+			b = a.slice();
+
+		buster.assert.isTrue(Epitome.isEqual(a, b));
+	},
+
+
 	'Expect two regexes to be equal': function() {
 		buster.assert.isTrue(Epitome.isEqual(new RegExp('\s'), new RegExp('\s')));
 	},
