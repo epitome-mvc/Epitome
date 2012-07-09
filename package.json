@@ -21,7 +21,7 @@
         "epitome",
         "mvc"
     ],
-    "main": "./Epitome-min.js",
+    "main": "./src/main.js",
     "license": "MIT",
     "devDependencies" : {
         "buster" : "~0.6.0"
