@@ -68,7 +68,8 @@ the core components are very similar to the ones found in Backbone.js
 
 - `Epitome.isEqual` - a module for comparing values, borrowed from _.js
 - `Epitome.Model` - the model itself
-- `Epitome.Model.Sync` - a plugin for keeping your model and collections in sync via REST endpoints
+- `Epitome.Model.Sync` - a plugin for keeping your model and in sync via REST endpoints
+- `Epitome.Model.Storage` - a plugin for keeping your model in sync via localStorage
 - `Epitome.Collection` - an Array-like model collection, observing all model events
 - `Epitome.Collection.Sync` - extends the collection to fetch and reset if needed
 - `Epitome.Template` - based upon _.js and jresig work but safer, `<%=key%>` or `<% logic %>`

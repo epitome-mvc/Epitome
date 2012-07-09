@@ -3,18 +3,116 @@
 	// get the Epitome module
 	var Epitome = typeof require == 'function' ? require('./epitome-model') : exports.Epitome,
 		Model = Epitome.Model,
-		syncPseudo = 'sync:';
+		storagePseudo = 'storage:';
 
-	// define CRUD mapping.
-	var methodMap = {
-		'create': 'POST',
-		'read': 'GET',
-		'update': 'PUT',
-		'delete': 'DELETE'
-	};
+	var Storage = new Class({
+
+		storage: {}, // you can puncture this through classname.storage[key]
+
+		Implements: [Options],
+
+		options: {
+			storageMethod: 'sessionStorage', // or localStorage
+			privateKey: 'myStorage' // sub key for namespacing
+		},
+
+		initialize: function(options) {
+			this.setOptions(options);
+			this.storageMethod = this.options.storageMethod;
+
+			this.setupStorage();
+		},
+
+		setupStorage: function() {
+			// main method that needs to be called to set the api up and handles detection
+			// 3 levels of degradation. with storage, without -> window.name or a simple {}
+			var storage;
+
+			this.hasNativeStorage = !!(typeof window[this.storageMethod] == 'object' && window[this.storageMethod].getItem);
+
+			// try native
+			if (this.hasNativeStorage) {
+				try {
+					this.storage = JSON.decode(window[this.storageMethod].getItem(this.options.privateKey)) || this.storage;
+				}
+				catch(e) {
+					// session expired / multiple tabs error (security), downgrade.
+					this.hasNativeStorage = false;
+				}
+			}
+
+			if (!this.hasNativeStorage) {
+				// try to use a serialized object in window.name instead
+				try {
+					storage = JSON.decode(window.name);
+					if (storage && typeof storage == 'object' && storage[this.options.privateKey])
+						this.storage = storage[this.options.privateKey];
+				}
+				catch(e) {
+					// window.name was something else. pass on our current object.
+					this._serializeWindowName();
+				}
+			}
+
+			return this;
+		},
+
+		getItem: function(item) {
+			// return from storage in memory
+			return this.storage[item] || null;
+		},
+
+		setItem: function(item, value) {
+			// add a key to storage hash
+			this.storage = JSON.decode(window[this.storageMethod].getItem(this.options.privateKey)) || this.storage;
+			this.storage[item] = value;
+
+			if (this.hasNativeStorage) {
+				try {
+					window[this.storageMethod].setItem(this.options.privateKey, JSON.encode(this.storage));
+				}
+				catch(e) {
+					// session expired / tabs error (security)
+				}
+			}
+			else {
+				this._serializeWindowName();
+			}
+
+			return this;
+		},
+
+		removeItem: function(item) {
+			// remove a key from the storage hash
+			delete this.storage[item];
+
+			if (this.hasNativeStorage) {
+				try {
+					window[this.storageMethod].setItem(this.options.privateKey, JSON.encode(this.storage));
+				}
+				catch(e) {
+					// session expired / tabs error (security)
+				}
+			}
+			else {
+				// remove from window.name also.
+				this._serializeWindowName();
+			}
+		},
+
+		_serializeWindowName: function() {
+			// this is the fallback that merges storage into window.name
+			var obj = {},
+				storage = JSON.decode(window.name);
+
+			obj[this.options.privateKey] = this.storage;
+			window.name = JSON.encode(Object.merge(obj, storage));
+		}
+	});
+
 
 	// decorate the original object by adding a new property Sync
-	Model.Sync = new Class({
+	Model.Storage = new Class({
 
 		Extends: Model,
 
@@ -28,143 +126,66 @@
 
 					return id;
 				}
-			},
-			urlRoot: {
-				// normal convention - not in the model!
-				set: function(value) {
-					this.urlRoot = value;
-					delete this._attributes['urlRoot'];
-				},
-				get: function() {
-					// make sure we return a sensible url.
-					var base = this.urlRoot || this.options.urlRoot || 'no-urlRoot-set';
-					base.charAt(base.length - 1) != '/' && (base += '/');
-					return base;
-				}
 			}
 		},
 
 		options: {
 			// by default, HTTP emulation is enabled for mootools request class. we want it off.
-			emulateREST: false
+			storageMethod: 'sessionStorage'
 		},
 
 		initialize: function(obj, options) {
 			// needs to happen first before events are added,
 			// in case we have custom accessors in the model object.
-			this.setupSync();
 			this.parent(obj, options);
+			this.setupMethods();
 		},
 
-		sync: function(method, model) {
-			// internal low level api that works with the model request instance.
-			var options = {};
+		setupMethods: function() {
 
-			// determine what to call or do a read by default.
-			method = method && methodMap[method] ? methodMap[method] : methodMap['read'];
-			options.method = method;
-
-			// if it's a method via POST, append passed object or use exported model
-			if (method == methodMap.create || method == methodMap.update)
-				options.data = model || this.toJSON();
-
-			// make sure we have the right URL
-			options.url = this.get('urlRoot') + this.get('id') + '/';
-
-			// pass it all to the request
-			this.request.setOptions(options);
-
-			// call the request class' corresponding method (mootools does that).
-			this.request[method](model);
-
-			return this;
-		},
-
-		setupSync: function() {
-			var self = this,
-				rid = 0,
-				incrementRequestId = function() {
-					// request ids are unique and private. private to up them.
-					rid++;
-				};
-
-			// public methods - next likely is current rid + 1
-			this.getRequestId = function() {
-				return rid + 1;
-			};
-
-			this.request = new Request.JSON({
-				// one request at a time
-				link: 'chain',
-				url: this.get('urlRoot'),
-				emulation: this.options.emulateREST,
-				onRequest: incrementRequestId,
-				onCancel: function() {
-					this.removeEvents(syncPseudo + rid);
-				},
-				onSuccess: function(responseObj) {
-					responseObj = self.parse && self.parse(responseObj);
-					self.fireEvent(syncPseudo + rid, [responseObj]);
-					self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
-				},
-				onFailure: function() {
-					self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
-				}
+			var storage = this.storage = new Storage({
+				storageMethod: this.options.storageMethod,
+				privateKey: storagePseudo + this.get('id')
 			});
 
-
-			// export crud methods to model.
-			Object.each(methodMap, function(requestMethod, protoMethod) {
-				self[protoMethod] = function(model) {
-					this.sync(protoMethod, model);
+			Array.each(['create', 'update'], function(method) {
+				this[method] = function(model) {
+					model = model || this.toJSON();
+					storage.setItem('model', model);
+					this.fireEvent(method, model);
 				};
-			});
+			}, this);
 
-			return this;
-		},
+			this.delete = function() {
+				storage.removeItem('model');
 
-		_throwAwaySyncEvent: function(eventName, callback) {
-			// a pseudo :once event for each sync that sets the model to response and can do more callbacks.
-
-			// normally, methods that implement this will be the only ones to auto sync the model to server version.
-			eventName = eventName || syncPseudo + this.getRequestId();
-
-			var self = this,
-				throwAway = {};
-
-			throwAway[eventName] = function(responseObj) {
-				if (responseObj && typeof responseObj == 'object') {
-					self.set(responseObj);
-					callback && callback.apply(self, responseObj);
-				}
-
-				// remove this one-off event.
-				self.removeEvents(throwAway);
+				return this.fireEvent('delete');
 			};
 
-			return this.addEvents(throwAway);
-		}.protect(),
+			this.read = function() {
+				var model = storage.getItem('model');
+				if (model && typeof model == 'object') {
+					this.set(model);
+				}
+				this.fireEvent('read');
 
-		parse: function(resp) {
-			// pre-processor for json object from response.
-			return resp;
+				return model;
+			};
+
+			return this;
 		},
 
 		fetch: function() {
 			// perform a .read and then set returned object key/value pairs to model.
-			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
-				this.fireEvent('fetch');
-				this.isNewModel = false;
-			});
+
 			this.read();
+			this.fireEvent('fetch');
 
 			return this;
 		},
 
 		save: function(key, value) {
 			// saves model or accepts a key/value pair/object, sets to model and then saves.
-			var method = ['update','create'][+this.isNew()];
-
 			if (key) {
 				// if key is an object, go to overloadSetter.
 				var ktype = typeOf(key),
@@ -174,38 +195,23 @@
 			}
 
 			// we want to set this.
-			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
-				this.fireEvent('save');
-				this.fireEvent(method);
-			});
-
-
-			// create first time we sync, update after.
-			this[method]();
-			this.isNewModel = false;
+			this.update();
+			this.fireEvent('save');
 
 			return this;
 		},
 
 		destroy: function() {
 			// destroy the model, send delete to server
-			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
-				this._attributes = {};
-				this.fireEvent('destroy');
-				//todo: remove model from any collections it may be a member of.
-			});
-		},
+			this._attributes = {};
+			this.delete();
+			this.fireEvent('destroy');
 
-		isNew: function() {
-			if (typeof this.isNewModel === 'undefined')
-				this.isNewModel = true;
-
-			return this.isNewModel;
 		}
 	});
 
 	if (typeof define === 'function' && define.amd) {
-		define('epitome-model-sync', function() {
+		define('epitome-model-storage', function() {
 			return Epitome;
 		});
 	}

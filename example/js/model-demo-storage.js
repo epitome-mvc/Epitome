@@ -1,45 +1,31 @@
 // define a prototype for our model. You can just make an instance of Model but this is cleaner
 var testModel = new Class({
-
-	Extends: Epitome.Model.Sync,
-
-	options: {
-		defaults: {
-			urlRoot: 'data/',
-			id: '1231231'
-		}
-	}
+	Extends: Epitome.Model.Storage
 });
 
 
 
-var testInstance = new testModel({
-	initial: 'data'
+new testModel({
+	initial: 'data',
+	id: 'hai'
+}).create();
+
+// should read the initial data from the old model
+testInstance = new testModel({
+	id: 'hai'
 }, {
-	onChange: function() {
-		console.log(arguments);
+	onRead: function() {
+		console.log('read', this.toJSON())
 	},
-	'onChange:foo': function(value) {
-		console.log('foo is happening!', value);
+	onDestroy: function() {
+		console.log('model removed from storage');
 	},
-	onSync: function(resp, method) {
-		console.log('hi, you just did a ' + method);
-	},
-	onSave: function() {
-		console.log('saved');
-	},
-	onUpdate: function() {
-		console.log('updated');
-		// final data...
-		console.log(this.toJSON())
-	},
-	onCreate: function() {
-		console.log('created for the first time');
+	onUpdate: function(model) {
+		console.log('saved into storage', model);
 	}
 });
 
 
-console.log(testInstance.toJSON());
 
 // careful - here be dragons. shared single request instance
 // this should be event-driven and not chained, but it's an example of the api.
@@ -47,18 +33,10 @@ console.log(testInstance.toJSON());
 // get a model from the server
 testInstance.read();
 
-// we need to reset the isModelNew or it will not work with the next 2 tests.
-// logic is, if a model has been fetched, it is not new.
-testInstance.isModelNew = false;
+testInstance.set('hai', 'back');
 
-// do some changes
-testInstance.set('foo', 'bar');
+testInstance.update();
 
-// first save, should fire a create
-testInstance.create.delay(1000, testInstance);
+console.log(testInstance.get('initial'));
 
-// second save is an update
-testInstance.update.delay(3000, testInstance);
-
-// and now a delete
-testInstance.delete.delay(5000, testInstance);
+testInstance.destroy.delay(10000, testInstance);
