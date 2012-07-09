@@ -136,6 +136,7 @@ Credits and licensing
 =====================
 
 Epitome is developed for use of QMetric Group Limited.
+
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
 Released under the MIT license [http://mootools.net/license.txt](http://mootools.net/license.txt)
