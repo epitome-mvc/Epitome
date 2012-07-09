@@ -163,11 +163,8 @@
 			};
 
 			this.retrieve = function() {
-				// return model from storage
-				var model = storage.getItem(modelKey);
-				if (model && typeof model == 'object') {
-					this.set(model);
-				}
+				// return model from storage. don't set to Model!
+				var model = storage.getItem(modelKey) || null;
 
 				this.fireEvent('retrieve', model);
 

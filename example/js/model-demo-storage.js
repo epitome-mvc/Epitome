@@ -32,7 +32,7 @@ testInstance = new testModel({
 // this should be event-driven and not chained, but it's an example of the api.
 
 // get a model from the server
-testInstance.retrieve();
+testInstance.set(testInstance.retrieve());
 
 testInstance.set('hai', 'back');
 
