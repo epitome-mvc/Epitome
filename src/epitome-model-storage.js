@@ -139,7 +139,6 @@
 		};
 	})();
 
-
 	if (typeof define === 'function' && define.amd) {
 		define('epitome-model-storage', function() {
 			return Epitome;

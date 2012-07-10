@@ -4,9 +4,8 @@
 		noUrl = 'no-urlRoot-set',
 		eventPseudo = 'fetch:';
 
-	//this file is not functional.
-
 	Epitome.Collection.Sync = new Class({
+		// allows for fetching collections of model from the server
 
 		Extends: Epitome.Collection,
 
