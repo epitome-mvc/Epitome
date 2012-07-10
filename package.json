@@ -10,7 +10,7 @@
     "description" : "Epitome MV* for MooTools",
     "version" : "0.0.3",
     "scripts" : {
-        "test" : "node_modules/.bin/buster-test"
+        "test" : "node_modules/.bin/buster-test -r specification"
     },
     "repository": {
         "type": "git",
@@ -24,7 +24,7 @@
     "main": "./src/main.js",
     "license": "MIT",
     "devDependencies" : {
-        "buster" : "~0.6.0"
+        "buster" : ">=0.6.0"
     },
     "engines" : {
         "node" : "~0.6"
