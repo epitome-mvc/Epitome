@@ -17,21 +17,27 @@ Example
 
 A quick model creation with prototyping and `localStorage` looks like this:
 
-    // user class
+    // create a new user class prototype, basing it on Epitome.Model.Sync and implement storage
     var User = new Class({
         Extends: Epitome.Model.Sync,
         Implements: Epitome.Storage.sessionStorage,
         options: {
             defaults: {
-                urlRoot: '/user/'
+                urlRoot: '/user'
             }
         }
     });
 
+    // make a new model with id '1' and a property 'name'
     var userModel = new User({
         id: '1',
         name: 'Bobby'
     }, {
+        // default model values to instance only.
+        defaults: {
+            surname: 'Robertson'
+        },
+        // add some events
         onChange: function(key, value) {
             console.log('you changed ' + key + ' to ' + value);
         },
@@ -42,7 +48,7 @@ A quick model creation with prototyping and `localStorage` looks like this:
         "onChange:name": function(value) {
             console.log('you changed your name to ' + value);
         }
-    });
+    }); // attr: name: 'Bobby', id: 1, surname: 'Robertson', userModel.urlRoot = '/user/'
 
     // change some values.
     userModel.set({
