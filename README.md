@@ -16,6 +16,7 @@ An example model creation with prototyping looks like this:
     // user class
     var User = new Class({
         Extends: Epitome.Model.Sync,
+        Implements: Epitome.Storage.sessionStorage,
         options: {
             defaults: {
                 urlRoot: '/user/'
@@ -35,10 +36,17 @@ An example model creation with prototyping looks like this:
         }
     });
 
+    // get from storage if available
+    userModel.set(userModel.retrieve());
+
+    // on second run, these won't fire a change now but above.
     userModel.set({
         surname: 'Roberts',
         name: 'Bob'
     });
+
+    // save to localStorage
+    userModel.store();
 
 BUT, IS IT MVC?
 ===============
@@ -69,7 +77,7 @@ the core components are very similar to the ones found in Backbone.js
 - `Epitome.isEqual` - a module for comparing values, borrowed from _.js
 - `Epitome.Model` - the model itself
 - `Epitome.Model.Sync` - a plugin for keeping your model and in sync via REST endpoints
-- `Epitome.Model.Storage` - a plugin for keeping your model in sync via localStorage
+- `Epitome.Storage` - a plugin for import/export of `models` to `local`/`sessionStorage`
 - `Epitome.Collection` - an Array-like model collection, observing all model events
 - `Epitome.Collection.Sync` - extends the collection to fetch and reset if needed
 - `Epitome.Template` - based upon _.js and jresig work but safer, `<%=key%>` or `<% logic %>`
@@ -83,18 +91,18 @@ You can create a minified concatenated version of Epitome. Have a look inside of
 
 Typically, you'd create a new production build by running:
 
-    dchristoff@Dimitars-iMac:/projects/Epitome (master):
     > r.js -o app.build.js
 
     Tracing dependencies for: epitome
-    Uglifying file: /projects/Epitome/build/Epitome.js
+    Uglifying file: /projects/Epitome/Epitome-min.js
 
-    /projects/Epitome/build/Epitome.js
+    /projects/Epitome/Epitome-min.js
     ----------------
     /projects/Epitome/src/epitome.js
     /projects/Epitome/src/epitome-isequal.js
     /projects/Epitome/src/epitome-model.js
     /projects/Epitome/src/epitome-model-sync.js
+    /projects/Epitome/src/epitome-model-storage.js
     /projects/Epitome/src/epitome-collection.js
     /projects/Epitome/src/epitome-collection-sync.js
     /projects/Epitome/src/epitome-template.js
