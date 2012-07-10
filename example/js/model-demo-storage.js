@@ -1,8 +1,10 @@
 // define a prototype for our model. You can just make an instance of Model but this is cleaner
 var testModel = new Class({
-	Extends: Epitome.Model.Storage
-});
 
+	Extends: Epitome.Model.Sync,
+
+	Implements: Epitome.Storage.sessionStorage
+});
 
 
 new testModel({
@@ -27,17 +29,28 @@ testInstance = new testModel({
 });
 
 
-
 // careful - here be dragons. shared single request instance
 // this should be event-driven and not chained, but it's an example of the api.
 
 // get a model from the server
-testInstance.set(testInstance.retrieve());
+var model = testInstance.retrieve();
+if (model) {
+	testInstance.set(model);
+}
+else {
+	testInstance.read();
+}
 
 testInstance.set('hai', 'back');
-
 testInstance.store();
+console.log(testInstance.retrieve());
 
 console.log(testInstance.get('initial'));
 
-testInstance.eliminate.delay(10000, testInstance);
+testInstance.eliminate.delay(5000, testInstance);
+
+(function() {
+	testInstance.set('hai', 'again');
+	testInstance.store();
+	console.info(testInstance.retrieve());
+}).delay(6000);

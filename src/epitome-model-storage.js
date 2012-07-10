@@ -1,94 +1,117 @@
 ;(function(exports) {
 
 	// get the Epitome module
-	var Epitome = typeof require == 'function' ? require('./epitome-model') : exports.Epitome,
-		Model = Epitome.Model,
-		storagePseudo = 'model:',
-		Storage = new Class({
-			// internal implementation of Storage via local/session storage or window.name as fallback
+	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome;
 
-			storage: {}, // you can puncture this through classname.storage[key]
+	Epitome.Storage	= (function() {
+		// returns 2 classes for use with localStorage and sessionStorage as mixins
 
-			Implements: [Options],
+			// namespace in storage
+		var privateKey = 'epitome',
 
-			options: {
-				storageMethod: 'sessionStorage', // or localStorage
-				privateKey: 'models' // sub key for namespacing
+			// used by the models
+			storagePseudo = 'model:',
+
+			// feature detect if storage is available
+			hasNativeStorage = !!(typeof exports.localStorage == 'object' && exports.localStorage.getItem),
+
+			// this actual object that holds state of storage data.
+			storage = {},
+
+			// default storage method
+			storageMethod = 'localStorage',
+
+			// exported methods to classes, mootools element storage style
+			Methods = {
+				store: function(model) {
+					// saves model or argument into storage
+					model = model || this.toJSON();
+					setItem(storagePseudo + this.get('id'), model);
+					this.fireEvent('store', model);
+				},
+
+				eliminate: function() {
+					// deletes model from storage but does not delete the model
+					removeItem(storagePseudo + this.get('id'));
+					return this.fireEvent('eliminate');
+				},
+
+				retrieve: function() {
+					// return model from storage. don't set to Model!
+					var model = getItem(storagePseudo + this.get('id')) || null;
+
+					this.fireEvent('retrieve', model);
+
+					return model;
+				}
 			},
 
-			initialize: function(options) {
-				this.setOptions(options);
-				this.storageMethod = this.options.storageMethod;
+			setStorage = function(method) {
+				// mini constructor that returns an object with the method as context
+				var s;
 
-				this.setupStorage();
-			},
-
-			setupStorage: function() {
-				// main method that needs to be called to set the api up and handles detection
-				// 3 levels of degradation. with storage, without -> window.name or a simple {}
-				var storage;
-
-				this.hasNativeStorage = !!(typeof window[this.storageMethod] == 'object' && window[this.storageMethod].getItem);
+				method && (storageMethod = method);
 
 				// try native
-				if (this.hasNativeStorage) {
+				if (hasNativeStorage) {
 					try {
-						this.storage = JSON.decode(window[this.storageMethod].getItem(this.options.privateKey)) || this.storage;
+						storage = JSON.decode(exports[storageMethod].getItem(privateKey)) || storage;
 					}
 					catch(e) {
 						// session expired / multiple tabs error (security), downgrade.
-						this.hasNativeStorage = false;
+						hasNativeStorage = false;
 					}
 				}
 
-				if (!this.hasNativeStorage) {
+				if (!hasNativeStorage) {
 					// try to use a serialized object in window.name instead
 					try {
-						storage = JSON.decode(window.name);
-						if (storage && typeof storage == 'object' && storage[this.options.privateKey])
-							this.storage = storage[this.options.privateKey];
+						s = JSON.decode(exports.name);
+						if (s && typeof s == 'object' && s[privateKey])
+							storage = s[privateKey];
 					}
 					catch(e) {
 						// window.name was something else. pass on our current object.
-						this._serializeWindowName();
+						_serializeWindowName();
 					}
 				}
 
-				return this;
+				return new Class(Methods);
 			},
 
-			getItem: function(item) {
+			// internal methods to proxy working with storage and fallbacks
+			getItem = function(item) {
 				// return from storage in memory
-				return this.storage[item] || null;
+				return storage[item] || null;
 			},
 
-			setItem: function(item, value) {
+			setItem = function(item, value) {
 				// add a key to storage hash
-				this.storage = JSON.decode(window[this.storageMethod].getItem(this.options.privateKey)) || this.storage;
-				this.storage[item] = value;
+				storage = JSON.decode(exports[storageMethod].getItem(privateKey)) || storage;
+				storage[item] = value;
 
-				if (this.hasNativeStorage) {
+				if (hasNativeStorage) {
 					try {
-						window[this.storageMethod].setItem(this.options.privateKey, JSON.encode(this.storage));
+						exports[storageMethod].setItem(privateKey, JSON.encode(storage));
 					}
 					catch(e) {
 						// session expired / tabs error (security)
 					}
 				}
 				else {
-					this._serializeWindowName();
+					serializeWindowName();
 				}
 
 				return this;
 			},
 
-			removeItem: function(item) {
+			removeItem = function(item) {
 				// remove a key from the storage hash
-				delete this.storage[item];
+				delete storage[item];
 
-				if (this.hasNativeStorage) {
+				if (hasNativeStorage) {
 					try {
-						window[this.storageMethod].setItem(this.options.privateKey, JSON.encode(this.storage));
+						exports[storageMethod].setItem(privateKey, JSON.encode(storage));
 					}
 					catch(e) {
 						// session expired / tabs error (security)
@@ -96,84 +119,26 @@
 				}
 				else {
 					// remove from window.name also.
-					this._serializeWindowName();
+					serializeWindowName();
 				}
 			},
 
-			_serializeWindowName: function() {
+			serializeWindowName = function() {
 				// this is the fallback that merges storage into window.name
 				var obj = {},
-					storage = JSON.decode(window.name);
+					s = JSON.decode(exports.name);
 
-				obj[this.options.privateKey] = this.storage;
-				window.name = JSON.encode(Object.merge(obj, storage));
-			}
-		});
-
-
-	// decorate the original object by adding the new methods like in mootools element storage.
-	Model.Storage = new Class({
-
-		Extends: Model,
-
-		properties: {
-			id: {
-				get: function() {
-					// always need an id, even if we don't have one.
-					var id = this._attributes.id || (this._attributes.id = String.uniqueID());
-					// always need a collection id.
-					this.cid || (this.cid = id);
-
-					return id;
-				}
-			}
-		},
-
-		options: {
-			// by default, HTTP emulation is enabled for mootools request class. we want it off.
-			storageMethod: 'sessionStorage'
-		},
-
-		initialize: function(obj, options) {
-			this.parent(obj, options);
-			this.setupMethods();
-
-			return this;
-		},
-
-		setupMethods: function() {
-			// instantiate Storage locally
-			var modelKey = storagePseudo + this.get('id'),
-				self = this,
-				storage = new Storage({
-					storageMethod: this.options.storageMethod
-				});
-
-			this.store = function(model) {
-				// saves model or argument into storage
-				model = model || this.toJSON();
-				storage.setItem(modelKey, model);
-				self.fireEvent('store', model);
+				obj[privateKey] = storage;
+				exports.name = JSON.encode(Object.merge(obj, s));
 			};
 
-			this.eliminate = function() {
-				// deletes model from storage but does not delete the model
-				storage.removeItem(modelKey);
-				return this.fireEvent('eliminate');
-			};
+		// actual object returns 2 distinct classes we can use.
+		return {
+			localStorage: setStorage('localStorage'),
+			sessionStorage: setStorage('sessionStorage')
+		};
+	})();
 
-			this.retrieve = function() {
-				// return model from storage. don't set to Model!
-				var model = storage.getItem(modelKey) || null;
-
-				this.fireEvent('retrieve', model);
-
-				return model;
-			};
-
-			return this;
-		}
-	});
 
 	if (typeof define === 'function' && define.amd) {
 		define('epitome-model-storage', function() {
