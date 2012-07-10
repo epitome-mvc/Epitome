@@ -17,6 +17,7 @@ Example
 
 A quick model creation with prototyping and `localStorage` looks like this:
 
+```javascript
     // user class
     var User = new Class({
         Extends: Epitome.Model.Sync,
@@ -62,6 +63,7 @@ A quick model creation with prototyping and `localStorage` looks like this:
 
     // go wild!
     userModel.save();
+```
 
 For more examples, have a look inside of `example/js/`
 
