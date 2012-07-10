@@ -17,11 +17,6 @@ Example
 
 A quick model creation with prototyping and `localStorage` looks like this:
 
-    // if using AMD...
-    var Epitome (typeof require === 'function')
-        ? require('epitome-model-sync')
-        : this.Epitome;
-
     // user class
     var User = new Class({
         Extends: Epitome.Model.Sync,
