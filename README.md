@@ -6,7 +6,16 @@ Epitome [![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.p
 Epitome is an experimental M/V/* modular framework based upon MooTools. The building blocks of all components are extensible MooTools classes
 and the Event observer patterns that come out of the box.
 
-An example model creation with prototyping and `localStorage` looks like this:
+
+BUT, IS IT MVC?
+===============
+
+> &lt;jiggliemon> MVD, Model View Don'task
+
+Example
+=======
+
+A quick model creation with prototyping and `localStorage` looks like this:
 
     // if using AMD...
     var Epitome (typeof require === 'function')
@@ -48,10 +57,7 @@ An example model creation with prototyping and `localStorage` looks like this:
     // save to localStorage
     userModel.store();
 
-BUT, IS IT MVC?
-===============
-
-> &lt;jiggliemon> MVD, Model View Don'task
+For more examples, have a look inside of `example/js/`
 
 Documentation
 =============
