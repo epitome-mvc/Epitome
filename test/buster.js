@@ -18,11 +18,15 @@ config['Browser tests'] = {
 		'src/epitome-isequal.js',
 		// model core
 		'src/epitome-model.js',
+
 		// controller/collection
 		'src/epitome-collection.js',
 
 		// extending extras
 		'src/epitome-model-sync.js',
+
+		// storage
+		'src/epitome-model-storage.js',
 
 		// controller/collection
 		'src/epitome-collection-sync.js',
