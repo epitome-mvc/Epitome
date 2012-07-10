@@ -40,22 +40,33 @@ A quick model creation with prototyping and `localStorage` looks like this:
         onChange: function(key, value) {
             console.log('you changed ' + key + ' to ' + value);
         },
+        onSave: function() {
+            // also save to localStorage
+            this.store();
+        },
         "onChange:name": function(value) {
             console.log('you changed your name to ' + value);
         }
     });
 
-    // get from storage if available
-    userModel.set(userModel.retrieve());
-
-    // on second run, these won't fire a change now but above.
+    // change some values.
     userModel.set({
         surname: 'Roberts',
         name: 'Bob'
     });
 
-    // save to localStorage
-    userModel.store();
+
+    // get from storage if available, else - from server
+    var data = userModel.retrieve();
+    if (data) {
+        userModel.set(data);
+    }
+    else {
+        userModel.read();
+    }
+
+    // go wild!
+    userModel.save();
 
 For more examples, have a look inside of `example/js/`
 
