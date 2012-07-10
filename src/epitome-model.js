@@ -9,7 +9,18 @@
 		_attributes: {},
 
 		// custom accessors.
-		properties: {},
+		properties: {
+			id: {
+				get: function() {
+					// always need an id, even if we don't have one.
+					var id = this._attributes.id || (this._attributes.id = String.uniqueID());
+					// always need a collection id.
+					this.cid || (this.cid = id);
+
+					return id;
+				}
+			}
+		},
 
 		// initial `private` object
 		options: {
@@ -28,6 +39,8 @@
 
 			// merge options overload, will now add the events.
 			this.setOptions(options);
+
+			return this.fireEvent('ready');
 		},
 
 		set: function() {
