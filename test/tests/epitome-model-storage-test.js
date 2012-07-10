@@ -16,17 +16,23 @@ buster.testCase('Epitome model storage >', {
 			bar: 'foo'
 		};
 
-		this.protoModel = new Class({
+		this.protoModelLocal = new Class({
 			Extends: Epitome.Model,
 			Implements: Epitome.Storage.localStorage
 		});
 
-		this.model = new this.protoModel(this.dataInitial);
+		this.protoModelSession = new Class({
+			Extends: Epitome.Model,
+			Implements: Epitome.Storage.sessionStorage
+		});
+
+		this.model = new this.protoModelLocal(this.dataInitial);
+		this.model2 = new this.protoModelSession(this.dataInitial);
 	},
 
 	tearDown: function() {
-		this.model.removeEvents();
 		this.model.eliminate();
+		this.model2.eliminate();
 	},
 
 	'Expect the model to have the sync methods >': function() {
@@ -53,11 +59,25 @@ buster.testCase('Epitome model storage >', {
 
 		this.model.destroy();
 
-		var newmodel = new this.protoModel({
+		var newmodel = new this.protoModelLocal({
 			id: this.dataInitial.id
 		});
 
 		newmodel.set(newmodel.retrieve());
 		buster.assert.equals(data, newmodel.toJSON());
+	},
+
+	'Expect to be able to use models with localStorage and sessionStorage at the same time >': function() {
+		// share the same id, different storage medium
+		this.model.set('foo', 'foo');
+
+		this.model.store();
+
+		this.model2.set('foo', 'more foo');
+
+		this.model2.store();
+
+		buster.refute.equals(this.model.retrieve(), this.model2.retrieve())
+
 	}
 });
