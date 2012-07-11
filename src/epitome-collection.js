@@ -177,9 +177,10 @@
 			this._models.sort(function(a, b) {
 				var ak = a.get(key),
 					bk = b.get(key),
+					cm = c(ak, bk),
 					map = {
-						asc: c(ak, bk),
-						desc: c(bk, ak)
+						asc: cm,
+						desc: -(cm)
 					};
 
 				// unknown types are ascending
