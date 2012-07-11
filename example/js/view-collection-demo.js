@@ -61,7 +61,8 @@ var testInstance = new testView({
 	events: {
 		'click:relay(a.task-remove)': 'removeTask',
 		'click:relay(button.task-create)': 'newTask',
-		'click:relay(button.change-one)': 'changeFirst'
+		'click:relay(button.change-one)': 'changeFirst',
+		'click:relay(button.sort)': 'resort'
 	},
 
 	onReady: function() {
@@ -81,7 +82,7 @@ var testInstance = new testView({
 			model = this.collection.getModelById(id);
 
 		this.collection.removeModel(model);
-		model.delete();
+		model.delete_();
 		this.render();
 	},
 
@@ -100,6 +101,12 @@ var testInstance = new testView({
 		});
 
 		model.save();
+	},
+
+	onResort: function(e, el) {
+		e && e.stop && e.stop();
+
+		this.collection.sort(el.get('data-sort'));
 	}
 });
 

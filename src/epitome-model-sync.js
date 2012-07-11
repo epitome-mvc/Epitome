@@ -10,7 +10,8 @@
 		'create': 'POST',
 		'read': 'GET',
 		'update': 'PUT',
-		'delete': 'DELETE'
+		// unsafe to call a method delete in IE7/8
+		'delete_': 'DELETE'
 	};
 
 	// decorate the original object by adding a new property Sync
@@ -135,7 +136,7 @@
 			throwAway[eventName] = function(responseObj) {
 				if (responseObj && typeof responseObj == 'object') {
 					self.set(responseObj);
-					callback && callback.apply(self, responseObj);
+					callback && callback.call(self, responseObj);
 				}
 
 				// remove this one-off event.
@@ -191,7 +192,7 @@
 			// destroy the model, send delete to server
 			this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
 				this._attributes = {};
-				this.delete();
+				this.delete_();
 				this.fireEvent('destroy');
 			});
 		},
