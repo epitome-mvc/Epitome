@@ -1,6 +1,6 @@
 /*jshint mootools:true */
 ;(function(exports) {
-	// 'use strict';
+	// 'use strict';  // breaks tests due to mootools reliance on args.callee and fireEvent
 
 	var Epitome = typeof require == 'function' ? require('./epitome-template') : exports.Epitome;
 
