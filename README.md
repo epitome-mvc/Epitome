@@ -120,7 +120,7 @@ Typically, you'd create a new production build by running:
     /projects/Epitome/src/epitome-isequal.js
     /projects/Epitome/src/epitome-model.js
     /projects/Epitome/src/epitome-model-sync.js
-    /projects/Epitome/src/epitome-model-storage.js
+    /projects/Epitome/src/epitome-storage.js
     /projects/Epitome/src/epitome-collection.js
     /projects/Epitome/src/epitome-collection-sync.js
     /projects/Epitome/src/epitome-template.js

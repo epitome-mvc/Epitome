@@ -8,7 +8,7 @@
     ],
     "name" : "epitome",
     "description" : "Epitome MV* for MooTools",
-    "version" : "0.0.3",
+    "version" : "0.0.4",
     "scripts" : {
         "test" : "node_modules/.bin/buster-test -r specification"
     },
@@ -27,6 +27,6 @@
         "buster" : ">=0.6.0"
     },
     "engines" : {
-        "node" : "~0.6"
+        "node" : ">=0.6"
     }
 }

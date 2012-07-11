@@ -26,7 +26,7 @@ config['Browser tests'] = {
 		'src/epitome-model-sync.js',
 
 		// storage
-		'src/epitome-model-storage.js',
+		'src/epitome-storage.js',
 
 		// controller/collection
 		'src/epitome-collection-sync.js',

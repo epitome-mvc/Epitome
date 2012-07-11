@@ -8,7 +8,7 @@
 		'epitome-isequal',
 		'epitome-model',
 		'epitome-model-sync',
-		'epitome-model-storage',
+		'epitome-storage',
 		'epitome-collection',
 		'epitome-collection-sync',
 		'epitome-template',

@@ -41,6 +41,8 @@
 		initialize: function(models, options) {
 			this.setOptions(options);
 			models && this.setUp(models);
+			// collections should have an id for storage
+			this.id = this.options.id || String.uniqueID();
 		},
 
 		setUp: function(models) {
@@ -97,6 +99,11 @@
 
 			// let somebody know we lost one.
 			return this.fireEvent('remove', [model, model.cid]);
+		},
+
+		get: function(what) {
+			// compat for storage
+			return this[what];
 		},
 
 		getModelByCID: function(cid) {

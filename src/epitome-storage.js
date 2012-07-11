@@ -6,11 +6,8 @@
 	Epitome.Storage	= (function() {
 		// returns 2 classes for use with localStorage and sessionStorage as mixins
 
-			// used by the models
-		var storagePseudo = 'model:',
-
 			// feature detect if storage is available
-			hasNativeStorage = !!(typeof exports.localStorage == 'object' && exports.localStorage.getItem),
+		var	hasNativeStorage = !!(typeof exports.localStorage == 'object' && exports.localStorage.getItem),
 
 			// default storage method
 			localStorage = 'localStorage',
@@ -23,7 +20,9 @@
 				var s,
 					privateKey = 'epitome-' + storageMethod,
 					// this actual object that holds state of storage data - per method.
-					storage = {};
+					storage = {},
+					// by default, prefix storage keys with model:
+					storagePrefix = 'model';
 
 				// try native
 				if (hasNativeStorage) {
@@ -55,19 +54,19 @@
 					store: function(model) {
 						// saves model or argument into storage
 						model = model || this.toJSON();
-						setItem(storagePseudo + this.get('id'), model);
+						setItem([storagePrefix, this.get('id')].join(':'), model);
 						this.fireEvent('store', model);
 					},
 
 					eliminate: function() {
 						// deletes model from storage but does not delete the model
-						removeItem(storagePseudo + this.get('id'));
+						removeItem([storagePrefix, this.get('id')].join(':'));
 						return this.fireEvent('eliminate');
 					},
 
 					retrieve: function() {
 						// return model from storage. don't set to Model!
-						var model = getItem(storagePseudo + this.get('id')) || null;
+						var model = getItem([storagePrefix, this.get('id')].join(':')) || null;
 
 						this.fireEvent('retrieve', model);
 
@@ -128,7 +127,11 @@
 					exports.name = JSON.encode(Object.merge(obj, s));
 				};
 
-				return new Class(Object.clone(Methods));
+				return function(storageName) {
+					storageName && (storagePrefix = storageName);
+					return new Class(Object.clone(Methods));
+				};
+
 			};
 
 
@@ -141,7 +144,7 @@
 	})();
 
 	if (typeof define === 'function' && define.amd) {
-		define('epitome-model-storage', function() {
+		define('epitome-storage', function() {
 			return Epitome;
 		});
 	}
