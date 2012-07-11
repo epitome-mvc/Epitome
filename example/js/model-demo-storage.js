@@ -3,7 +3,7 @@ var testModel = new Class({
 
 	Extends: Epitome.Model.Sync,
 
-	Implements: Epitome.Storage.sessionStorage
+	Implements: Epitome.Storage.sessionStorage()
 });
 
 
