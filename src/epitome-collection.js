@@ -1,4 +1,6 @@
+/*jshint mootools:true */
 ;(function(exports) {
+	'use strict';
 
 	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
 		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];

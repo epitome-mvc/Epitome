@@ -1,4 +1,6 @@
+/*jshint mootools:true */
 ;(function(exports) {
+	'use strict';
 
 	// get the Epitome module
 	var Epitome = typeof require == 'function' ? require('./epitome-model') : exports.Epitome,

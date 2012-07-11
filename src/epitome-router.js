@@ -1,5 +1,6 @@
+/*jshint mootools:true */
 ;(function(exports) {
-	//todo: add pushstate support instead of hashchange but keep hashes for routing.
+	'use strict';
 
 	// get the Epitome module
 	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,

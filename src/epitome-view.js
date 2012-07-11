@@ -1,4 +1,6 @@
+/*jshint mootools:true */
 ;(function(exports) {
+	// 'use strict';
 
 	var Epitome = typeof require == 'function' ? require('./epitome-template') : exports.Epitome;
 
@@ -173,8 +175,6 @@
 		}
 
 	});
-
-
 
 	if (typeof define === 'function' && define.amd) {
 		define('epitome-view', function() {

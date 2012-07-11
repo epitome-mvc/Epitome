@@ -82,7 +82,7 @@ buster.testCase('Basic Epitome view test >', {
 	'Expect the events on the element to bubble to class instance >': function() {
 		var spy = this.spy();
 		this.view.addEvent('handleClick', spy);
-		this.view.element.fireEvent('click');
+		this.view.element.fireEvent('click', {});
 		buster.assert.called(spy);
 	}
 

@@ -1,4 +1,6 @@
+/*jshint mootools:true */
 ;(function(exports) {
+	'use strict';
 
 	// this is just the host object for the MVC toolkit.
 	var Epitome = {};
