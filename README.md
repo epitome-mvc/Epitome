@@ -20,7 +20,7 @@ A quick model creation with prototyping and `localStorage` looks like this:
     // create a new user class prototype, basing it on Epitome.Model.Sync and implement storage
     var User = new Class({
         Extends: Epitome.Model.Sync,
-        Implements: Epitome.Storage.sessionStorage,
+        Implements: Epitome.Storage.sessionStorage(),
         options: {
             defaults: {
                 urlRoot: '/user'
