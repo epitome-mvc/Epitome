@@ -101,12 +101,13 @@
 				// remove from collection of managed models
 				Array.erase(self._models, model);
 
-				self.length--;
+				self.length = self._models.length;
+
+				// let somebody know we lost some.
 				self.fireEvent('remove', [model, model.cid]);
 			});
 
-			// let somebody know we lost some.
-			return this.fireEvent('change', models);
+			return this;
 		},
 
 		get: function(what) {
