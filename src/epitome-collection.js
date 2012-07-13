@@ -1,6 +1,4 @@
-/*jshint mootools:true */
 ;(function(exports) {
-	'use strict';
 
 	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
 		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
@@ -90,17 +88,25 @@
 			return this.fireEvent('add', [model, model.cid]).fireEvent('change', [model, model.cid]);
 		},
 
-		removeModel: function(model) {
-			// restore `fireEvent` to one from prototype, aka, `Event.prototype.fireEvent`
-			delete model.fireEvent;
+		removeModel: function(models) {
+			// supports a single model or an array of models
+			var	self = this;
 
-			// remove from collection of managed models
-			Array.erase(this._models, model);
+			models = Array.from(models);
 
-			this.length = this._models.length;
+			Array.each(models, function(model) {
+				// restore `fireEvent` to one from prototype, aka, `Event.prototype.fireEvent`
+				delete model.fireEvent;
+
+				// remove from collection of managed models
+				Array.erase(self._models, model);
+
+				self.length--;
+				self.fireEvent('remove', [model, model.cid]);
+			});
 
 			// let somebody know we lost one.
-			return this.fireEvent('remove', [model, model.cid]);
+			return this;
 		},
 
 		get: function(what) {
