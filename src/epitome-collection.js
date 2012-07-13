@@ -85,7 +85,7 @@
 			this.length = this._models.length;
 
 			// let somebody know.
-			return this.fireEvent('add', [model, model.cid]).fireEvent('change', [model, model.cid]);
+			return this.fireEvent('add', [model, model.cid]).fireEvent('reset', [model, model.cid]);
 		},
 
 		removeModel: function(models) {
@@ -107,7 +107,7 @@
 				self.fireEvent('remove', [model, model.cid]);
 			});
 
-			return this;
+			return this.fireEvent('reset', [models]);
 		},
 
 		get: function(what) {

@@ -80,6 +80,23 @@ buster.testCase('Basic Epitome empty collection creation >', {
 		buster.assert.isTrue(instanceOf(this.collection.getModelByCID(data.id), this.collection.model));
 	},
 
+	'Expect adding a model to fire onReset >': function() {
+		var data = {
+			id: 'hello'
+		}, spy = this.spy();
+
+		this.collection.addEvent('reset', spy);
+		this.collection.addModel(data);
+		buster.assert.called(spy);
+	},
+
+	'Expect removing a model to fire onReset >': function() {
+		var spy = this.spy();
+		this.collection.addEvent('reset', spy);
+		this.collection.removeModel(this.model);
+		buster.assert.called(spy);
+	},
+
 	'Expect removing models to collection to fire onRemove event >': function() {
 		var self = this;
 		this.collection.addModel(this.model);
@@ -87,6 +104,19 @@ buster.testCase('Basic Epitome empty collection creation >', {
 			buster.assert.equals(model, self.model);
 		});
 		this.collection.removeModel(this.model);
+	},
+
+	'Expect to be able to remove multiple models at the same time >': function() {
+		var self = this,
+			model2 = new Epitome.Model({
+				hai: 'mum'
+			});
+		this.collection.addModel(this.model);
+		this.collection.addModel(model2);
+		this.collection.addEvent('reset', function(models) {
+			buster.assert.equals(models.length, 2);
+		});
+		this.collection.removeModel([this.model, model2]);
 	},
 
 	'Expect to be able to add models to the collection >': function() {
