@@ -105,8 +105,8 @@
 				self.fireEvent('remove', [model, model.cid]);
 			});
 
-			// let somebody know we lost one.
-			return this;
+			// let somebody know we lost some.
+			return this.fireEvent('change', models);
 		},
 
 		get: function(what) {
