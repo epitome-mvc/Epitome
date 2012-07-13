@@ -74,7 +74,7 @@ For more examples, have a look inside of `example/js/`
 A standard [TodoMVC](http://todomvc.com/) example has been provided here: [Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo).
 
 You can view it in action here:
-(http://fragged.org/Epitome/example/todo/epitome/#!/)[http://fragged.org/Epitome/example/todo/epitome/#!/]
+[http://fragged.org/Epitome/example/todo/epitome/#!/](http://fragged.org/Epitome/example/todo/epitome/#!/)
 
 The todo app is also a submodule of Epitome so you can add it by doing this at the root of the repo:
 ```
