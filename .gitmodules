@@ -1,0 +1,3 @@
+[submodule "example/todo"]
+	path = example/todo
+	url = git://github.com/DimitarChristoff/Epitome-todo.git
