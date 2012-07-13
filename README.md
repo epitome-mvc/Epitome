@@ -76,6 +76,14 @@ A standard [TodoMVC](http://todomvc.com/) example has been provided here: [Epito
 You can view it in action here:
 (http://fragged.org/Epitome/example/todo/epitome/#!/)[http://fragged.org/Epitome/example/todo/epitome/#!/]
 
+The todo app is also a submodule of Epitome so you can add it by doing this at the root of the repo:
+```
+git submodule init
+git submodule update
+```
+
+And you can keep it updated by going to `~/example/todo/` and doing a pull
+
 Documentation
 =============
 
