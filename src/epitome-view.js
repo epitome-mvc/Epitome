@@ -80,7 +80,8 @@
 					'fetch': eventProxy('fetch'),
 					'add': eventProxy('add'),
 					'remove': eventProxy('remove'),
-					'sort': eventProxy('sort')
+					'sort': eventProxy('sort'),
+					'reset': eventProxy('reset')
 				});
 			}
 
