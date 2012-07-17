@@ -1,14 +1,20 @@
 {
-    "author" : "DimitarChristoff",
-    "contributors": [
-        {
-            "name": "Dimitar Christoff",
-            "email": "christoff@gmail.com"
-        }
-    ],
     "name" : "epitome",
-    "description" : "Epitome MV* for MooTools",
-    "version" : "0.0.4",
+    "description" : "Epitome, an MVP framework built on top of MooTools",
+    "homepage": "https://github.com/DimitarChristoff/Epitome",
+    "version" : "0.0.5",
+    "author" : "Dimitar Christoff <christoff@gmail.com> (https://twitter.com/D_mitar)",
+    "keywords": [
+        "mootools",
+        "epitome",
+        "mvc",
+        "mvp"
+    ],
+    "contributors": [
+        "Garrick Cheung",
+        "Simon Smith",
+        "Chiel Kunkels"
+    ],
     "scripts" : {
         "test" : "node_modules/.bin/buster-test -r specification"
     },
@@ -16,15 +22,13 @@
         "type": "git",
         "url": "https://github.com/DimitarChristoff/Epitome"
     },
-    "keywords": [
-        "mootools",
-        "epitome",
-        "mvc"
-    ],
+    "bugs": {
+        "url": "https://github.com/DimitarChristoff/Epitome/issues"
+    },
     "main": "./src/main.js",
-    "license": "MIT",
+    "license": "MIT (http://mootools.net/license.txt)",
     "devDependencies" : {
-        "buster" : ">=0.6.0"
+        "buster" : ">=0.6.1"
     },
     "engines" : {
         "node" : ">=0.6"
