@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epitome</title>
+    
+    <link rel="stylesheet" type="text/css" href="http://documentup.com/stylesheets/screen.css">
+    
+    
+
+    
+  </head>
+  <body><div id="container">
+  <div id="nav">
+    
+      <div id="header">
+        <a href="#" id="logo">Epitome</a>
+      </div>
+    
+    <ul id="sections">
+      
+        <li>
+          <a href="#epitome-model-api">Epitome.Model - API</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#epitome-model-api/constructor-initialize">constructor (initialize)</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-api/set">set</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-api/get">get</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-api/tojson">toJSON</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-api/unset">unset</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-api/empty">empty</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-api/destroy">destroy</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#epitome-model-events">Epitome.Model Events</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#epitome-model-events/ready">ready</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-events/change">change</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-events/change-key">change:key</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-events/empty">empty</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-events/destroy">destroy</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#epitome-model-extras">Epitome.Model extras</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#epitome-model-extras/_attributes">_attributes: {}</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-extras/collections">collections: []</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-extras/options">options: {}</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-extras/options-defaults">options.defaults: {}</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-extras/properties">properties: {}</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#epitome-model-sync">Epitome.Model.Sync</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#epitome-model-sync/constructor-initialize">constructor (initialize)</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-sync/sync">sync</a>
+                </li>
+              
+                <li>
+                  <a href="#epitome-model-sync/parse">parse</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+    </ul>
+    
+    
+  </div>
+  <div id="content">
+    
+    <p><img src="epitome-logo.png" alt="Epitome">
+
+</p>
+<p>The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the MooTools Options and Events classes are implemented already.
+
+</p>
+<h2 id='epitome-model-api'>Epitome.Model - API</h2 id='epitome-model-api'>
+<p>The following are the officially API&#39;d class methods:
+
+</p>
+<h3 id='epitome-model-api/constructor-initialize'>constructor (initialize)</h3 id='epitome-model-api/constructor-initialize'>
+<hr>
+<p><em>Expects arguments: <code>(Object) model, (Object) options</code></em>
+
+</p>
+<p>The <code>modelObject</code> - if passed, sets the internal data hash to a new derefrenced object with the keys of the <code>modelObject</code>. Special accessor properties as defined in the <code>Epitome.Model.prototype.properties</code> will run first and be applicable. 
+
+</p>
+<p>The <code>options</code> object is a standard MooTools class options override and is being merged with the <code>Epitome.Model.prototype.options</code> when a new model is created. It typically contains various event handlers in the form of:
+
+</p>
+<pre><code class="javascript">
+<span class="keyword">new</span> Epitome.Model({}, {
+   onChange: <span class="function"><span class="keyword">function</span><span class="params">(key, value)</span> {</span>
+       console.log(key, value);
+   },
+   defaults: {
+       userTitle: <span class="string">'admin'</span>
+   }
+});</code></pre>
+<p>Supported: <code>(Object) options.defaults</code> - allows initial values of the model to be set if they are not being passed to the model constructor.
+
+</p>
+<p>Constructor fires an event called <code>ready</code> when done. Setting the initial model does not fire a <code>change</code> event.
+
+</p>
+<h3 id='epitome-model-api/set'>set</h3 id='epitome-model-api/set'>
+<hr>
+<p><em>Expects arguments: mixed: <code>(String) key, (Mixed) value</code> pair or <code>(Object) obj</code></em>
+
+</p>
+<p>Allows changing of any individual model key or a set of key/value pairs, encapsulated in an object. Will fire a single <code>change</code> event with all the changed properties as well as a specific <code>change:key</code> event that passes just the value of the key as argument.
+
+</p>
+<p>For typing of value, you can store anything at all (Primitives, Objects, Functions) but keep in mind that when it comes to serialising the Model and sending it to the server, only Primitive types make sense. 
+
+</p>
+<h3 id='epitome-model-api/get'>get</h3 id='epitome-model-api/get'>
+<hr>
+<p><em>Expects arguments: mixed: <code>(String) key</code> or <code>(Array) keys</code></em>
+
+</p>
+<p>Returns known values within the model for either a single key or an array of keys. For an array of keys, it will return an object with <code>key</code> : <code>value</code> mapping.
+
+</p>
+<h3 id='epitome-model-api/tojson'>toJSON</h3 id='epitome-model-api/tojson'>
+<hr>
+<p><em>Expects arguments: none</em>
+
+</p>
+<p>Returns a de-referenced Object, containing all the known model keys and values.
+
+</p>
+<h3 id='epitome-model-api/unset'>unset</h3 id='epitome-model-api/unset'>
+<hr>
+<p><em>Expects arguments: mixed: <code>(String) key</code> or <code>(Array) keys</code></em>
+
+</p>
+<p>Removes keys from model, either a single one or an array of multiple keys. Does not fire a change event.
+
+</p>
+<h3 id='epitome-model-api/empty'>empty</h3 id='epitome-model-api/empty'>
+<hr>
+<p><em>Expects arguments: none</em>
+
+</p>
+<p>Empties the model of all data and fires a single change event with all keys as well as individual <code>change:key</code> events.
+
+</p>
+<p>Fires an <code>empty</code> event.
+
+</p>
+<h3 id='epitome-model-api/destroy'>destroy</h3 id='epitome-model-api/destroy'>
+<hr>
+<p><em>Expects arguments: none</em>
+
+</p>
+<p>Emits a <code>destroy</code> event, empties the model. No change event. Event is observed by Collections the model is a member of, where it triggers a <code>removeModel</code>
+
+
+</p>
+<h2 id='epitome-model-events'>Epitome.Model Events</h2 id='epitome-model-events'>
+<p>======
+
+</p>
+<p>The following events are emitted by the Model:
+
+</p>
+<h3 id='epitome-model-events/ready'>ready</h3 id='epitome-model-events/ready'>
+<hr>
+<p>Fires when the model is instantiated and set.
+
+</p>
+<h3 id='epitome-model-events/change'>change</h3 id='epitome-model-events/change'>
+<hr>
+<p><em>Returns arguments: <code>(Array) changedProperties</code></em>
+
+</p>
+<p>Fires on <code>.set</code>, returns an array of all properties on the Model that changed since the previous <code>set</code>. Does not fire if there are no changes, even when values are not primitives (through _.js -&gt; <code>Epitome.isEqual</code>)
+
+</p>
+<h3 id='epitome-model-events/change-key'>change:key</h3 id='epitome-model-events/change-key'>
+<hr>
+<p><em>Returns arguments: <code>(Mixed) value</code></em>
+
+</p>
+<p>Fires on a <code>.set</code> on a particular key, eg. <code>model.set(&#39;this&#39;, &#39;that&#39;)</code> will fire <code>onChange:this</code> to the instance, passing on <code>that</code> as the <code>value</code> argument.
+
+</p>
+<h3 id='epitome-model-events/empty'>empty</h3 id='epitome-model-events/empty'>
+<hr>
+<p>Fires after a model has been emptied of all values through <code>model.empty()</code>, independently of all <code>change</code> events that fire on the attributes
+
+</p>
+<h3 id='epitome-model-events/destroy'>destroy</h3 id='epitome-model-events/destroy'>
+<hr>
+<p>Fires after <code>.destroy()</code> has been called. Expect the attributes collection to be an empty object. Observed by collections, which will auto-remove models
+
+
+</p>
+<h2 id='epitome-model-extras'>Epitome.Model extras</h2 id='epitome-model-extras'>
+<p>There are several additional properties each model instance will have.
+
+</p>
+<h3 id='epitome-model-extras/_attributes'>_attributes: {}</h3 id='epitome-model-extras/_attributes'>
+<hr>
+<p>The attributes object is <strong>public</strong> (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by <code>model.toJSON()</code> 
+
+</p>
+<h3 id='epitome-model-extras/collections'>collections: []</h3 id='epitome-model-extras/collections'>
+<hr>
+<p>An array that contains references to all instances of Epitome.Collection that the model is currently a member of. Useful for iteration as well as utilised by collections that want to know if Event observers are required.
+
+</p>
+<h3 id='epitome-model-extras/options'>options: {}</h3 id='epitome-model-extras/options'>
+<hr>
+<p>A MooTools default options set, which can be on the prototype of the Model constructor.
+
+</p>
+<h3 id='epitome-model-extras/options-defaults'>options.defaults: {}</h3 id='epitome-model-extras/options-defaults'>
+<hr>
+<p>An object with default Model Attributes to use when instantiating. Merged with Model object when creating. 
+
+</p>
+<h3 id='epitome-model-extras/properties'>properties: {}</h3 id='epitome-model-extras/properties'>
+<hr>
+<p>A collection of custom accessors that override default <code>model.get</code> and <code>model.set</code> methods. For example:
+
+</p>
+<pre><code class="javascript">properties: {
+    foo: {
+        get: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+            <span class="comment">// scope is model</span>
+            <span class="keyword">return</span> <span class="keyword">this</span>.foo();
+        },
+        set: <span class="function"><span class="keyword">function</span><span class="params">(value)</span> {</span>
+            <span class="comment">// don't send this to the attributes, store in the instance directly.</span>
+            <span class="comment">// won't fire a traditional onChange</span>
+            <span class="keyword">this</span>.foo = value;
+        }
+    }
+}</code></pre>
+<p>In the example above, any calls to <code>model.set(&#39;foo&#39;, value)</code> and <code>model.get(&#39;foo&#39;)</code> are handled by custom functions. This is a pattern that allows you to use getters and setters for properties that are handled differently than normal ones. It can also be used as pre-processors for data. Make sure that you either set them on the instance directly or that you import the default ones for id in a custom prototype version as they are not merged like options.
+
+
+</p>
+<h2 id='epitome-model-sync'>Epitome.Model.Sync</h2 id='epitome-model-sync'>
+<p>This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal <a href="#epitome-model-api">Model</a>, unless outlined below:
+
+</p>
+<h3 id='epitome-model-sync/constructor-initialize'>constructor (initialize)</h3 id='epitome-model-sync/constructor-initialize'>
+<hr>
+<p><em>Expects arguments: <code>(Object) model, (Object) options</code></em>
+
+</p>
+<p>A model <code>id</code> with your model as well as setup a <code>urlRoot</code> either as a property of the model or as an options property is required for your model to be synced. The constructor function first calls the Epitome.Model constructor and then sets up the XHR instance and methods.
+
+</p>
+<p>An additional option has been added <code>options.emulateREST: true || false</code>, which is being passed to the Request instance. If your server has no CRUD mapping, emulation can be enabled so everything will go through POST/GET requests with <code>_method</code> containing the original intent.
+
+</p>
+<h3 id='epitome-model-sync/sync'>sync</h3 id='epitome-model-sync/sync'>
+<hr>
+<p><em>Expects arguments: <code>(String) method</code>, <code>(Object) model</code> - optional</em>
+
+</p>
+<p>Sync acts as a proxy/interface to the XHR instance in the model <code>this.request</code> A method can be one of the following:
+</p>
+<blockquote>
+<p>get post, create, read, delete, update
+
+</p>
+</blockquote>
+<p>The second argument <code>model</code> is optional and should be a simple object. If it is not supplied, the default <code>model.toJSON()</code> is used instead.
+
+</p>
+<p>As a whole, you should NOT use the sync directly but elect to use the API methods for each specific request task.
+
+</p>
+<h3 id='epitome-model-sync/parse'>parse</h3 id='epitome-model-sync/parse'>
+<hr>
+<p><em>Expects arguments: <code>(Object) response</code></em>
+
+</p>
+<p><em>Expected return: <code>(Object) response</code></em>
+
+</p>
+<p>A method that you can extend in your definition of Models for doing any pre-processing of data returned by sync from the server. For example:
+
+</p>
+<pre><code class="javascript">parse: <span class="function"><span class="keyword">function</span><span class="params">(response)</span> {</span>
+    <span class="comment">// data comes back with decoration. split them first.</span>
+    <span class="keyword">this</span>.meta = response.meta;
+    <span class="keyword">return</span> response.data;
+}</code></pre>
+
+  </div>
+</div></body>
+</html>
