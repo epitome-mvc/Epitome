@@ -1,0 +1,9 @@
+{
+    "name": "Epitome",
+    "twitter": [
+        "D_mitar",
+        "policyexpert"
+    ],
+    "travis": true,
+    "content": "doc/Epitome.md"
+}
