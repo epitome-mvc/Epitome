@@ -212,7 +212,26 @@ buster.testCase('Basic Epitome collection with a model creation >', {
 		this.collection.addModel(temp);
 		temp.destroy();
 		buster.refute.equals(temp, this.collection.getModelById('hai'));
+	},
+
+	'A model should be able to exist in 2 collections and the event emitter should work when removed from either one >': function() {
+		var c2 = new this.Collection(this.models),
+			spy = this.spy();
+		this.collection.addEvent('change', spy);
+		c2.removeModel(this.model);
+		this.model.set('foo', 'bar');
+		buster.assert.called(spy);
+	},
+
+	'Adding a model to a collection should include the collection instance in the model.collections array >': function() {
+		buster.assert.isTrue(this.model.collections.contains(this.collection));
+	},
+
+	'Removing a model from a collection should also remove the collection instance in the model.collections array >': function() {
+		this.collection.removeModel(this.model);
+		buster.refute.isTrue(this.model.collections.contains(this.collection));
 	}
+
 });
 
 

@@ -29,6 +29,8 @@
 			defaults: {}
 		},
 
+		collections: [],
+
 		initialize: function(obj, options) {
 			// constructor for Model class.
 
