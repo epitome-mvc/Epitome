@@ -3,7 +3,7 @@ Epitome [![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.p
 
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
-Epitome is an experimental M/V/* modular framework based upon MooTools. The building blocks of all components are extensible MooTools classes
+Epitome is an experimental MV* modular framework based upon MooTools. The building blocks of all components are extensible MooTools classes
 and the Event observer patterns that come out of the box.
 
 
@@ -11,6 +11,8 @@ BUT, IS IT MVC?
 ===============
 
 > &lt;jiggliemon> MVD, Model View Don'task
+
+Strictly speaking, `Epitome.View` is closer to a MVP implementation with thin logic around the views, represented by `Epitome.Template`.
 
 Example
 =======
@@ -71,7 +73,7 @@ A quick model creation with prototyping and `localStorage` looks like this:
 
 For more examples, have a look inside of `example/js/`
 
-A standard [TodoMVC](http://todomvc.com/) example has been provided here: [Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo).
+A standard [TodoMVC](http://todomvc.com/) reference implementation has been provided here: [Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo).
 
 You can view it in action here:
 [http://fragged.org/Epitome/example/todo/epitome/#!/](http://fragged.org/Epitome/example/todo/epitome/#!/)
