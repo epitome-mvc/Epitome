@@ -1,6 +1,8 @@
 Epitome [![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master)](http://travis-ci.org/DimitarChristoff/Epitome)
 =======
 
+![Epitome](https://epitome-logo.png)
+
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
 Epitome is an experimental MV* modular framework based upon MooTools. The building blocks of all components are extensible MooTools classes
