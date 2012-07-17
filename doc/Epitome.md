@@ -1,8 +1,30 @@
-![Epitome](epitome-logo.png)
+![Epitome](https://github.com/DimitarChristoff/Epitome/raw/master/doc/epitome-logo.png)
 
-The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the MooTools Options and Events classes are implemented already.
+> _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
+
+Epitome is an experimental MV* modular framework based upon MooTools. The building blocks of all components are extensible MooTools classes
+and the Event observer patterns that come out of the box.
+
+[![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master)](http://travis-ci.org/DimitarChristoff/Epitome)
+
+**BUT, IS IT MVC?**
+
+> &lt;jiggliemon> MVD, Model View Don'task
+
+Strictly speaking, `Epitome.View` is closer to a MVP implementation with thin logic around the views, represented by `Epitome.Template`.
+
+Epitome's API is still subject to changes, which means it is undocumented. The code itself is with a lot of inline comments added to help you understand it better.
+
+The creation and logic employed in the writing of Epitome has been documented in several blog posts:
+
+* [Creating the Model](http://tech.qmetric.co.uk/creating-your-own-mvc-like-data-model-class-in-mootools_59.html)
+* [Creating the Model.Sync](http://tech.qmetric.co.uk/building-a-mootools-micro-mvc-part-2-adding-sync-to-your-model_132.html)
+* [Adding the template](http://tech.qmetric.co.uk/epitome-template-a-lightweight-templating-engine-for-mootools-that-works_190.html)
+* [Testing it in CI via Travis CI](http://tech.qmetric.co.uk/automating-javascript-ci-with-buster-js-and-travisci_205.html)
 
 ## Epitome.Model - API
+
+The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the MooTools Options and Events classes are implemented already.
 
 The following are the officially API'd class methods:
 
@@ -19,7 +41,6 @@ The `modelObject` - if passed, sets the internal data hash to a new derefrenced 
 The `options` object is a standard MooTools class options override and is being merged with the `Epitome.Model.prototype.options` when a new model is created. It typically contains various event handlers in the form of:
 
 ```javascript
-
 new Epitome.Model({}, {
    onChange: function(key, value) {
        console.log(key, value);
@@ -40,7 +61,10 @@ _Expects arguments: mixed: `(String) key`, `(Mixed) value` - pair - or: `(Object
 
 _Returns: `this`_
 
-_**Events: `change: function(changedProperties)`, `change:key: function(valueForKey)`**_
+_**Events:**_
+
+ * `change: function(changedProperties)`
+ * `change:key: function(valueForKey)`
 
 Allows changing of any individual model key or a set of key/value pairs, encapsulated in an object. Will fire a single `change` event with all the changed properties as well as a specific `change:key` event that passes just the value of the key as argument.
 
@@ -48,7 +72,7 @@ For typing of value, you can store anything at all (Primitives, Objects, Functio
 
 ### get
 ---
-_Expects arguments: mixed: `(String) key` or `(Array) keys`_
+_Expects arguments mixed: `(String) key` or `(Array) keys`_
 
 _Returns: `this`_
 
@@ -195,3 +219,142 @@ _Returns: `this`_
 _**Events: `fetch`, `sync`, `read`**_
 
 It will request the server to return the model object for the current id via a `.read()`. It will also change the status of the model (`model.isNewModel`) to false, meaning `.save()` will never use `.create()`. The fetch event will fire once the response object has been returned. The response object is then merged with the current model via a `.set`, it won't empty your data. To do so, you need to issue a `.empty()` first.
+
+## Examples
+---
+
+A quick model creation with prototyping and `localStorage` looks like this:
+
+```javascript
+// create a new user class prototype, basing it on Epitome.Model.Sync and implement storage
+var User = new Class({
+    Extends: Epitome.Model.Sync,
+    Implements: Epitome.Storage.sessionStorage(),
+    options: {
+        defaults: {
+            urlRoot: '/user'
+        }
+    }
+});
+
+// make a new model with id '1' and a property 'name'
+var userModel = new User({
+    id: '1',
+    name: 'Bobby'
+}, {
+    // default model values to instance only.
+    defaults: {
+        surname: 'Robertson'
+    },
+    // add some events
+    onChange: function(key, value) {
+        console.log('you changed ' + key + ' to ' + value);
+    },
+    onSave: function() {
+        // also save to localStorage
+        this.store();
+    },
+    "onChange:name": function(value) {
+        console.log('you changed your name to ' + value);
+    }
+}); // attr: name: 'Bobby', id: 1, surname: 'Robertson', userModel.urlRoot = '/user/'
+
+// change some values.
+userModel.set({
+    surname: 'Roberts',
+    name: 'Bob'
+});
+
+
+// get from storage if available, else - from server
+var data = userModel.retrieve();
+if (data) {
+    userModel.set(data);
+}
+else {
+    userModel.read();
+}
+
+// go wild!
+userModel.save();
+```
+For more examples, have a look inside of `example/js/`
+
+### TodoMVC reference
+---
+A standard [TodoMVC](http://todomvc.com/) reference implementation has been provided here: [Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo).
+
+You can view it in action here:
+[http://fragged.org/Epitome/example/todo/epitome/#!/](http://fragged.org/Epitome/example/todo/epitome/#!/)
+
+The todo app is also a submodule of Epitome so you can add it by doing this at the root of the repo:
+```
+git submodule init
+git submodule update
+```
+
+And you can keep it updated by going to `~/example/todo/` and doing a pull
+
+
+## Building
+---
+
+You can create a minified concatenated version of Epitome. Have a look inside of the simple `app.build.js` you can use for `r.js` (require.js optimiser).
+
+Typically, you'd create a new production build by running:
+
+    > r.js -o app.build.js
+
+    Tracing dependencies for: epitome
+    Uglifying file: /projects/Epitome/Epitome-min.js
+
+    /projects/Epitome/Epitome-min.js
+    ----------------
+    /projects/Epitome/src/epitome.js
+    /projects/Epitome/src/epitome-isequal.js
+    /projects/Epitome/src/epitome-model.js
+    /projects/Epitome/src/epitome-model-sync.js
+    /projects/Epitome/src/epitome-storage.js
+    /projects/Epitome/src/epitome-collection.js
+    /projects/Epitome/src/epitome-collection-sync.js
+    /projects/Epitome/src/epitome-template.js
+    /projects/Epitome/src/epitome-view.js
+    /projects/Epitome/src/epitome-router.js
+
+Install requirejs via npm, if you haven't:
+
+    npm install -g requirejs
+
+Alternatively, grab r.js and put it inside the project, then do `node r.js -o app.build.js`
+
+An npm package is also available:
+
+    npm install epitome
+
+## Testing
+---
+
+Tests are currently separated in 2 groups: node tests and browser tests. The distinction is that under node only,
+it uses `mootools-server` and lacks `Request` or `Element`, so only unit tests will run.
+
+Testing is run via [Buster.js](http://busterjs.org) can be found in `/tests/` - check the README.md there for more info.
+
+_Please note that as of buster 0.6.0, having browser and node test groups at the same time fails to terminate the buster-test process. node tests are temporary disabled_
+
+
+## Development and contribution
+---
+
+Feel free to fork, play and contribute back to the project if you can, pull requests are more than welcome. Just make sure you
+create the request in a branch and write tests / fix existing tests before you send it. Oh, and make sure it does not break the build!
+
+## Credits and licensing
+---
+
+Built by QMetric Group Limited.
+
+Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar)
+
+![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
+
+Released under the MIT license [http://mootools.net/license.txt](http://mootools.net/license.txt)
