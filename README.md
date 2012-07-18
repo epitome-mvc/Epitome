@@ -420,6 +420,138 @@ parse: function(response) {
 }
 ```
 
+### Epitome.View - API
+
+The view is a pretty loose binding around a HTMLElement, it does not try to do much by default. It essentially binds the element to either a Model or a Collection, listening and propagating events that they fire in order to be able to react to them. The expectation is that a `render` method will be defined that uses the data to output it in the browser. The render can be called based upon change or reset events as needed.
+
+### constructor (initialize)
+---
+_Expects arguments: `(Object) options`_
+
+_Returns: `this`_
+
+_**Events: `ready`**_
+
+A single argument in the shape of an `options` Object is passed to the constructor of the View. It is expected to have special 'mutator'-like properties and key properties that it stores for future use.
+
+A simple example would look like this:
+```
+// define the View prototype
+var testView = new Class({
+
+	Extends: Epitome.View,
+
+	render: function() {
+	    // have a render.
+		this.empty();
+        this.element.set('html', this.template(this.model.toJSON()));
+		this.parent();
+		return this;
+	}
+});
+
+
+var testInstance = new testView({
+
+	model: someModelInstance,
+
+	element: 'someid',
+
+	template: document.id('test-template').get('html'),
+
+	// event binding
+	events: {
+		'click:relay(a.task-remove)': 'emptyModel',
+		'click:relay(button.change-one)': 'changeModel'
+	},
+
+	onReady: function() {
+        this.render();
+	},
+
+	`onChange:model`: this.render.bind(this)
+});
+```
+
+The key `options` are:
+
+* `element` - a String id or an element to bind events to and reference
+* `model` - optional Model instance structure to bind to. Exchangeable with `collection`
+* `collection` - optional Collection instance to bind to. Exchangeable with `model`
+* `template` - a String of raw HTML that defines the raw template to use in output.
+* `events` - an Object with MooTools style event bindings to apply to the `element`, delegated or not. values are implied event handlers on the instance
+* `onEventHandlers` - code that reacts to various events that the instance fires.
+
+### render
+---
+_Expects arguments: unknown_
+
+_Returns: `this`_
+
+_**Events: `render`**_
+
+It is essential that this method is defined in your View prototype Object definition. It does not assume to do anything by default, you need to define how the output takes place and how your data is being used. For convenience, it has access to either `this.model` or `this.collection` as the source of data that can be be passed to the [template](#epitome-view-api/template) method. It is expected that at the bottom of your definition, `this.parent()` is called in order for the `render` event to fire.
+
+### setElement
+---
+_Expects arguments: `(Mixed) element`, optional `(Object) events`_
+
+_Returns: `this`_
+
+A public method that allows you to change or set an element that powers a view. If called the first time, it will get the Element (through `document.id()`) and save the reference in `this.element`. If an events object is passed, it will bind the events. If called a second time, it will unbind all events on the old element, change the element reference and rebind new events, if supplied.
+
+### template
+---
+_Expects arguments: `(Object) data`, optional `(String) template`_
+
+_Returns: compiled template or function._
+
+A simple sandbox function where you can either use the Epitome.Template templating engine or call an external engine like Mustache, Handlebars, Hogan etc. The second argument is optional and if not supplied, it will revert to `this.options.template` instead.
+
+An example override to make it work with Mustache would be:
+```
+var myView = new Class({
+    Extends: Epitome.View,
+    template: function(data, template) {
+        template = template || this.options.template;
+        return Mustache.render(template, data);
+    },
+    render: function() {
+        this.element.set('html', this.template({name:'there'}, 'Hello {{name}}'));
+    }
+});
+```
+
+### empty
+---
+_Expects arguments: `(Boolean) soft`_
+
+_Returns: compiled template or function._
+
+_**Events: `empty`**_
+
+By default, it will empty the element through making innerHTML an empty string, calling GC on all child nodes. If the `soft` argument is true, will apply `this.element.empty()`, which is a MooTools Element method that removes all child nodes without destroying them.
+
+### dispose
+---
+_Expects arguments: none_
+
+_Returns: compiled template or function._
+
+_**Events: `dispose`**_
+
+Will detach `this.element` from the DOM. It can be injected again later on.
+
+### destroy
+---
+_Expects arguments: none_
+
+_Returns: compiled template or function._
+
+_**Events: `dispose`**_
+
+Removes and destroys `this.element` from the DOM and from memory. You need to use [setElement](#epitome-view-api/setelement) to add a new one if you want to re-render.
+
 ## Epitome.Storage - API
 
 The storage Class is meant to be used as a mix-in. It works with any instances of Epitome.Model (including Epitome.Model.Sync) as well as Epitome.Collection.
