@@ -113,7 +113,7 @@ _**Events: `destroy`**_
 Empties the model. No change event. Event is observed by Collections the model is a member of, where it triggers a `removeModel()`
 
 
-### Epitome.Model - properties
+### Model properties*
 
 There are several additional properties each model instance will have.
 
@@ -371,7 +371,7 @@ The following Array methods are also available directly on the Collection instan
 
 For more information, see [Mootools Array Type](http://mootools.net/docs/core/Types/Array)
 
-### Epitome.Collection - properties
+### Collection properties*
 
 #### _models
 ---
