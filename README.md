@@ -302,14 +302,6 @@ _Returns: `modelInstance` or `null`_
 
 Performs a search in the collection by the Model's `id` via the standard `getter`. Returns found Model instance or `null` if no match is found.
 
-### getModelById
----
-_Expects arguments: `(String) id`_
-
-_Returns: `modelInstance` or `null`_
-
-Performs a search in the collection by the Model's `id` via the standard `getter`. Returns found Model instance or `null` if no match is found.
-
 ### toJSON
 ---
 _Expects arguments: none_
