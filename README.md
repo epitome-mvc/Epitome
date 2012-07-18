@@ -11,9 +11,9 @@ and the Event observer patterns that come out of the box.
 
 > &lt;jiggliemon> MVD, Model View Don'task
 
-Strictly speaking, `Epitome.View` is closer to a MVP implementation with thin logic around the views, represented by `Epitome.Template`.
+Strictly speaking, `Epitome.View` is closer to a MVP implementation than a classic MVC with thin logic around the views, represented by `Epitome.Template`. If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently.
 
-Epitome's API is still subject to changes, which means it is undocumented. The code itself is with a lot of inline comments added to help you understand it better.
+Epitome's API is still subject to changes, which means documentation is not overly verbose. The code itself is with a lot of inline comments added to help you understand it better.
 
 The creation and logic employed in the writing of Epitome has been documented in several blog posts:
 
