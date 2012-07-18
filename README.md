@@ -11,7 +11,7 @@ and the Event observer patterns that come out of the box.
 
 > &lt;jiggliemon> MVD, Model View Don'task
 
-Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementation than a classic MVC one, with thin logic around the views, represented by `Epitome.Template`. However, because `Epitome.View` is very unassuming, you can also use it in a more classical MVC pattern for multiple purposes if you wish.
+Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementation than a classic MVC one, with thin logic around the views, represented by `Epitome.Template`. However, because `Epitome.View` is very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.
 
 If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently.
 
@@ -681,6 +681,28 @@ else {
 userModel.save();
 ```
 For more examples, have a look inside of `example/js/`
+
+## Epitome.Template
+
+The Template module is a dumbed down implementation of the `underscore.js` _.template(), which in turn was based on work by John Resig. The main differences are the following:
+
+* referencing object keys in the template that have no matching data causes no javascript exception
+* only 2 types of tags are supported: `<%=normalKey%>` and `<% evaluated logic %>`
+* conditional returns do not output. blocks are preferred, eg. `<% if (foo) { %>is foo<% } else { %>is not foo<% } %>`
+
+You can modify the syntax for the tags by altering the regex in the constructor:
+```
+options: {
+    // default block logic syntax is <% if (data.prop) { %>
+    evaluate: /<%([\s\S]+?)%>/g,
+    // literal out is <%=property%>
+    normal: /<%=([\s\S]+?)%>/g
+}
+```
+
+## Eptiome.Router
+
+The Router Class is a hashbang controller, useful for single page applications. A direct import of [https://github.com/DimitarChristoff/Router](https://github.com/DimitarChristoff/Router), see documentation and examples in the original repository.
 
 ### TodoMVC reference
 ---
