@@ -270,7 +270,8 @@ bob.set(bob.retrieve());
 Automatically populate:
 ```
 var bob = new user({
-    id: 'bob',
+    id: 'bob'
+}, {
     onRetrieve: function(data) {
         this.set(data);
     }
