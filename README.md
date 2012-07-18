@@ -11,7 +11,7 @@ and the Event observer patterns that come out of the box.
 
 > &lt;jiggliemon> MVD, Model View Don'task
 
-Strictly speaking, `Epitome.View` is closer to a presented in a MVP implementation than a classic MVC, with thin logic around the views, represented by `Epitome.Template`. Because `Epitome.View` is very unassuming, you can also use it in a more classical MVC pattern for multiple purposes, should you choose to do so.
+Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementation than a classic MVC one, with thin logic around the views, represented by `Epitome.Template`. However, because `Epitome.View` is very unassuming, you can also use it in a more classical MVC pattern for multiple purposes if you wish.
 
 If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently.
 
