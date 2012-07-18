@@ -623,7 +623,6 @@ _**Events: `eliminate`**_
 Calling eliminate on a model or a collection will destroy the stored data the browser has for that model or collection.
 
 ## Epitome.Template
----
 
 The Template module is a dumbed down implementation of the `underscore.js` _.template(), which in turn was based on work by John Resig. The main differences are the following:
 
@@ -642,13 +641,11 @@ options: {
 ```
 
 ## Eptiome.Router
----
 
 The Router Class is a hashbang controller, useful for single page applications. A direct import of [https://github.com/DimitarChristoff/Router](https://github.com/DimitarChristoff/Router), see documentation and examples in the original repository.
 
 
 ## Examples
----
 
 A quick model creation with prototyping and `localStorage` looks like this:
 
@@ -724,7 +721,6 @@ And you can keep it updated by going to `~/example/todo/` and doing a pull
 
 
 ## Building
----
 
 You can create a minified concatenated version of Epitome. Have a look inside of the simple `app.build.js` you can use for `r.js` (require.js optimiser).
 
@@ -759,7 +755,6 @@ An npm package is also available:
     npm install epitome
 
 ## Testing
----
 
 Tests are currently separated in 2 groups: node tests and browser tests. The distinction is that under node only,
 it uses `mootools-server` and lacks `Request` or `Element`, so only unit tests will run.
@@ -770,13 +765,11 @@ _Please note that as of buster 0.6.0, having browser and node test groups at the
 
 
 ## Development and contribution
----
 
 Feel free to fork, play and contribute back to the project if you can, pull requests are more than welcome. Just make sure you
 create the request in a branch and write tests / fix existing tests before you send it. Oh, and make sure it does not break the build!
 
 ## Credits and licensing
----
 
 Built by QMetric Group Limited.
 
