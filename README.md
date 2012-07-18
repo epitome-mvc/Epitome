@@ -38,7 +38,7 @@ _Returns: `this`_
 
 _**Events: `ready`**_
 
-The `modelObject` - if passed, sets the internal data hash to a new derefrenced object with the keys of the `modelObject`. Special accessor properties as defined in the `Epitome.Model.prototype.properties` will run first and be applicable. 
+The `model` - if passed, sets the internal data hash to a new derefrenced object. Special accessor properties, as defined in the `Epitome.Model.prototype.properties`, will run first and be applicable. See [properties](#epitome-model/properties) for more info.
 
 The `options` object is a standard MooTools class options override and is being merged with the `Epitome.Model.prototype.options` when a new model is created. It typically contains various event handlers in the form of:
 
@@ -55,7 +55,7 @@ new Epitome.Model({}, {
 
 Supported: `(Object) options.defaults` - allows initial values of the model to be set if they are not being passed to the model constructor.
 
-Constructor fires an event called `ready` when done. Setting the initial model does not fire a `change` event.
+Of note, the Constructor fires an event called `ready` when done and setting the initial model does not fire a `change` event.
 
 ### set
 ---
@@ -65,12 +65,12 @@ _Returns: `this`_
 
 _**Events:**_
 
- * `change: function(changedProperties)`
- * `change:key: function(valueForKey)`
+ * `change: function(changedProperties) {}`
+ * `change:key: function(valueForKey) {}`
 
 Allows changing of any individual model key or a set of key/value pairs, encapsulated in an object. Will fire a single `change` event with all the changed properties as well as a specific `change:key` event that passes just the value of the key as argument.
 
-For typing of value, you can store anything at all (Primitives, Objects, Functions) but keep in mind that when it comes to serialising the Model and sending it to the server, only Primitive types make sense. 
+For typing of value, you can store anything at all (Primitives, Objects, Functions). Keep in mind that, when it comes to serialising the Model and sending it to the server, only Primitive types or ones with a sensible `toString()` implementation will make sense.
 
 ### get
 ---
