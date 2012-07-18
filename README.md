@@ -113,27 +113,27 @@ _**Events: `destroy`**_
 Empties the model. No change event. Event is observed by Collections the model is a member of, where it triggers a `removeModel()`
 
 
-## Epitome.Model properties
+### Epitome.Model - properties
 
 There are several additional properties each model instance will have.
 
-### _attributes: {}
+#### _attributes: {}
 ---------------
 The attributes object is __public__ (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by `model.toJSON()` 
 
-### collections: []
+#### collections: []
 ---------------
 An array that contains references to all instances of Epitome.Collection that the model is currently a member of. Useful for iteration as well as utilised by collections that want to know if Event observers are required.
 
-### options: {}
+#### options: {}
 -----------
 A MooTools default options set, which can be on the prototype of the Model constructor.
 
-### options.defaults: {}
+#### options.defaults: {}
 --------------------
 An object with default Model Attributes to use when instantiating. Merged with Model object when creating. 
 
-### properties: {}
+#### properties: {}
 --------------
 A collection of custom accessors that override default `model.get` and `model.set` methods. For example:
 
@@ -155,7 +155,7 @@ properties: {
 In the example above, any calls to `model.set('foo', value)` and `model.get('foo')` are handled by custom functions. This is a pattern that allows you to use getters and setters for properties that are handled differently than normal ones. It can also be used as pre-processors for data. Make sure that you either set them on the instance directly or that you import the default ones for id in a custom prototype version as they are not merged like options.
 
 
-## Epitome.Model.Sync
+## Epitome.Model.Sync - API
 
 This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal [Model](#epitome-model-api), unless outlined below:
 
@@ -171,7 +171,7 @@ An additional option has been added `options.emulateREST: true || false`, which 
 ---
 _Expects optional arguments: `(String) method`, `(Object) model`_
 
-_**Events: `sync: function(responseObj, method, options)`**_
+_**Events: `sync: function(responseObj, method, options) {}`**_
 
 Sync acts as a proxy/interface to the XHR instance in the model `this.request` A method can be one of the following:
 > get, post, create, read, delete, update
@@ -219,6 +219,73 @@ _Returns: `this`_
 _**Events: `fetch`, `sync`, `read`**_
 
 It will request the server to return the model object for the current id via a `.read()`. It will also change the status of the model (`model.isNewModel`) to false, meaning `.save()` will never use `.create()`. The fetch event will fire once the response object has been returned. The response object is then merged with the current model via a `.set`, it won't empty your data. To do so, you need to issue a `.empty()` first.
+
+## Epitome.Storage - API
+
+The storage Class is meant to be used as a mix-in. It works with any instances of Epitome.Model (including Epitome.Model.Sync) as well as Epitome.Collection.
+
+To add storage functionality to your model, you declare use in the prototype via the `Implements` mutator:
+```
+var user = new Class({
+    Extends: Epitome.Model,
+    Implements: Epitome.Storage.localStorage('model')
+});
+```
+The code above will call the storage factory and enable `localStorage` within your model with a storage namespace key `model`. In the actual storage massive, data will appear under an `epitome-model` key.
+
+The following methods are added to your Class (identical to Element.Storage from MooTools):
+
+### store
+---
+_Expects optional arguments: `(Object) model`_
+
+_Returns: `this`_
+
+_**Events: `store: function(model) {}`**_
+
+When called without any arguments, store will just save the current model or collection into storage. The models and collections are stored under a sub-key of the value returned `.get('id')`, so it is important to have an id in both if you want to achieve persistence.
+
+**If no id is provided, an id is generated for models and collections, which means a page reload will cause a different id to be generated and no data will be retrieved**
+
+You can also pass a custom object as argument to write instead of the current model or collection.
+
+### retrieve
+---
+_Expects arguments: none_
+
+_Returns: `(Object) model` or `(Array) collection`_
+
+_**Events: `retrieve: function(model) {}`**_
+
+When you retrieve a model or a collection, it will simply return what the browser has as data (based upon the model or colleciton id as key). It will **NOT** apply a `model.set(data)` for you, you need to do this yourself.
+```
+var bob = new user({
+    id: 'bob'
+});
+
+// populate model from storage, if available.
+bob.set(bob.retrieve());
+```
+
+Automatically populate:
+```
+var bob = new user({
+    id: 'bob',
+    onRetrieve: function(data) {
+        this.set(data);
+    }
+}).retrieve();
+```
+
+### eliminate
+---
+_Expects arguments: none_
+
+_Returns: `this`_
+
+_**Events: `eliminate`**_
+
+Calling eliminate on a model or a collection will destroy the stored data the browser has for that model or collection.
 
 ## Examples
 ---
