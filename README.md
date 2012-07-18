@@ -235,7 +235,7 @@ _Returns: `this`_
 _**Events: `ready`**_
 
 The constructor method will accept a large variety of arguments. You can pass on either an Array of Models or an Array of Objects or a single Model or a single Object. You can also pass an empty Array and populate it later. Typical Collection prototype definition looks something like this:
-```
+```javascript
 var usersCollection = new Class({
     Extends: Epitome.Collection
     model: userModel // or Epitome.Model by default
@@ -331,7 +331,7 @@ _Returns: `this`_
 _**Events: `sort`**_
 
 Sorting is quite flexible. It works a lot like `Array.prototype.sort`. By default, you can sort based upon strings that represent keys in the Models. For example:
-```
+```javascript
 users.sort('name');
 // descending order pseduo
 users.sort('name:desc');
@@ -437,7 +437,7 @@ _**Events: `ready`**_
 A single argument in the shape of an `options` Object is passed to the constructor of the View. It is expected to have special 'mutator'-like properties and key properties that it stores for future use.
 
 A simple example would look like this:
-```
+```javascript
 // define the View prototype
 var testView = new Class({
 
@@ -511,7 +511,7 @@ _Returns: compiled template or function._
 A simple sandbox function where you can either use the Epitome.Template templating engine or call an external engine like Mustache, Handlebars, Hogan etc. The second argument is optional and if not supplied, it will revert to `this.options.template` instead.
 
 An example override to make it work with Mustache would be:
-```
+```javascript
 var myView = new Class({
     Extends: Epitome.View,
     template: function(data, template) {
@@ -559,7 +559,7 @@ Removes and destroys `this.element` from the DOM and from memory. You need to us
 The storage Class is meant to be used as a mix-in. It works with any instances of Epitome.Model (including Epitome.Model.Sync) as well as Epitome.Collection.
 
 To add storage functionality to your model, you declare use in the prototype via the `Implements` mutator:
-```
+```javascript
 var user = new Class({
     Extends: Epitome.Model,
     Implements: Epitome.Storage.localStorage('model')
@@ -592,7 +592,7 @@ _Returns: `(Object) model` or `(Array) collection`_
 _**Events: `retrieve: function(model) {}`**_
 
 When you retrieve a model or a collection, it will simply return what the browser has as data (based upon the model or colleciton id as key). It will **NOT** apply a `model.set(data)` for you, you need to do this yourself.
-```
+```javascript
 var bob = new user({
     id: 'bob'
 });
@@ -602,7 +602,7 @@ bob.set(bob.retrieve());
 ```
 
 Automatically populate:
-```
+```javascript
 var bob = new user({
     id: 'bob'
 }, {
@@ -632,7 +632,7 @@ The Template module is a dumbed down implementation of the `underscore.js` _.tem
 * conditional returns do not output. blocks are preferred, eg. `<% if (foo) { %>is foo<% } else { %>is not foo<% } %>`
 
 You can modify the syntax for the tags by altering the regex in the constructor:
-```
+```javascript
 options: {
     // default block logic syntax is <% if (data.prop) { %>
     evaluate: /<%([\s\S]+?)%>/g,
