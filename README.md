@@ -377,6 +377,49 @@ Tries to always reference the length of `_models`.
 ---
 Each Collection prototype has that property that references a Model prototype constructor. When data is being received in raw format (so, simple Objects), Models are being created by instantiating the stored constructor object in `this.model`.
 
+## Epitome.Collection.Sync - API
+
+The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitome-collection-api). It extends the default Collection prototype and adds a Request instance that can retrieve an Array of Model data from a server and add / update the Collection after.
+
+### constructor (initialize)
+---
+_Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
+
+_Returns: `this`_
+
+_**Events: `ready`**_
+
+In terms of differences with the original prototype, the `options`, needs just one extra key: `urlRoot`, which should contain the absolute or relative URL to the end-point that can return the Model data.
+
+### fetch
+---
+_Expects optional arguments: (Boolean) refresh_
+
+_Returns: `this`_
+
+_**Events: `fetch`**_
+
+When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by `id`. If they exist already, a `set()` is called that will merge new data into the Model instance and fire `change` events as appropriate. If the optional `refresh` argument is set to true, the current collection will be emptied first via [empty](#epitome-collection-api/empty).
+
+Returns the instance 'now' but because it is async, applying anything to the collection before the `fetch` event has fired may have unexpected results.
+
+### parse
+---
+_Expects arguments: `(Mixed) response`_
+
+_Expected return: `(Array) response`_
+
+A method that you can extend in your definition of Epitome.Collection.Sync for doing any pre-processing of data returned by sync from the server. For example:
+
+```javascript
+parse: function(response) {
+    // data comes back with decoration. split them first.
+    // { meta: { something: 'here' }, models: [] }
+    this.meta = response.meta;
+    return response.models;
+}
+```
+
 ## Epitome.Storage - API
 
 The storage Class is meant to be used as a mix-in. It works with any instances of Epitome.Model (including Epitome.Model.Sync) as well as Epitome.Collection.
