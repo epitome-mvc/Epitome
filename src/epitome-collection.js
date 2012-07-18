@@ -43,6 +43,8 @@
 			models && this.setUp(models);
 			// collections should have an id for storage
 			this.id = this.options.id || String.uniqueID();
+
+			return this.fireEvent('ready');
 		},
 
 		setUp: function(models) {
@@ -156,7 +158,7 @@
 		},
 
 		empty: function() {
-			this._models = [];
+			this.removeModel(this._models);
 			return this.fireEvent('empty');
 		},
 

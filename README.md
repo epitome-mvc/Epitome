@@ -220,6 +220,171 @@ _**Events: `fetch`, `sync`, `read`**_
 
 It will request the server to return the model object for the current id via a `.read()`. It will also change the status of the model (`model.isNewModel`) to false, meaning `.save()` will never use `.create()`. The fetch event will fire once the response object has been returned. The response object is then merged with the current model via a `.set`, it won't empty your data. To do so, you need to issue a `.empty()` first.
 
+## Epitome.Collection - API
+
+Epitome collections are in essence, an Array-like Class that can contain multiple Models. It has a basic model prototype and adding and removing of models works either based upon passing a simple data has or an actual Model instance. When a model is in a collection, it observes all of the model events and fires them on the collection instance. It also allows for filtering, mapping, sorting and many other more convenience methods.
+
+### constructor (initialize)
+---
+_Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
+
+_Returns: `this`_
+
+_**Events: `ready`**_
+
+The constructor method will accept a large variety of arguments. You can pass on either an Array of Models or an Array of Objects or a single Model or a single Object. You can also pass an empty Array and populate it later. Typical Collection prototype definition looks something like this:
+```
+var usersCollection = new Class({
+    Extends: Epitome.Collection
+    model: userModel // or Epitome.Model by default
+});
+
+var users = new usersCollection([{
+    id: 'bob'
+}], {
+    onChange: function(model, props) {
+        console.log('model change', model, props);
+    },
+    onReady: function() {
+        console.log('the collection is ready');
+    }
+});
+```
+For reference purposes, each Model that enters a collection needs to have a `cid` - collection id. If the Model has an `id`, that is preferred. Otherwise, a `cid` will be generated. If the Model gets an `id` later on, the `cid` will not be changed.
+
+### addModel
+---
+_Expects arguments: `(Mixed) model` , `(Boolean) replace`_
+
+_Returns: `this`_
+
+_**Events: `add: function(model, cid) {}`**_
+
+Adding a Model to a Collection must always happen through this method. It either appends the Model instance to the internal `_models` Array or it creates a new Model and then appends it. It also starts observing the Model's events and emitting them to the Collection instance with an additional argument passed `Model`. So, if you add a Model stored in `bob` and then do `bob.fireEvent('hai', 'there')`, the collection will also fire an event like this: `this.fireEvent('hai', [bob, 'there']); Adding a Model also increases the `Collection.length` property.
+
+The monitoring of the events (Observer) is done through creating a local function override / decoration of the Model's `fireEvent` method, normally inherited from the MooTools Events Class. If a model stops being a part of a collection, the override is destroyed and the default `fireEvent`.
+
+### removeModel
+---
+_Expects arguments: `(Mixed) model(s)`_
+
+_Returns: `this`_
+
+_**Events: `remove: function(model, cid) {}`, `reset`**_
+
+This method allows you to remove a single model or an array of models from the collection in the same call. For each removed model, a `remove` Event will fire. When removing of all Models is done, the collection will also fire a `reset` event, allowing you to re-render your views if you like.
+
+In addition to removing the Model from the Collection, it removes the reference to the Collection in the Model's `collections` Array. If that model stops being a member of any collection, the observed `fireEvent` method is removed from the Model instance, resulting in the method from the Events Class prototype taking over.
+
+Decreases the `Collection.length` property.
+
+### getModelByCID
+---
+_Expects arguments: `(String) cid`_
+
+_Returns: `modelInstance` or `null`_
+
+Performs a search in the collection by `cid` (Collection id). Returns found Model instance or `null` if no match is found.
+
+### getModel
+---
+_Expects arguments: `(Number) id`_
+
+_Returns: `modelInstance` or `null`_
+
+Returns a model based upon the Array index in the Collection.
+
+### getModelById
+---
+_Expects arguments: `(String) id`_
+
+_Returns: `modelInstance` or `null`_
+
+Performs a search in the collection by the Model's `id` via the standard `getter`. Returns found Model instance or `null` if no match is found.
+
+### getModelById
+---
+_Expects arguments: `(String) id`_
+
+_Returns: `modelInstance` or `null`_
+
+Performs a search in the collection by the Model's `id` via the standard `getter`. Returns found Model instance or `null` if no match is found.
+
+### toJSON
+---
+_Expects arguments: none_
+
+_Returns: `modelsData`_
+
+Returns an array of the applied `toJSON` method on all Models in the collection.
+
+### empty
+---
+_Expects arguments: none_
+
+_Returns: `this`_
+
+_**Events: `remove`, `reset`, `empty`**_
+
+Applies `this.removeModel` to all Models of the collection. Fires `empty` when done - though before that, a `remove` and `reset` will fire, see [removeModel](#epitome-collection-api/removemodel)
+
+### sort
+---
+_Expects arguments: (Mixed) how_
+
+_Returns: `this`_
+
+_**Events: `sort`**_
+
+Sorting is quite flexible. It works a lot like `Array.prototype.sort`. By default, you can sort based upon strings that represent keys in the Models. For example:
+```
+users.sort('name');
+// descending order pseduo
+users.sort('name:desc');
+```
+Sorting also allows you to pass a function you define yourself as per the [Array.prototype.sort](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort) interface. When done, it will fire a `sort` event.
+
+### reverse
+---
+_Expects arguments: none_
+
+_Returns: `this`_
+
+_**Events: `sort`**_
+
+Reverses sort the order of Models in the collection. Fires a `sort` event, not `reverse`
+
+### Array helpers
+
+The following Array methods are also available directly on the Collection instances:
+
+* forEach
+* each
+* invoke
+* filter
+* map
+* some
+* indexOf
+* contains
+* getRandom
+* getLast
+
+For more information, see [Mootools Array Type](http://mootools.net/docs/core/Types/Array)
+
+### Epitome.Collection - properties
+
+#### _models
+---
+Each Collection instance has an Array property called `_models` that contains all referenced Model instances. Even though it is not a real private property, it is recommended you do not alter it from outside of the API.
+
+### length
+---
+Tries to always reference the length of `_models`.
+
+#### model
+---
+Each Collection prototype has that property that references a Model prototype constructor. When data is being received in raw format (so, simple Objects), Models are being created by instantiating the stored constructor object in `this.model`.
+
 ## Epitome.Storage - API
 
 The storage Class is meant to be used as a mix-in. It works with any instances of Epitome.Model (including Epitome.Model.Sync) as well as Epitome.Collection.
