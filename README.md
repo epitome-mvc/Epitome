@@ -622,6 +622,31 @@ _**Events: `eliminate`**_
 
 Calling eliminate on a model or a collection will destroy the stored data the browser has for that model or collection.
 
+## Epitome.Template
+---
+
+The Template module is a dumbed down implementation of the `underscore.js` _.template(), which in turn was based on work by John Resig. The main differences are the following:
+
+* referencing object keys in the template that have no matching data causes no javascript exception
+* only 2 types of tags are supported: `<%=normalKey%>` and `<% evaluated logic %>`
+* conditional returns do not output. blocks are preferred, eg. `<% if (foo) { %>is foo<% } else { %>is not foo<% } %>`
+
+You can modify the syntax for the tags by altering the regex in the constructor:
+```
+options: {
+    // default block logic syntax is <% if (data.prop) { %>
+    evaluate: /<%([\s\S]+?)%>/g,
+    // literal out is <%=property%>
+    normal: /<%=([\s\S]+?)%>/g
+}
+```
+
+## Eptiome.Router
+---
+
+The Router Class is a hashbang controller, useful for single page applications. A direct import of [https://github.com/DimitarChristoff/Router](https://github.com/DimitarChristoff/Router), see documentation and examples in the original repository.
+
+
 ## Examples
 ---
 
@@ -681,28 +706,6 @@ else {
 userModel.save();
 ```
 For more examples, have a look inside of `example/js/`
-
-## Epitome.Template
-
-The Template module is a dumbed down implementation of the `underscore.js` _.template(), which in turn was based on work by John Resig. The main differences are the following:
-
-* referencing object keys in the template that have no matching data causes no javascript exception
-* only 2 types of tags are supported: `<%=normalKey%>` and `<% evaluated logic %>`
-* conditional returns do not output. blocks are preferred, eg. `<% if (foo) { %>is foo<% } else { %>is not foo<% } %>`
-
-You can modify the syntax for the tags by altering the regex in the constructor:
-```
-options: {
-    // default block logic syntax is <% if (data.prop) { %>
-    evaluate: /<%([\s\S]+?)%>/g,
-    // literal out is <%=property%>
-    normal: /<%=([\s\S]+?)%>/g
-}
-```
-
-## Eptiome.Router
-
-The Router Class is a hashbang controller, useful for single page applications. A direct import of [https://github.com/DimitarChristoff/Router](https://github.com/DimitarChristoff/Router), see documentation and examples in the original repository.
 
 ### TodoMVC reference
 ---
