@@ -22,7 +22,7 @@ The creation and logic employed in the writing of Epitome has been documented in
 * [Adding the template](http://tech.qmetric.co.uk/epitome-template-a-lightweight-templating-engine-for-mootools-that-works_190.html)
 * [Testing it in CI via Travis CI](http://tech.qmetric.co.uk/automating-javascript-ci-with-buster-js-and-travisci_205.html)
 
-## Epitome.Model - API
+## Epitome.Model
 
 The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the MooTools Options and Events classes are implemented already.
 
@@ -155,9 +155,9 @@ properties: {
 In the example above, any calls to `model.set('foo', value)` and `model.get('foo')` are handled by custom functions. This is a pattern that allows you to use getters and setters for properties that are handled differently than normal ones. It can also be used as pre-processors for data. Make sure that you either set them on the instance directly or that you import the default ones for id in a custom prototype version as they are not merged like options.
 
 
-## Epitome.Model.Sync - API
+## Epitome.Model.Sync
 
-This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal [Model](#epitome-model-api), unless outlined below:
+This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal [Model](#epitome-model), unless outlined below:
 
 ### constructor (initialize)
 ---
@@ -220,7 +220,7 @@ _**Events: `fetch`, `sync`, `read`**_
 
 It will request the server to return the model object for the current id via a `.read()`. It will also change the status of the model (`model.isNewModel`) to false, meaning `.save()` will never use `.create()`. The fetch event will fire once the response object has been returned. The response object is then merged with the current model via a `.set`, it won't empty your data. To do so, you need to issue a `.empty()` first.
 
-## Epitome.Collection - API
+## Epitome.Collection
 
 Epitome collections are in essence, an Array-like Class that can contain multiple Models. It has a basic model prototype and adding and removing of models works either based upon passing a simple data has or an actual Model instance. When a model is in a collection, it observes all of the model events and fires them on the collection instance. It also allows for filtering, mapping, sorting and many other more convenience methods.
 
@@ -278,14 +278,6 @@ In addition to removing the Model from the Collection, it removes the reference 
 
 Decreases the `Collection.length` property.
 
-### getModelByCID
----
-_Expects arguments: `(String) cid`_
-
-_Returns: `modelInstance` or `null`_
-
-Performs a search in the collection by `cid` (Collection id). Returns found Model instance or `null` if no match is found.
-
 ### getModel
 ---
 _Expects arguments: `(Number) id`_
@@ -293,6 +285,14 @@ _Expects arguments: `(Number) id`_
 _Returns: `modelInstance` or `null`_
 
 Returns a model based upon the Array index in the Collection.
+
+### getModelByCID
+---
+_Expects arguments: `(String) cid`_
+
+_Returns: `modelInstance` or `null`_
+
+Performs a search in the collection by `cid` (Collection id). Returns found Model instance or `null` if no match is found.
 
 ### getModelById
 ---
@@ -318,7 +318,7 @@ _Returns: `this`_
 
 _**Events: `remove`, `reset`, `empty`**_
 
-Applies `this.removeModel` to all Models of the collection. Fires `empty` when done - though before that, a `remove` and `reset` will fire, see [removeModel](#epitome-collection-api/removemodel)
+Applies `this.removeModel` to all Models of the collection. Fires `empty` when done - though before that, a `remove` and `reset` will fire, see [removeModel](#epitome-collection/removemodel)
 
 ### sort
 ---
@@ -377,9 +377,9 @@ Tries to always reference the length of `_models`.
 ---
 Each Collection prototype has that property that references a Model prototype constructor. When data is being received in raw format (so, simple Objects), Models are being created by instantiating the stored constructor object in `this.model`.
 
-## Epitome.Collection.Sync - API
+## Epitome.Collection.Sync
 
-The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitome-collection-api). It extends the default Collection prototype and adds a Request instance that can retrieve an Array of Model data from a server and add / update the Collection after.
+The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitome-collection). It extends the default Collection prototype and adds a Request instance that can retrieve an Array of Model data from a server and add / update the Collection after.
 
 ### constructor (initialize)
 ---
@@ -399,7 +399,7 @@ _Returns: `this`_
 
 _**Events: `fetch`**_
 
-When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by `id`. If they exist already, a `set()` is called that will merge new data into the Model instance and fire `change` events as appropriate. If the optional `refresh` argument is set to true, the current collection will be emptied first via [empty](#epitome-collection-api/empty).
+When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by `id`. If they exist already, a `set()` is called that will merge new data into the Model instance and fire `change` events as appropriate. If the optional `refresh` argument is set to true, the current collection will be emptied first via [empty](#epitome-collection/empty).
 
 Returns the instance 'now' but because it is async, applying anything to the collection before the `fetch` event has fired may have unexpected results.
 
@@ -420,7 +420,7 @@ parse: function(response) {
 }
 ```
 
-## Epitome.View - API
+## Epitome.View
 
 The view is a pretty loose binding around a HTMLElement, it does not try to do much by default. It essentially binds the element to either a Model or a Collection, listening and propagating events that they fire in order to be able to react to them. The expectation is that a `render` method will be defined that uses the data to output it in the browser. The render can be called based upon change or reset events as needed.
 
@@ -490,7 +490,7 @@ _Returns: `this`_
 
 _**Events: `render`**_
 
-It is essential that this method is defined in your View prototype Object definition. It does not assume to do anything by default, you need to define how the output takes place and how your data is being used. For convenience, it has access to either `this.model` or `this.collection` as the source of data that can be be passed to the [template](#epitome-view-api/template) method. It is expected that at the bottom of your definition, `this.parent()` is called in order for the `render` event to fire.
+It is essential that this method is defined in your View prototype Object definition. It does not assume to do anything by default, you need to define how the output takes place and how your data is being used. For convenience, it has access to either `this.model` or `this.collection` as the source of data that can be be passed to the [template](#epitome-view/template) method. It is expected that at the bottom of your definition, `this.parent()` is called in order for the `render` event to fire.
 
 ### setElement
 ---
@@ -550,9 +550,9 @@ _Returns: compiled template or function._
 
 _**Events: `dispose`**_
 
-Removes and destroys `this.element` from the DOM and from memory. You need to use [setElement](#epitome-view-api/setelement) to add a new one if you want to re-render.
+Removes and destroys `this.element` from the DOM and from memory. You need to use [setElement](#epitome-view/setelement) to add a new one if you want to re-render.
 
-## Epitome.Storage - API
+## Epitome.Storage
 
 The storage Class is meant to be used as a mix-in. It works with any instances of Epitome.Model (including Epitome.Model.Sync) as well as Epitome.Collection.
 
