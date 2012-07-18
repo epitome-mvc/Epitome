@@ -420,7 +420,7 @@ parse: function(response) {
 }
 ```
 
-### Epitome.View - API
+## Epitome.View - API
 
 The view is a pretty loose binding around a HTMLElement, it does not try to do much by default. It essentially binds the element to either a Model or a Collection, listening and propagating events that they fire in order to be able to react to them. The expectation is that a `render` method will be defined that uses the data to output it in the browser. The render can be called based upon change or reset events as needed.
 
