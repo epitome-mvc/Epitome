@@ -377,7 +377,7 @@ For more information, see [Mootools Array Type](http://mootools.net/docs/core/Ty
 ---
 Each Collection instance has an Array property called `_models` that contains all referenced Model instances. Even though it is not a real private property, it is recommended you do not alter it from outside of the API.
 
-### length
+#### length
 ---
 Tries to always reference the length of `_models`.
 
