@@ -1,4 +1,4 @@
-![Epitome](https://github.com/DimitarChristoff/Epitome/raw/master/doc/epitome-logo.png)
+![Epitome](https://github.com/DimitarChristoff/Epitome/raw/master/example/epitome-logo.png)
 
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
