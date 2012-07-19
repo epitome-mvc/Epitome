@@ -13,7 +13,7 @@ else
     echo "running build.js..."
     ./build.js
     echo "--------------------------------------------------------------------------------"
-    echo "adding index.html and pushing...
+    echo "adding index.html and pushing..."
     git add index.html
     git commit -m'automatically generated gh-pages'
     git push origin gh-pages
