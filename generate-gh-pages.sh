@@ -16,14 +16,19 @@ else
     echo "--------------------------------------------------------------------------------"
     git checkout gh-pages
     echo "--------------------------------------------------------------------------------"
-    echo "running build.js..."
+    echo "checking and getting dependencies..."
 
-    ./build.js
-
+    npm install .
     echo "--------------------------------------------------------------------------------"
-    echo "adding index.html and pushing..."
+    echo "running npm build..."
 
-    git add index.html
+    npm build
+    rc=$?
+    if [[ $? != 0]]; then
+        echo "npm build has failed. check logs and package.json, exiting..."
+        exit $rc
+    fi
+
     git commit -m'automatically generated gh-pages'
     git push origin gh-pages
 
