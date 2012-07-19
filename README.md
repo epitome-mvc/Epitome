@@ -23,7 +23,7 @@ The creation and logic employed in the writing of Epitome has been documented in
 * [Adding the template](http://tech.qmetric.co.uk/epitome-template-a-lightweight-templating-engine-for-mootools-that-works_190.html)
 * [Testing it in CI via Travis CI](http://tech.qmetric.co.uk/automating-javascript-ci-with-buster-js-and-travisci_205.html)
 
-Current version: *0.0.6*
+Current version: *0.0.6 beta*
 
 ## Epitome.Model
 
