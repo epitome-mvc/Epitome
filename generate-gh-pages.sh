@@ -24,7 +24,8 @@ else
 
     npm test
     rc=$?
-    if [[ $? != 0]]; then
+
+    if [ rc != 0 ]; then
         echo "build.js has failed. check logs and package.json, exiting..."
         exit $rc
     fi
