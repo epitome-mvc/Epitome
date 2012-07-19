@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
 echo "-----------------------------------------------------[gh-pages generator 0.0.1]-"
+echo ""
+echo "                                                             ('.')"
+echo "                                                              <))=$"
+echo "                                                              _/\_"
+echo ""
+
 if [ -n "$(git status --porcelain)" ]; then
     echo "PLEASE COMMIT YOUR CHANGE FIRST!!!"
     echo "--------------------------------------------------------------------------------"
