@@ -20,9 +20,9 @@ else
 
     npm install .
     echo "--------------------------------------------------------------------------------"
-    echo "running build.js via npm test..."
+    echo "running build.js via npm run-script build..."
 
-    npm test
+    npm run-script build
     rc=$?
 
     if [[ $rc != 0 ]]; then
