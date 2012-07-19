@@ -2,7 +2,7 @@
     "name" : "epitome",
     "description" : "Epitome, an MVP framework built on top of MooTools",
     "homepage": "https://github.com/DimitarChristoff/Epitome",
-    "version" : "0.0.5",
+    "version" : "0.0.6",
     "author" : "Dimitar Christoff <christoff@gmail.com> (https://twitter.com/D_mitar)",
     "keywords": [
         "mootools",

@@ -14,14 +14,16 @@ Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementa
 
 If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently.
 
-Epitome's API is still subject to changes, which means documentation is not overly verbose. The code itself is with a lot of inline comments added to help you understand it better.
+Epitome's API is still subject to change, which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-The creation and logic employed in the writing of Epitome has been documented in several blog posts:
+The creation and logic employed in the writing of Epitome has been documented in several blog posts on the QMetric tech blog:
 
 * [Creating the Model](http://tech.qmetric.co.uk/creating-your-own-mvc-like-data-model-class-in-mootools_59.html)
 * [Creating the Model.Sync](http://tech.qmetric.co.uk/building-a-mootools-micro-mvc-part-2-adding-sync-to-your-model_132.html)
 * [Adding the template](http://tech.qmetric.co.uk/epitome-template-a-lightweight-templating-engine-for-mootools-that-works_190.html)
 * [Testing it in CI via Travis CI](http://tech.qmetric.co.uk/automating-javascript-ci-with-buster-js-and-travisci_205.html)
+
+Current version: *0.0.6*
 
 ## Epitome.Model
 
@@ -719,30 +721,33 @@ git submodule update
 And you can keep it updated by going to `~/example/todo/` and doing a pull
 
 
-## Building
+## Download + Building
 
-You can create a minified concatenated version of Epitome. Have a look inside of the simple `app.build.js` you can use for `r.js` (require.js optimiser).
+You can check it out of the [github repo](https://github.com/DimitarChristoff/Epitome/) or you can [grab the zip](https://github.com/DimitarChristoff/Epitome/zipball/master) or simply download the minified [Epitome-min.js](https://raw.github.com/DimitarChristoff/Epitome/master/Epitome-min.js).
+
+You can create your own minified concatenated version of Epitome with the components you want. Have a look inside of the simple `app.build.js` you can use for `r.js` (require.js optimiser).
 
 Typically, you'd create a new production build by running:
 
-    > r.js -o app.build.js
+```sh
+> r.js -o app.build.js
 
-    Tracing dependencies for: epitome
-    Uglifying file: /projects/Epitome/Epitome-min.js
+Tracing dependencies for: epitome
+Uglifying file: /projects/Epitome/Epitome-min.js
 
-    /projects/Epitome/Epitome-min.js
-    ----------------
-    /projects/Epitome/src/epitome.js
-    /projects/Epitome/src/epitome-isequal.js
-    /projects/Epitome/src/epitome-model.js
-    /projects/Epitome/src/epitome-model-sync.js
-    /projects/Epitome/src/epitome-storage.js
-    /projects/Epitome/src/epitome-collection.js
-    /projects/Epitome/src/epitome-collection-sync.js
-    /projects/Epitome/src/epitome-template.js
-    /projects/Epitome/src/epitome-view.js
-    /projects/Epitome/src/epitome-router.js
-
+/projects/Epitome/Epitome-min.js
+----------------
+/projects/Epitome/src/epitome.js
+/projects/Epitome/src/epitome-isequal.js
+/projects/Epitome/src/epitome-model.js
+/projects/Epitome/src/epitome-model-sync.js
+/projects/Epitome/src/epitome-storage.js
+/projects/Epitome/src/epitome-collection.js
+/projects/Epitome/src/epitome-collection-sync.js
+/projects/Epitome/src/epitome-template.js
+/projects/Epitome/src/epitome-view.js
+/projects/Epitome/src/epitome-router.js
+```
 Install requirejs via npm, if you haven't:
 
     npm install -g requirejs
@@ -752,6 +757,8 @@ Alternatively, grab r.js and put it inside the project, then do `node r.js -o ap
 An npm package is also available:
 
     npm install epitome
+
+Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you'd have to move it within your web server root.
 
 ## Testing
 
