@@ -20,12 +20,12 @@ else
 
     npm install .
     echo "--------------------------------------------------------------------------------"
-    echo "running npm build..."
+    echo "running build.js via npm test..."
 
-    npm build
+    npm test
     rc=$?
     if [[ $? != 0]]; then
-        echo "npm build has failed. check logs and package.json, exiting..."
+        echo "build.js has failed. check logs and package.json, exiting..."
         exit $rc
     fi
 
