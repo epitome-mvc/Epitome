@@ -51,12 +51,14 @@ config['Browser tests'] = {
 };
 
 /*
+// tests disabled as buster-test with both groups right now does not proc.exit
 config['Node tests'] = {
 	rootPath: '../',
 
 	environment: 'node',
 
 	libs: [
+		// server-only, no request or element.
 		'test/lib/mootools-core-1.4.5-server.js'
 	],
 
