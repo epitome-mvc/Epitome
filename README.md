@@ -2,8 +2,7 @@
 
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
-Epitome is an experimental MV* modular framework based upon MooTools. The building blocks of all components are extensible MooTools classes
-and the Event observer patterns that come out of the box.
+Epitome is a new extensible and modular open-source MVP* framework, built out of MooTools Classes and Events. See [credits and licensing](#credits-and-licensing)
 
 [![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master)](http://travis-ci.org/DimitarChristoff/Epitome)
 
@@ -773,7 +772,7 @@ create the request in a branch and write tests / fix existing tests before you s
 
 Built by QMetric Group Limited.
 
-Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar)
+Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar) with help from Garrick Cheung, Chase Wilson, Simon Smith & Chiel Kunkels
 
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
