@@ -14,11 +14,12 @@ else
     ./build.js
     echo "--------------------------------------------------------------------------------"
     echo "adding index.html and pushing..."
+
     git add index.html
     git commit -m'automatically generated gh-pages'
     git push origin gh-pages
     echo "--------------------------------------------------------------------------------"
-    echo "all done, going back to master now.
+    echo "all done, going back to master now."
     git co master
 fi
 echo "--------------------------------------------------------------------------------"
