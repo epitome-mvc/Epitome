@@ -4,5 +4,6 @@
         "D_mitar",
         "policyexpert"
     ],
-    "travis": true
+    "travis": true,
+    "google_analytics": "UA-1199722-3"
 }
