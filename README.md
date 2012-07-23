@@ -792,3 +792,5 @@ Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar) with 
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
 Released under the MIT license [http://mootools.net/license.txt](http://mootools.net/license.txt)
+
+Documentation generated via [DocumentUp](http://documentup.com), with a local theme in the style of js garden and our [mootstrap scrollspy plugin](https://github.com/DimitarChristoff/mootstrap-scrollspy)
