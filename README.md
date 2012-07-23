@@ -29,7 +29,15 @@ Current version: *0.0.6 beta*
 
 The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the MooTools Options and Events classes are implemented already.
 
-The following are the officially API'd class methods:
+The Model can fire the following events:
+
+* `ready` - when instantiated
+* `change` - when any properties have changed
+* `change:key` - when a particular property `key` has changed
+* `empty` - when a model has been emptied of all properties
+* `destroy` - when a model has been `destroyed` and all data removed.
+
+The following methods are official API on all Model Classes:
 
 ### constructor (initialize)
 ---
