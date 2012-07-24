@@ -16,13 +16,6 @@ If you feel strongly about semantics of the patterns used, you should look at [D
 
 Epitome's API is still subject to change, which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-The creation and logic employed in the writing of Epitome has been documented in several blog posts on the QMetric tech blog:
-
-* [Creating the Model](http://tech.qmetric.co.uk/creating-your-own-mvc-like-data-model-class-in-mootools_59.html)
-* [Creating the Model.Sync](http://tech.qmetric.co.uk/building-a-mootools-micro-mvc-part-2-adding-sync-to-your-model_132.html)
-* [Adding the template](http://tech.qmetric.co.uk/epitome-template-a-lightweight-templating-engine-for-mootools-that-works_190.html)
-* [Testing it in CI via Travis CI](http://tech.qmetric.co.uk/automating-javascript-ci-with-buster-js-and-travisci_205.html)
-
 Current version: *0.0.6 beta*
 
 ## Epitome.Model
@@ -782,6 +775,13 @@ _Please note that as of buster 0.6.0, having browser and node test groups at the
 
 Feel free to fork, play and contribute back to the project if you can, pull requests are more than welcome. Just make sure you
 create the request in a branch and write tests / fix existing tests before you send it. Oh, and make sure it does not break the build!
+
+The creation and logic employed in the writing of Epitome has been documented in several blog posts on the QMetric tech blog:
+
+* [Creating the Model](http://tech.qmetric.co.uk/creating-your-own-mvc-like-data-model-class-in-mootools_59.html)
+* [Creating the Model.Sync](http://tech.qmetric.co.uk/building-a-mootools-micro-mvc-part-2-adding-sync-to-your-model_132.html)
+* [Adding the template](http://tech.qmetric.co.uk/epitome-template-a-lightweight-templating-engine-for-mootools-that-works_190.html)
+* [Testing it in CI via Travis CI](http://tech.qmetric.co.uk/automating-javascript-ci-with-buster-js-and-travisci_205.html)
 
 ## Credits and licensing
 
