@@ -654,7 +654,7 @@ _Returns: `this`_
 
 _**Events: `ready`, `before`, `after`, mixed, `undefined`, `error`, `route:add`, `route:remove`**_
 
-As this is quite involved and can act as a Controller for your app, here's a practical example that defines a few route events and adds the event handlers within the Class instance:
+As this is quite involved and can act as a Controller for your app, here's a practical example that defines a few routes and event handlers within the Epitome.Router Class instantiation:
 ```javascript
 App.router = new Epitome.Router({
     // routes definition will proxy the events
@@ -671,12 +671,12 @@ App.router = new Epitome.Router({
         console.log('init');
     },
 
-    // before route method
+    // before route method, fires before the event handler once a match has been found
     onBefore: function(routeId){
         console.log('before', routeId)
     },
 
-    // specific pseudos for before
+    // specific pseudos for :before
     'onIndex:before': function() {
         console.log('we are about to go to the index route');
     },
@@ -686,12 +686,12 @@ App.router = new Epitome.Router({
         console.log('navigated already to index route, update breadcrumb?');
     },
 
-    // after route method
+    // after route method has fired, post-route event.
     onAfter: function(route){
         console.info('after', route)
     },
 
-    // routes events callbacks
+    // routes events callbacks are functions that call parts of your app
 
     // index
     onIndex: function() {
@@ -731,7 +731,6 @@ App.router = new Epitome.Router({
     'onRoute:add': function(constructorObject) {
         console.log(constructorObject.id + ' was added as a new route');
     }
-
 });
 ```
 ### addRoute
@@ -767,6 +766,9 @@ _Returns: `this`_
 _**Events: `route:remove`**_
 
 Removes a route by the route identifier string.
+
+For more examples of Router, have a look inside the [todomvc](https://github.com/DimitarChristoff/Epitome-todo/blob/master/epitome/js/app.js#L42-70) demo.
+
 
 
 ## Examples
