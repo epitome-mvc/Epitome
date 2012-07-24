@@ -2,7 +2,7 @@
 ;(function(exports) {
 	'use strict';
 
-	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome;
+	var Epitome = typeof require == 'function' ? require('./epitome-isequal') : exports.Epitome;
 
 	Epitome.Model = new Class({
 
