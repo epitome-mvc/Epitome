@@ -787,7 +787,7 @@ The creation and logic employed in the writing of Epitome has been documented in
 
 Built by QMetric Group Limited.
 
-Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar) with help from Garrick Cheung, Chase Wilson, Simon Smith & Chiel Kunkels
+Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar) with help from [Garrick Cheung](http://twitter.com/garrickcheung), [Chase Wilson](http://twitter.com/jiggliemon), [Simon Smith](http://twitter.com/blinkdesign) & [Chiel Kunkels](http://twitter.com/chielkunkels/)
 
 ![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
