@@ -14,7 +14,7 @@ Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementa
 
 If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently.
 
-Epitome's API is still subject to change, which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
+Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
 Current version: *0.0.6 beta*
 
