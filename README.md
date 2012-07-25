@@ -864,6 +864,23 @@ else {
 // go wild!
 userModel.save();
 ```
+
+For an example via Require.JS:
+```
+require.config({
+    baseUrl: 'src'
+});
+
+require(['epitome-model'], function(Epitome) {
+    // Epitome will contain Model and isEqual automatically.
+    var tweet = new Class({
+        Extends: Epitome.model
+    });
+
+    // etc.
+});
+```
+
 For more examples, have a look inside of `example/js/`
 
 ### TodoMVC reference
