@@ -192,7 +192,7 @@ properties: {
     }
 }
 ```
-This gives you great versatility but it does require some understanding of the inner workings of Model. The important thing to remember is that the `set` method is a proxy and relies on the __private__ setter `_set`, using the MooTools `[overloadSetter](http://stackoverflow.com/a/4013500/126998)`. The same thing applies to `get`, which is overloaded through `overloadGetter`.
+This gives you great versatility but it does require some understanding of the inner workings of Model. The important thing to remember is that the `set` method is a proxy and relies on the __private__ setter `_set`, using the MooTools [overloadSetter](http://stackoverflow.com/a/4013500/126998). The same thing applies to `get`, which is overloaded through `overloadGetter`.
 
 
 ## Epitome.Model.Sync
