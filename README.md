@@ -874,7 +874,7 @@ require.config({
 require(['epitome-model'], function(Epitome) {
     // Epitome will contain Model and isEqual automatically.
     var tweet = new Class({
-        Extends: Epitome.model
+        Extends: Epitome.Model
     });
 
     // etc.
