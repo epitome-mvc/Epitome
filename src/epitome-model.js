@@ -2,158 +2,158 @@
 ;(function(exports) {
 	'use strict';
 
-	var Epitome = typeof require == 'function' ? require('./epitome-isequal') : exports.Epitome;
+	// wrapper function for requirejs or normal object
+	var wrap = function(Epitome) {
 
-	Epitome.Model = new Class({
+		Epitome.Model = new Class({
 
-		Implements: [Options, Events],
+			Implements: [Options, Events],
 
-		_attributes: {},
+			_attributes: {},
 
-		// custom accessors.
-		properties: {
-			id: {
-				get: function() {
-					// always need an id, even if we don't have one.
-					var id = this._attributes.id || (this._attributes.id = String.uniqueID());
-					// always need a collection id.
-					this.cid || (this.cid = id);
+			// custom accessors.
+			properties: {
+				id: {
+					get: function() {
+						// always need an id, even if we don't have one.
+						var id = this._attributes.id || (this._attributes.id = String.uniqueID());
+						// always need a collection id.
+						this.cid || (this.cid = id);
 
-					return id;
+						return id;
+					}
 				}
-			}
-		},
+			},
 
-		// initial `private` object
-		options: {
-			defaults: {}
-		},
+			// initial `private` object
+			options: {
+				defaults: {}
+			},
 
-		collections: [],
+			collections: [],
 
-		initialize: function(obj, options) {
-			// constructor for Model class.
+			initialize: function(obj, options) {
+				// constructor for Model class.
 
-			// are there any defaults passed? better to have them on the proto.
-			options && options.defaults && (this.options.defaults = Object.merge(this.options.defaults, options.defaults));
+				// are there any defaults passed? better to have them on the proto.
+				options && options.defaults && (this.options.defaults = Object.merge(this.options.defaults, options.defaults));
 
-			// initial obj should pass on to the setter.
-			obj = obj && typeOf(obj) === 'object' ? obj : {};
-			this.set(Object.merge(this.options.defaults, obj));
+				// initial obj should pass on to the setter.
+				obj = obj && typeOf(obj) === 'object' ? obj : {};
+				this.set(Object.merge(this.options.defaults, obj));
 
-			// merge options overload, will now add the events.
-			this.setOptions(options);
+				// merge options overload, will now add the events.
+				this.setOptions(options);
 
-			return this.fireEvent('ready');
-		},
+				return this.fireEvent('ready');
+			},
 
-		set: function() {
-			// call the real getter. we proxy this because we want
-			// a single event after all properties are updated and the ability to work with
-			// either a single key, value pair or an object
-			this.propertiesChanged = [];
-			this._set.apply(this, arguments);
-			// if any properties did change, fire a change event with the array.
-			this.propertiesChanged.length && this.fireEvent('change', this.get(this.propertiesChanged));
-		},
+			set: function() {
+				// call the real getter. we proxy this because we want
+				// a single event after all properties are updated and the ability to work with
+				// either a single key, value pair or an object
+				this.propertiesChanged = [];
+				this._set.apply(this, arguments);
+				// if any properties did change, fire a change event with the array.
+				this.propertiesChanged.length && this.fireEvent('change', this.get(this.propertiesChanged));
+			},
 
-		// private, real setter functions, not on prototype, see note above
-		_set: function(key, value) {
-			// needs to be bound the the instance.
-			if (!key || typeof value === 'undefined') return this;
+			// private, real setter functions, not on prototype, see note above
+			_set: function(key, value) {
+				// needs to be bound the the instance.
+				if (!key || typeof value === 'undefined') return this;
 
-			// custom setter - see bit further down
-			if (this.properties[key] && this.properties[key]['set'])
-				return this.properties[key]['set'].call(this, value);
+				// custom setter - see bit further down
+				if (this.properties[key] && this.properties[key]['set'])
+					return this.properties[key]['set'].call(this, value);
 
 
-			// no change? this is crude and works for primitives.
-			if (this._attributes[key] && Epitome.isEqual(this._attributes[key], value))
+				// no change? this is crude and works for primitives.
+				if (this._attributes[key] && Epitome.isEqual(this._attributes[key], value))
+					return this;
+
+				if (value === null) {
+					delete this._attributes[key]; // delete = null.
+				}
+				else {
+					this._attributes[key] = value;
+				}
+
+				// fire an event.
+				this.fireEvent('change:' + key, value);
+
+				// store changed keys...
+				this.propertiesChanged.push(key);
+
 				return this;
+			}.overloadSetter(),   // mootools abstracts overloading to allow object iteration
 
-			if (value === null) {
-				delete this._attributes[key]; // delete = null.
-			}
-			else {
-				this._attributes[key] = value;
-			}
+			get: function(key) {
+				// overload getter, 2 paths...
 
-			// fire an event.
-			this.fireEvent('change:' + key, value);
+				// custom accessors take precedence and have no reliance on item being in attributes
+				if (key && this.properties[key] && this.properties[key]['get']) {
+					return this.properties[key]['get'].call(this);
+				}
 
-			// store changed keys...
-			this.propertiesChanged.push(key);
+				// else, return from attributes or return null when undefined.
+				return (key && typeof this._attributes[key] !== 'undefined') ? this._attributes[key] : null;
+			}.overloadGetter(),
 
-			return this;
-		}.overloadSetter(),   // mootools abstracts overloading to allow object iteration
+			unset: function() {
+				// can remove keys from model, passed on as multiple string arguments or an array of string keys
+				var keys = Array.prototype.slice.apply(arguments),
+					obj = {},
+					len = keys.length;
 
-		get: function(key) {
-			// overload getter, 2 paths...
+				if (!len)
+					return this;
 
-			// custom accessors take precedence and have no reliance on item being in attributes
-			if (key && this.properties[key] && this.properties[key]['get']) {
-				return this.properties[key]['get'].call(this);
-			}
+				Array.each(Array.flatten(keys), function(key) {
+					obj[key] = null;
+				});
 
-			// else, return from attributes or return null when undefined.
-			return (key && typeof this._attributes[key] !== 'undefined') ? this._attributes[key] : null;
-		}.overloadGetter(),
+				this.set(obj);
 
-		unset: function() {
-			// can remove keys from model, passed on as multiple string arguments or an array of string keys
-			var keys = Array.prototype.slice.apply(arguments),
-				obj = {},
-				len = keys.length;
-
-			if (!len)
 				return this;
+			},
 
-			Array.each(Array.flatten(keys), function(key) {
-				obj[key] = null;
-			});
+			toJSON: function() {
+				return Object.clone(this._attributes);
+			},
 
-			this.set(obj);
+			empty: function() {
+				// empty the model and fire change event
+				var keys = Object.keys(this.toJSON()),
+					self = this;
 
-			return this;
-		},
+				// let the instance know.
+				this.fireEvent('change', [keys]);
 
-		toJSON: function() {
-			return Object.clone(this._attributes);
-		},
+				// fire change for all keys in the model.
+				Array.each(keys, function(key) {
+					self.fireEvent('change:' + key, null);
+				}, this);
 
-		empty: function() {
-			// empty the model and fire change event
-			var keys = Object.keys(this.toJSON()),
-				self = this;
+				this._attributes = {};
+				this.fireEvent('empty');
+			},
 
-			// let the instance know.
-			this.fireEvent('change', [keys]);
+			destroy: function() {
+				// destroy the model, send delete to server
+				this._attributes = {};
+				this.fireEvent('destroy');
+			}
+		});
 
-			// fire change for all keys in the model.
-			Array.each(keys, function(key) {
-				self.fireEvent('change:' + key, null);
-			}, this);
-
-			this._attributes = {};
-			this.fireEvent('empty');
-		},
-
-		destroy: function() {
-			// destroy the model, send delete to server
-			this._attributes = {};
-			this.fireEvent('destroy');
-		}
-	});
+		return Epitome;
+	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
-		define('epitome-model', function() {
-			return Epitome;
-		});
-	}
-	else if (typeof module === 'object') {
-		module.exports = Epitome;
+		// requires epitome object only.
+		define(['./epitome-isequal'], wrap);
 	}
 	else {
-		exports.Epitome = Epitome;
+		exports.Epitome = wrap(exports);
 	}
 }(this));

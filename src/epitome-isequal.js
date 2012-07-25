@@ -2,8 +2,10 @@
 ;(function(exports) {
 	'use strict';
 
-	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
-		eq = Epitome.isEqual = function(a, b, stack) {
+	// wrapper function for requirejs or normal object
+	var wrap = function(Epitome) {
+
+		var eq = Epitome.isEqual = function(a, b, stack) {
 			// this is a modified version of eq func from _.js
 
 			// Identical objects are equal. `0 === -0`, but they aren't identical.
@@ -98,15 +100,14 @@
 			return result;
 		};
 
+		return Epitome;
+	}; // end wrap
+
 	if (typeof define === 'function' && define.amd) {
-		define('epitome-isequal', function() {
-			return Epitome;
-		});
-	}
-	else if (typeof module === 'object') {
-		module.exports = Epitome;
+		// requires epitome object only.
+		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = Epitome;
+		exports.Epitome = wrap(exports);
 	}
 }(this));

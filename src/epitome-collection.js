@@ -1,239 +1,241 @@
+/*jshint mootools:true */
 ;(function(exports) {
+	'use strict';
 
-	var Epitome = typeof require == 'function' ? require('./epitome') : exports.Epitome,
-		methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
+	// wrapper function for requirejs or normal object
+	var wrap = function(Epitome) {
 
-	// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
-	Function.extend({
-		monitorModelEvents: function(listener, orig) {
-			// `@listener` - subscriber class to also get the event, required.
-			// `@orig` - orig model instance for scope, required.
+		var	methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
 
-			var self = this;
-			// the original func is `this`, now saved ref.
+		// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
+		Function.extend({
+			monitorModelEvents: function(listener, orig) {
+				// `@listener` - subscriber class to also get the event, required.
+				// `@orig` - orig model instance for scope, required.
 
-			// this is brave, may affect scope in edge cases: `.fireEvent.apply(otherobj, args)`
-			orig = orig || this;
+				var self = this;
+				// the original func is `this`, now saved ref.
 
-			// has the events class been mixed in?
-			if (!(listener && listener.fireEvent))
-				return this;
+				// this is brave, may affect scope in edge cases: `.fireEvent.apply(otherobj, args)`
+				orig = orig || this;
 
-			return function(type, args, delay) {
-				// now pass orig bound to orig scope, or at least the function.
-				self.apply(orig, arguments);
+				// has the events class been mixed in?
+				if (!(listener && listener.fireEvent))
+					return this;
 
-				// let controller know and place instance. Make sure model is managed still!
-				listener.getModelByCID(orig.cid) && listener.fireEvent(type, Array.flatten([orig, args]), delay);
-			};
-		}
-	});
+				return function(type, args, delay) {
+					// now pass orig bound to orig scope, or at least the function.
+					self.apply(orig, arguments);
 
-	var Collection = Epitome.Collection = new Class({
-
-		Implements: [Options,Events],
-
-		// base model is just Epitome.Model
-		model: Epitome.Model,
-
-		_models: [],
-
-		initialize: function(models, options) {
-			this.setOptions(options);
-			models && this.setUp(models);
-			// collections should have an id for storage
-			this.id = this.options.id || String.uniqueID();
-
-			return this.fireEvent('ready');
-		},
-
-		setUp: function(models) {
-			models = Array.from(models);
-			Array.each(models, this.addModel.bind(this));
-
-			// if a model is destroyed, remove from the collection
-			this.addEvent('destroy', this.removeModel.bind(this));
-
-			return this;
-		},
-
-		addModel: function(model, replace) {
-			// add a new model to collection
-			var exists;
-
-			// if it's just an object, make it a model first
-			if (typeOf(model) == 'object' && !instanceOf(model, this.model)) {
-				model = new this.model(model);
-			}
-
-			// assign a cid.
-			model.cid = model.cid || model.get('id') || String.uniqueID();
-
-			// already in the collection?
-			exists = this.getModelByCID(model.cid);
-
-			// if not asked to replace, bail out.
-			if (exists && replace !== true)
-				return this.fireEvent('add:error', model);
-
-			// replace an existing model when requested
-			exists && replace === true && (this._models[this._models.indexOf(model)] = model);
-
-			// decorate `fireEvent` by making it local on the model instance. we are a quiet subscriber
-			model.fireEvent = Function.monitorModelEvents.apply(model.fireEvent, [this, model]);
-
-			// add to models array.
-			this._models.push(model);
-
-			model.collections.include(this);
-
-			this.length = this._models.length;
-
-			// let somebody know.
-			return this.fireEvent('add', [model, model.cid]).fireEvent('reset', [model, model.cid]);
-		},
-
-		removeModel: function(models) {
-			// supports a single model or an array of models
-			var	self = this;
-
-			models = Array.from(models);
-
-			Array.each(models, function(model) {
-				model.collections.erase(self);
-				// restore `fireEvent` to one from prototype, aka, `Event.prototype.fireEvent`
-				// only if there are no collections left that are interested in this model's events
-				model.collections.length || delete model.fireEvent;
-
-				// remove from collection of managed models
-				Array.erase(self._models, model);
-
-				self.length = self._models.length;
-
-				// let somebody know we lost some.
-				self.fireEvent('remove', [model, model.cid]);
-			});
-
-			return this.fireEvent('reset', [models]);
-		},
-
-		get: function(what) {
-			// compat for storage
-			return this[what];
-		},
-
-		getModelByCID: function(cid) {
-			// return a model based upon a cid search
-			var last = null;
-
-			this.some(function(el) {
-				return el.cid == cid && (last = el);
-			});
-
-			return last;
-		},
-
-		getModelById: function(id) {
-			// return a model based upon an id search
-			var last = null;
-
-			this.some(function(el) {
-				return el.get('id') == id && (last = el);
-			});
-
-			return last;
-		},
-
-		getModel: function(index) {
-			// return a model based upon the index in the array
-			return this._models[index];
-		},
-
-		toJSON: function() {
-			// get the toJSON of all models.
-			var getJSON = function(model) {
-				return model.toJSON();
-			};
-			return Array.map(this._models, getJSON);
-		},
-
-		empty: function() {
-			this.removeModel(this._models);
-			return this.fireEvent('empty');
-		},
-
-		sort: function(how) {
-			// no arg. natural sort
-			if (!how) {
-				this._models.sort();
-				return this.fireEvent('sort');
-			}
-
-			// callback function
-			if (typeof how === 'function') {
-				this.model.sort(how);
-				return this.fireEvent('sort');
-			}
-
-			// string keys, supports `:asc` (default) and `:desc` order
-			var type = 'asc',
-				pseudos = how.split(':'),
-				key = pseudos[0],
-				c = function(a, b) {
-					if (a < b)
-						return -1;
-					if (a > b)
-						return 1;
-					return 0;
+					// let controller know and place instance. Make sure model is managed still!
+					listener.getModelByCID(orig.cid) && listener.fireEvent(type, Array.flatten([orig, args]), delay);
 				};
+			}
+		});
 
-			// do we have order defined? override type.
-			pseudos[1] && (type = pseudos[1]);
+		var Collection = Epitome.Collection = new Class({
 
-			this._models.sort(function(a, b) {
-				var ak = a.get(key),
-					bk = b.get(key),
-					cm = c(ak, bk),
-					map = {
-						asc: cm,
-						desc: -(cm)
+			Implements: [Options,Events],
+
+			// base model is just Epitome.Model
+			model: Epitome.Model,
+
+			_models: [],
+
+			initialize: function(models, options) {
+				this.setOptions(options);
+				models && this.setUp(models);
+				// collections should have an id for storage
+				this.id = this.options.id || String.uniqueID();
+
+				return this.fireEvent('ready');
+			},
+
+			setUp: function(models) {
+				models = Array.from(models);
+				Array.each(models, this.addModel.bind(this));
+
+				// if a model is destroyed, remove from the collection
+				this.addEvent('destroy', this.removeModel.bind(this));
+
+				return this;
+			},
+
+			addModel: function(model, replace) {
+				// add a new model to collection
+				var exists;
+
+				// if it's just an object, make it a model first
+				if (typeOf(model) == 'object' && !instanceOf(model, this.model)) {
+					model = new this.model(model);
+				}
+
+				// assign a cid.
+				model.cid = model.cid || model.get('id') || String.uniqueID();
+
+				// already in the collection?
+				exists = this.getModelByCID(model.cid);
+
+				// if not asked to replace, bail out.
+				if (exists && replace !== true)
+					return this.fireEvent('add:error', model);
+
+				// replace an existing model when requested
+				exists && replace === true && (this._models[this._models.indexOf(model)] = model);
+
+				// decorate `fireEvent` by making it local on the model instance. we are a quiet subscriber
+				model.fireEvent = Function.monitorModelEvents.apply(model.fireEvent, [this, model]);
+
+				// add to models array.
+				this._models.push(model);
+
+				model.collections.include(this);
+
+				this.length = this._models.length;
+
+				// let somebody know.
+				return this.fireEvent('add', [model, model.cid]).fireEvent('reset', [model, model.cid]);
+			},
+
+			removeModel: function(models) {
+				// supports a single model or an array of models
+				var	self = this;
+
+				models = Array.from(models);
+
+				Array.each(models, function(model) {
+					model.collections.erase(self);
+					// restore `fireEvent` to one from prototype, aka, `Event.prototype.fireEvent`
+					// only if there are no collections left that are interested in this model's events
+					model.collections.length || delete model.fireEvent;
+
+					// remove from collection of managed models
+					Array.erase(self._models, model);
+
+					self.length = self._models.length;
+
+					// let somebody know we lost some.
+					self.fireEvent('remove', [model, model.cid]);
+				});
+
+				return this.fireEvent('reset', [models]);
+			},
+
+			get: function(what) {
+				// compat for storage
+				return this[what];
+			},
+
+			getModelByCID: function(cid) {
+				// return a model based upon a cid search
+				var last = null;
+
+				this.some(function(el) {
+					return el.cid == cid && (last = el);
+				});
+
+				return last;
+			},
+
+			getModelById: function(id) {
+				// return a model based upon an id search
+				var last = null;
+
+				this.some(function(el) {
+					return el.get('id') == id && (last = el);
+				});
+
+				return last;
+			},
+
+			getModel: function(index) {
+				// return a model based upon the index in the array
+				return this._models[index];
+			},
+
+			toJSON: function() {
+				// get the toJSON of all models.
+				var getJSON = function(model) {
+					return model.toJSON();
+				};
+				return Array.map(this._models, getJSON);
+			},
+
+			empty: function() {
+				this.removeModel(this._models);
+				return this.fireEvent('empty');
+			},
+
+			sort: function(how) {
+				// no arg. natural sort
+				if (!how) {
+					this._models.sort();
+					return this.fireEvent('sort');
+				}
+
+				// callback function
+				if (typeof how === 'function') {
+					this.model.sort(how);
+					return this.fireEvent('sort');
+				}
+
+				// string keys, supports `:asc` (default) and `:desc` order
+				var type = 'asc',
+					pseudos = how.split(':'),
+					key = pseudos[0],
+					c = function(a, b) {
+						if (a < b)
+							return -1;
+						if (a > b)
+							return 1;
+						return 0;
 					};
 
-				// unknown types are ascending
-				if (typeof map[type] == 'undefined')
-					type = 'asc';
+				// do we have order defined? override type.
+				pseudos[1] && (type = pseudos[1]);
 
-				return map[type];
-			});
+				this._models.sort(function(a, b) {
+					var ak = a.get(key),
+						bk = b.get(key),
+						cm = c(ak, bk),
+						map = {
+							asc: cm,
+							desc: -(cm)
+						};
 
-			return this.fireEvent('sort');
-		},
+					// unknown types are ascending
+					if (typeof map[type] == 'undefined')
+						type = 'asc';
 
-		reverse: function() {
-			// reversing is just sorting in reverse.
-			Array.reverse(this._models);
+					return map[type];
+				});
 
-			return this.fireEvent('sort');
-		}
+				return this.fireEvent('sort');
+			},
 
-	});
+			reverse: function() {
+				// reversing is just sorting in reverse.
+				Array.reverse(this._models);
 
-	Array.each(methodMap, function(method) {
-		Collection.implement(method, function() {
-			return Array.prototype[method].apply(this._models, arguments);
+				return this.fireEvent('sort');
+			}
+
 		});
-	});
 
+		Array.each(methodMap, function(method) {
+			Collection.implement(method, function() {
+				return Array.prototype[method].apply(this._models, arguments);
+			});
+		});
+
+		return Epitome;
+	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
-		define('epitome-collection', function() {
-			return Epitome;
-		});
-	}
-	else if (typeof module === 'object') {
-		module.exports = Epitome;
+		// requires epitome model and all its deps
+		define(['./epitome-model'], wrap);
 	}
 	else {
-		exports.Epitome = Epitome;
+		exports.Epitome = wrap(exports);
 	}
 }(this));

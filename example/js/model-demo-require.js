@@ -3,9 +3,7 @@ require.config({
 });
 
 // this will require main module, isequal and model
-require([
-	'main'
-], function(Epitome) {
+require(['epitome-model'], function(Epitome) {
 	// define a prototype for our model. You can just make an instance of Model but this is cleaner
 	var testModel = new Class({
 
@@ -34,4 +32,7 @@ require([
 	testInstance.set('foo', 'bar');
 
 	console.log(testInstance.toJSON());
+
+	// show return only Model and isEqual
+	console.log(Object.keys(Epitome));
 });

@@ -2,19 +2,17 @@
 ;(function(exports) {
 	'use strict';
 
-	// this is just the host object for the MVC toolkit.
-	var Epitome = {};
+	// wrapper function for requirejs or normal object
+	var wrap = function() {
+		// this is just the host object for the Epitome modules
+		return {};
+	};
 
-	// Expose the class for AMD, CommonJS and browsers
 	if (typeof define === 'function' && define.amd) {
-		define('epitome', function() {
-			return Epitome;
-		});
-	}
-	else if (typeof module === 'object') {
-		module.exports = Epitome;
+		// returns an empty module
+		define(wrap);
 	}
 	else {
-		exports.Epitome = Epitome;
+		exports.Epitome = wrap(exports);
 	}
 }(this));
