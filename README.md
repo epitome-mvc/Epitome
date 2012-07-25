@@ -158,6 +158,42 @@ properties: {
 ```
 In the example above, any calls to `model.set('foo', value)` and `model.get('foo')` are handled by custom functions. This is a pattern that allows you to use getters and setters for properties that are handled differently than normal ones. It can also be used as pre-processors for data. Make sure that you either set them on the instance directly or that you import the default ones for id in a custom prototype version as they are not merged like options.
 
+Keep in mind that if you want to use custom setters as transformers, you need to work with the low-level api and mock the default event system for compatibility. Although this gives you great control, it's not exactly API-friendly and can cause circular references if you are not being careful. For instance, decorating a property `price` with a currency sign:
+```javascript
+properties: {
+    price: {
+        set: function(value) {
+            // do NOT do this, it will create an infinite loop as it's calling self.
+            return this.set('price', '$' + value);
+        }
+    }
+}
+```
+Instead, you need to work with the `_attributes` object and mock the events:
+```
+properties: {
+    price: {
+        set: function(value) {
+            // get current value and prep new value.
+            var currentValue = this.get('price'),
+                newValue = '$' + value;
+
+            // store it in the attributes object
+            this._attributes['price'] = newValue;
+
+            // see if we need to raise change events
+            if (!Epitome.isEqual(currentValue, newValue)) {
+                // individual event
+                this.fireEvent('change:price', newValue);
+                // if a part of a set({obj}), general change as well.
+                this.propertiesChanged.push('price');
+            }
+        }
+    }
+}
+```
+This gives you great versatility but it does require some understanding of the inner workings of Model. The important thing to remember is, `set` is a proxy method using `_set`, which is through a MooTools `overloadSetter`. The same thing applies to `get`, which is overloaded through `overloadGetter`.
+
 
 ## Epitome.Model.Sync
 
