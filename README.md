@@ -16,7 +16,9 @@ If you feel strongly about semantics of the patterns used, you should look at [D
 
 Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-Current version: *0.0.6 beta*
+Current version: **0.0.7 beta 2**
+
+All individual components of Epitome work as normal javscript files to be used in a browser as well as through `require.js` modules. See [Downloading + Building](#download-building)
 
 ## Epitome.Model
 
@@ -903,6 +905,8 @@ And you can keep it updated by going to `~/example/todo/` and doing a pull
 
 You can check it out of the [github repo](https://github.com/DimitarChristoff/Epitome/) or you can [grab the zip](https://github.com/DimitarChristoff/Epitome/zipball/master) or simply download the minified [Epitome-min.js](https://raw.github.com/DimitarChristoff/Epitome/master/Epitome-min.js).
 
+All files are wrapped into `define` blocks, which means you can simply use `require.js` to ask for a component and all of its dependencies will be resolved automatically for you.
+
 You can create your own minified concatenated version of Epitome with the components you want. Have a look inside of the simple `app.build.js` you can use for `r.js` (require.js optimiser).
 
 Typically, you'd create a new production build by running:
@@ -936,7 +940,7 @@ An npm package is also available:
 
     npm install epitome
 
-Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you'd have to move it within your web server root.
+Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you'd have to move it within your web server root. require('epitome') should then return the contents of `main.js` in the source folder, which grabs all dependencies.
 
 ## Testing
 
