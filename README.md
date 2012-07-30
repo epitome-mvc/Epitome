@@ -36,13 +36,17 @@ The following methods are official API on all Model Classes:
 
 ### constructor (initialize)
 ---
-<a class="api" href="#"></a><a class="api-end" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Object) model`, `(Object) options`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `ready`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 The `model` - if passed, sets the internal data hash to a new derefrenced object. Special accessor properties, as defined in the `Epitome.Model.prototype.properties`, will run first and be applicable. See [properties](#epitome-model/model-properties) for more info.
 
@@ -65,13 +69,17 @@ Of note, the Constructor fires an event called `ready` when done and setting the
 
 ### set
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: mixed: `(String) key`, `(Mixed) value` - pair - or: `(Object) obj`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events:**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
  * `change: function(changedProperties) {}`
  * `change:key: function(valueForKey) {}`
@@ -82,53 +90,69 @@ For typing of value, you can store anything at all (Primitives, Objects, Functio
 
 ### get
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments mixed: `(String) key` or `(Array) keys`_
-
+</p>
+<p>
 _Returns: `this`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Returns known values within the model for either a single key or an array of keys. For an array of keys, it will return an object with `key` : `value` mapping.
 
 ### toJSON
 ------
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Returns a de-referenced Object, containing all the known model keys and values.
 
 ### unset
 -----
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: mixed: `(String) key` or `(Array) keys`_
-
+</p>
+<p>
 _Returns: `this`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Removes keys from model, either a single one or an array of multiple keys. Does not fire a change event.
 
 ### empty
 -----
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `empty`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Empties the model of all data and fires a single change event with all keys as well as individual `change:key` events.
 
 ### destroy
 -------
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `destroy`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Empties the model. No change event. Event is observed by Collections the model is a member of, where it triggers a `removeModel()`
 
@@ -217,9 +241,11 @@ This is an example implementation of RESTful module that extends the base Epitom
 
 ### constructor (initialize)
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Object) model`, `(Object) options`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 A model `id` with your model as well as setup a `urlRoot` either as a property of the model or as an options property is required for your model to be synced. The constructor function first calls the Epitome.Model constructor and then sets up the XHR instance and methods.
 
@@ -227,11 +253,14 @@ An additional option has been added `options.emulateREST: true || false`, which 
 
 ### sync
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects optional arguments: `(String) method`, `(Object) model`_
-
+</p>
+<p>
 _**Events: `sync: function(responseObj, method, options) {}`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Sync acts as a proxy/interface to the XHR instance in the model `this.request` A method can be one of the following:
 > get, post, create, read, delete, update
@@ -244,11 +273,14 @@ As a whole, you should NOT use the sync directly but elect to use the API method
 
 ### parse
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Object) response`_
-
+</p>
+<p>
 _Expected return: `(Object) response`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 A method that you can extend in your definition of Models for doing any pre-processing of data returned by sync from the server. For example:
 
@@ -262,13 +294,17 @@ parse: function(response) {
 
 ### save
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects optional arguments: `(String) key`, `(String) value`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `save`, `sync`, possibly `create`, `update`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 The save should send the contents of the model to the server for storage. If it is a model that has not been saved before or fetched from the server, it will do so via `create()`, else, it will use `update()` instead.
 
@@ -276,13 +312,17 @@ If the optional `key` => `value` pair is passed, it will set them on the model a
 
 ### fetch
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `fetch`, `sync`, `read`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 It will request the server to return the model object for the current id via a `.read()`. It will also change the status of the model (`model.isNewModel`) to false, meaning `.save()` will never use `.create()`. The fetch event will fire once the response object has been returned. The response object is then merged with the current model via a `.set`, it won't empty your data. To do so, you need to issue a `.empty()` first.
 
@@ -292,13 +332,17 @@ Epitome collections are in essence, an Array-like Class that can contain multipl
 
 ### constructor (initialize)
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `ready`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 The constructor method will accept a large variety of arguments. You can pass on either an Array of Models or an Array of Objects or a single Model or a single Object. You can also pass an empty Array and populate it later. Typical Collection prototype definition looks something like this:
 ```javascript
@@ -322,13 +366,17 @@ For reference purposes, each Model that enters a collection needs to have a `cid
 
 ### addModel
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Mixed) model` , `(Boolean) replace`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `add: function(model, cid) {}`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Adding a Model to a Collection must always happen through this method. It either appends the Model instance to the internal `_models` Array or it creates a new Model and then appends it. It also starts observing the Model's events and emitting them to the Collection instance with an additional argument passed `Model`. So, if you add a Model stored in `bob` and then do `bob.fireEvent('hai', 'there')`, the collection will also fire an event like this: `this.fireEvent('hai', [bob, 'there']); Adding a Model also increases the `Collection.length` property.
 
@@ -336,13 +384,17 @@ The monitoring of the events (Observer) is done through creating a local functio
 
 ### removeModel
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Mixed) model(s)`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `remove: function(model, cid) {}`, `reset`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 This method allows you to remove a single model or an array of models from the collection in the same call. For each removed model, a `remove` Event will fire. When removing of all Models is done, the collection will also fire a `reset` event, allowing you to re-render your views if you like.
 
@@ -352,65 +404,85 @@ Decreases the `Collection.length` property.
 
 ### getModel
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Number) id`_
-
+</p>
+<p>
 _Returns: `modelInstance` or `null`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Returns a model based upon the Array index in the Collection.
 
 ### getModelByCID
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(String) cid`_
-
+</p>
+<p>
 _Returns: `modelInstance` or `null`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Performs a search in the collection by `cid` (Collection id). Returns found Model instance or `null` if no match is found.
 
 ### getModelById
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(String) id`_
-
+</p>
+<p>
 _Returns: `modelInstance` or `null`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Performs a search in the collection by the Model's `id` via the standard `getter`. Returns found Model instance or `null` if no match is found.
 
 ### toJSON
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `modelsData`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Returns an array of the applied `toJSON` method on all Models in the collection.
 
 ### empty
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `remove`, `reset`, `empty`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Applies `this.removeModel` to all Models of the collection. Fires `empty` when done - though before that, a `remove` and `reset` will fire, see [removeModel](#epitome-collection/removemodel)
 
 ### sort
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: (Mixed) how_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `sort`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Sorting is quite flexible. It works a lot like `Array.prototype.sort`. By default, you can sort based upon strings that represent keys in the Models. For example:
 ```javascript
@@ -422,13 +494,17 @@ Sorting also allows you to pass a function you define yourself as per the [Array
 
 ### reverse
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `sort`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Reverses sort the order of Models in the collection. Fires a `sort` event, not `reverse`
 
@@ -469,25 +545,33 @@ The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitom
 
 ### constructor (initialize)
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `ready`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 In terms of differences with the original prototype, the `options`, needs just one extra key: `urlRoot`, which should contain the absolute or relative URL to the end-point that can return the Model data.
 
 ### fetch
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects optional arguments: (Boolean) refresh_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `fetch`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by `id`. If they exist already, a `set()` is called that will merge new data into the Model instance and fire `change` events as appropriate. If the optional `refresh` argument is set to true, the current collection will be emptied first via [empty](#epitome-collection/empty).
 
@@ -495,11 +579,14 @@ Returns the instance 'now' but because it is async, applying anything to the col
 
 ### parse
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Mixed) response`_
-
+</p>
+<p>
 _Expected return: `(Array) response`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 A method that you can extend in your definition of Epitome.Collection.Sync for doing any pre-processing of data returned by sync from the server. For example:
 
@@ -518,13 +605,17 @@ The view is a pretty loose binding around a HTMLElement, it does not try to do m
 
 ### constructor (initialize)
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Object) options`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `ready`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 A single argument in the shape of an `options` Object is passed to the constructor of the View. It is expected to have special 'mutator'-like properties and key properties that it stores for future use.
 
@@ -578,33 +669,40 @@ The key `options` are:
 
 ### render
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: unknown_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `render`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 It is essential that this method is defined in your View prototype Object definition. It does not assume to do anything by default, you need to define how the output takes place and how your data is being used. For convenience, it has access to either `this.model` or `this.collection` as the source of data that can be be passed to the [template](#epitome-view/template) method. It is expected that at the bottom of your definition, `this.parent()` is called in order for the `render` event to fire.
 
 ### setElement
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Mixed) element`, optional `(Object) events`_
-
+</p>
+<p>
 _Returns: `this`_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 A public method that allows you to change or set an element that powers a view. If called the first time, it will get the Element (through `document.id()`) and save the reference in `this.element`. If an events object is passed, it will bind the events. If called a second time, it will unbind all events on the old element, change the element reference and rebind new events, if supplied.
 
 ### template
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
 _Expects arguments: `(Object) data`, optional `(String) template`_
 
 _Returns: compiled template or function._
-<a class="api-end" href="#"></a>
+</div>
 
 A simple sandbox function where you can either use the Epitome.Template templating engine or call an external engine like Mustache, Handlebars, Hogan etc. The second argument is optional and if not supplied, it will revert to `this.options.template` instead.
 
@@ -624,37 +722,49 @@ var myView = new Class({
 
 ### empty
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Boolean) soft`_
-
+</p>
+<p>
 _Returns: compiled template or function._
-
+</p>
+<p>
 _**Events: `empty`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 By default, it will empty the element through making innerHTML an empty string, calling GC on all child nodes. If the `soft` argument is true, will apply `this.element.empty()`, which is a MooTools Element method that removes all child nodes without destroying them.
 
 ### dispose
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: compiled template or function._
-
+</p>
+<p>
 _**Events: `dispose`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Will detach `this.element` from the DOM. It can be injected again later on.
 
 ### destroy
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: compiled template or function._
-
+</p>
+<p>
 _**Events: `dispose`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Removes and destroys `this.element` from the DOM and from memory. You need to use [setElement](#epitome-view/setelement) to add a new one if you want to re-render.
 
@@ -675,13 +785,17 @@ The following methods are added to your Class (identical to Element.Storage from
 
 ### store
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects optional arguments: `(Object) model`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `store: function(model) {}`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 When called without any arguments, store will just save the current model or collection into storage. The models and collections are stored under a sub-key of the value returned `.get('id')`, so it is important to have an id in both if you want to achieve persistence.
 
@@ -691,13 +805,17 @@ You can also pass a custom object as argument to write instead of the current mo
 
 ### retrieve
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `(Object) model` or `(Array) collection`_
-
+</p>
+<p>
 _**Events: `retrieve: function(model) {}`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 When you retrieve a model or a collection, it will simply return what the browser has as data (based upon the model or colleciton id as key). It will **NOT** apply a `model.set(data)` for you, you need to do this yourself.
 ```javascript
@@ -722,13 +840,13 @@ var bob = new user({
 
 ### eliminate
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
 _Expects arguments: none_
 
 _Returns: `this`_
 
 _**Events: `eliminate`**_
-<a class="api-end" href="#"></a>
+</div>
 
 Calling eliminate on a model or a collection will destroy the stored data the browser has for that model or collection.
 
@@ -756,13 +874,17 @@ The Router Class is a hashbang controller, useful for single page applications. 
 
 ### constructor (initialize)
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Object) options`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `ready`, `before`, `after`, mixed, `undefined`, `error`, `route:add`, `route:remove`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 As this is quite involved and can act as a Controller for your app, here's a practical example that defines a few routes and event handlers within the Epitome.Router Class instantiation:
 ```javascript
@@ -845,13 +967,17 @@ App.router = new Epitome.Router({
 ```
 ### addRoute
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(Object) route`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `route:add`**_
-<a class="api-end" href="#"></a>
+<p>
+</div>
 
 Example adding of route to your instance after instantiation:
 
@@ -871,13 +997,17 @@ App.router.addRoute({
 
 ### removeRoute
 ---
-<a class="api" href="#"></a>
+<div class="alert alert-info">
+<p>
 _Expects arguments: `(String) route`_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `route:remove`**_
-<a class="api-end" href="#"></a>
+</p>
+</div>
 
 Removes a route by the route identifier string.
 
@@ -1027,7 +1157,7 @@ Testing is run via [Buster.js](http://busterjs.org) can be found in `/tests/` - 
 
 <div class="alert alert-error">
 _Please note that as of buster 0.6.0, having browser and node test groups at the same time fails to terminate the buster-test process. node tests are temporary disabled_
-<a class="api-end" href="#"></a>
+</div>
 
 ## Development and contribution
 
