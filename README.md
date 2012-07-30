@@ -69,7 +69,7 @@ Of note, the Constructor fires an event called `ready` when done and setting the
 
 ### set
 ---
-<div class="alert alert-info">
+<div class="alert alert-info" markdown="1">
 <p>
 _Expects arguments: mixed: `(String) key`, `(Mixed) value` - pair - or: `(Object) obj`_
 </p>
@@ -163,7 +163,7 @@ There are several additional properties each model instance will have.
 
 #### _attributes: {}
 ---------------
-The attributes object is __public__ (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by `model.toJSON()` 
+The attributes object is __public__ (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by `model.toJSON()`
 
 #### collections: []
 ---------------
@@ -175,7 +175,7 @@ A MooTools default options set, which can be on the prototype of the Model const
 
 #### options.defaults: {}
 --------------------
-An object with default Model Attributes to use when instantiating. Merged with Model object when creating. 
+An object with default Model Attributes to use when instantiating. Merged with Model object when creating.
 
 #### properties: {}
 --------------
