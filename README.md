@@ -842,11 +842,15 @@ var bob = new user({
 ### eliminate
 ---
 <div class="alert alert-info">
+<p>
 _Expects arguments: none_
-
+</p>
+<p>
 _Returns: `this`_
-
+</p>
+<p>
 _**Events: `eliminate`**_
+</p>
 </div>
 
 Calling eliminate on a model or a collection will destroy the stored data the browser has for that model or collection.
@@ -1157,7 +1161,9 @@ it uses `mootools-server` and lacks `Request` or `Element`, so only unit tests w
 Testing is run via [Buster.js](http://busterjs.org) can be found in `/tests/` - check the README.md there for more info.
 
 <div class="alert alert-error">
+<p>
 _Please note that as of buster 0.6.0, having browser and node test groups at the same time fails to terminate the buster-test process. node tests are temporary disabled_
+</p>
 </div>
 
 ## Development and contribution
