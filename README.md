@@ -36,7 +36,7 @@ The following methods are official API on all Model Classes:
 
 ### constructor (initialize)
 ---
-<a class="alert alert-info"></a>
+<a class="api" href='#'>
 _Expects arguments: `(Object) model`, `(Object) options`_
 
 _Returns: `this`_
@@ -65,7 +65,7 @@ Of note, the Constructor fires an event called `ready` when done and setting the
 
 ### set
 ---
-<a class="alert" href="#">
+<a class="api" href='#'>
 _Expects arguments: mixed: `(String) key`, `(Mixed) value` - pair - or: `(Object) obj`_
 
 _Returns: `this`_
@@ -82,7 +82,7 @@ For typing of value, you can store anything at all (Primitives, Objects, Functio
 
 ### get
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments mixed: `(String) key` or `(Array) keys`_
 
 _Returns: `this`_
@@ -92,7 +92,7 @@ Returns known values within the model for either a single key or an array of key
 
 ### toJSON
 ------
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 </a>
 
@@ -100,7 +100,7 @@ Returns a de-referenced Object, containing all the known model keys and values.
 
 ### unset
 -----
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: mixed: `(String) key` or `(Array) keys`_
 
 _Returns: `this`_
@@ -110,7 +110,7 @@ Removes keys from model, either a single one or an array of multiple keys. Does 
 
 ### empty
 -----
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `this`_
@@ -122,7 +122,7 @@ Empties the model of all data and fires a single change event with all keys as w
 
 ### destroy
 -------
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `this`_
@@ -217,7 +217,7 @@ This is an example implementation of RESTful module that extends the base Epitom
 
 ### constructor (initialize)
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Object) model`, `(Object) options`_
 </a>
 
@@ -227,7 +227,7 @@ An additional option has been added `options.emulateREST: true || false`, which 
 
 ### sync
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects optional arguments: `(String) method`, `(Object) model`_
 
 _**Events: `sync: function(responseObj, method, options) {}`**_
@@ -244,7 +244,7 @@ As a whole, you should NOT use the sync directly but elect to use the API method
 
 ### parse
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Object) response`_
 
 _Expected return: `(Object) response`_
@@ -262,7 +262,7 @@ parse: function(response) {
 
 ### save
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects optional arguments: `(String) key`, `(String) value`_
 
 _Returns: `this`_
@@ -276,7 +276,7 @@ If the optional `key` => `value` pair is passed, it will set them on the model a
 
 ### fetch
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `this`_
@@ -292,7 +292,7 @@ Epitome collections are in essence, an Array-like Class that can contain multipl
 
 ### constructor (initialize)
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
 
 _Returns: `this`_
@@ -322,7 +322,7 @@ For reference purposes, each Model that enters a collection needs to have a `cid
 
 ### addModel
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Mixed) model` , `(Boolean) replace`_
 
 _Returns: `this`_
@@ -336,7 +336,7 @@ The monitoring of the events (Observer) is done through creating a local functio
 
 ### removeModel
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Mixed) model(s)`_
 
 _Returns: `this`_
@@ -352,7 +352,7 @@ Decreases the `Collection.length` property.
 
 ### getModel
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Number) id`_
 
 _Returns: `modelInstance` or `null`_
@@ -362,7 +362,7 @@ Returns a model based upon the Array index in the Collection.
 
 ### getModelByCID
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(String) cid`_
 
 _Returns: `modelInstance` or `null`_
@@ -372,7 +372,7 @@ Performs a search in the collection by `cid` (Collection id). Returns found Mode
 
 ### getModelById
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(String) id`_
 
 _Returns: `modelInstance` or `null`_
@@ -382,7 +382,7 @@ Performs a search in the collection by the Model's `id` via the standard `getter
 
 ### toJSON
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `modelsData`_
@@ -392,7 +392,7 @@ Returns an array of the applied `toJSON` method on all Models in the collection.
 
 ### empty
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `this`_
@@ -404,7 +404,7 @@ Applies `this.removeModel` to all Models of the collection. Fires `empty` when d
 
 ### sort
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: (Mixed) how_
 
 _Returns: `this`_
@@ -422,7 +422,7 @@ Sorting also allows you to pass a function you define yourself as per the [Array
 
 ### reverse
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `this`_
@@ -469,7 +469,7 @@ The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitom
 
 ### constructor (initialize)
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
 
 _Returns: `this`_
@@ -481,7 +481,7 @@ In terms of differences with the original prototype, the `options`, needs just o
 
 ### fetch
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects optional arguments: (Boolean) refresh_
 
 _Returns: `this`_
@@ -495,7 +495,7 @@ Returns the instance 'now' but because it is async, applying anything to the col
 
 ### parse
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Mixed) response`_
 
 _Expected return: `(Array) response`_
@@ -518,7 +518,7 @@ The view is a pretty loose binding around a HTMLElement, it does not try to do m
 
 ### constructor (initialize)
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Object) options`_
 
 _Returns: `this`_
@@ -578,7 +578,7 @@ The key `options` are:
 
 ### render
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: unknown_
 
 _Returns: `this`_
@@ -590,7 +590,7 @@ It is essential that this method is defined in your View prototype Object defini
 
 ### setElement
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Mixed) element`, optional `(Object) events`_
 
 _Returns: `this`_
@@ -600,7 +600,7 @@ A public method that allows you to change or set an element that powers a view. 
 
 ### template
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Object) data`, optional `(String) template`_
 
 _Returns: compiled template or function._
@@ -624,7 +624,7 @@ var myView = new Class({
 
 ### empty
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Boolean) soft`_
 
 _Returns: compiled template or function._
@@ -636,7 +636,7 @@ By default, it will empty the element through making innerHTML an empty string, 
 
 ### dispose
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: compiled template or function._
@@ -648,7 +648,7 @@ Will detach `this.element` from the DOM. It can be injected again later on.
 
 ### destroy
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: compiled template or function._
@@ -675,7 +675,7 @@ The following methods are added to your Class (identical to Element.Storage from
 
 ### store
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects optional arguments: `(Object) model`_
 
 _Returns: `this`_
@@ -691,7 +691,7 @@ You can also pass a custom object as argument to write instead of the current mo
 
 ### retrieve
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `(Object) model` or `(Array) collection`_
@@ -722,7 +722,7 @@ var bob = new user({
 
 ### eliminate
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: none_
 
 _Returns: `this`_
@@ -756,7 +756,7 @@ The Router Class is a hashbang controller, useful for single page applications. 
 
 ### constructor (initialize)
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Object) options`_
 
 _Returns: `this`_
@@ -845,7 +845,7 @@ App.router = new Epitome.Router({
 ```
 ### addRoute
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(Object) route`_
 
 _Returns: `this`_
@@ -871,7 +871,7 @@ App.router.addRoute({
 
 ### removeRoute
 ---
-<div class="alert alert-info">
+<a class="api" href='#'>
 _Expects arguments: `(String) route`_
 
 _Returns: `this`_
