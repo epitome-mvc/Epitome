@@ -38,10 +38,10 @@ The following methods are official API on all Model Classes:
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Object) model`, `(Object) options`_
+_Expects arguments: `(Object) model`, `(Object) options`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `ready`**_
@@ -69,19 +69,19 @@ Of note, the Constructor fires an event called `ready` when done and setting the
 
 ### set
 ---
-<div class="alert alert-info">
+<div class="alert alert-info" markdown="1">
 <p>
-<span class="label">Expects arguments</span> mixed: `(String) key`, `(Mixed) value` - pair - or: `(Object) obj`
+_Expects arguments: mixed: `(String) key`, `(Mixed) value` - pair - or: `(Object) obj`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`
+_Returns: `this`_
 </p>
 <p>
-<span class="label label-warning">Events</span>
-<ul>
-<li><code>change: function(changedProperties) {}</code>
-<li><code>change:key: function(valueForKey) {}</code>
-</ul>
+_**Events:**_
+
+ * `change: function(changedProperties) {}`
+ * `change:key: function(valueForKey) {}`
+
 </p>
 </div>
 
@@ -93,10 +93,10 @@ For typing of value, you can store anything at all (Primitives, Objects, Functio
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span> mixed: `(String) key` or `(Array) keys`_
+_Expects arguments mixed: `(String) key` or `(Array) keys`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 </div>
 
@@ -106,7 +106,7 @@ Returns known values within the model for either a single key or an array of key
 ------
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 </div>
 
@@ -116,10 +116,10 @@ Returns a de-referenced Object, containing all the known model keys and values.
 -----
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: mixed: `(String) key` or `(Array) keys`_
+_Expects arguments: mixed: `(String) key` or `(Array) keys`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 </div>
 
@@ -129,10 +129,10 @@ Removes keys from model, either a single one or an array of multiple keys. Does 
 -----
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `empty`**_
@@ -145,10 +145,10 @@ Empties the model of all data and fires a single change event with all keys as w
 -------
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `destroy`**_
@@ -244,7 +244,7 @@ This is an example implementation of RESTful module that extends the base Epitom
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Object) model`, `(Object) options`_
+_Expects arguments: `(Object) model`, `(Object) options`_
 </p>
 </div>
 
@@ -276,7 +276,7 @@ As a whole, you should NOT use the sync directly but elect to use the API method
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Object) response`_
+_Expects arguments: `(Object) response`_
 </p>
 <p>
 _Expected return: `(Object) response`_
@@ -300,7 +300,7 @@ parse: function(response) {
 _Expects optional arguments: `(String) key`, `(String) value`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `save`, `sync`, possibly `create`, `update`**_
@@ -315,10 +315,10 @@ If the optional `key` => `value` pair is passed, it will set them on the model a
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `fetch`, `sync`, `read`**_
@@ -335,10 +335,10 @@ Epitome collections are in essence, an Array-like Class that can contain multipl
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Array) models / objects` (or a single model /object), `(Object) options`_
+_Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `ready`**_
@@ -369,10 +369,10 @@ For reference purposes, each Model that enters a collection needs to have a `cid
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Mixed) model` , `(Boolean) replace`_
+_Expects arguments: `(Mixed) model` , `(Boolean) replace`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `add: function(model, cid) {}`**_
@@ -387,10 +387,10 @@ The monitoring of the events (Observer) is done through creating a local functio
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Mixed) model(s)`_
+_Expects arguments: `(Mixed) model(s)`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `remove: function(model, cid) {}`, `reset`**_
@@ -407,10 +407,10 @@ Decreases the `Collection.length` property.
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Number) id`_
+_Expects arguments: `(Number) id`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `modelInstance` or `null`_
+_Returns: `modelInstance` or `null`_
 </p>
 </div>
 
@@ -420,10 +420,10 @@ Returns a model based upon the Array index in the Collection.
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(String) cid`_
+_Expects arguments: `(String) cid`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `modelInstance` or `null`_
+_Returns: `modelInstance` or `null`_
 </p>
 </div>
 
@@ -433,10 +433,10 @@ Performs a search in the collection by `cid` (Collection id). Returns found Mode
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(String) id`_
+_Expects arguments: `(String) id`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `modelInstance` or `null`_
+_Returns: `modelInstance` or `null`_
 </p>
 </div>
 
@@ -446,10 +446,10 @@ Performs a search in the collection by the Model's `id` via the standard `getter
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> `modelsData`_
+_Returns: `modelsData`_
 </p>
 </div>
 
@@ -459,10 +459,10 @@ Returns an array of the applied `toJSON` method on all Models in the collection.
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `remove`, `reset`, `empty`**_
@@ -475,10 +475,10 @@ Applies `this.removeModel` to all Models of the collection. Fires `empty` when d
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: (Mixed) how_
+_Expects arguments: (Mixed) how_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `sort`**_
@@ -497,10 +497,10 @@ Sorting also allows you to pass a function you define yourself as per the [Array
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `sort`**_
@@ -548,10 +548,10 @@ The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitom
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Array) models / objects` (or a single model /object), `(Object) options`_
+_Expects arguments: `(Array) models / objects` (or a single model /object), `(Object) options`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `ready`**_
@@ -567,7 +567,7 @@ In terms of differences with the original prototype, the `options`, needs just o
 _Expects optional arguments: (Boolean) refresh_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `fetch`**_
@@ -582,7 +582,7 @@ Returns the instance 'now' but because it is async, applying anything to the col
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Mixed) response`_
+_Expects arguments: `(Mixed) response`_
 </p>
 <p>
 _Expected return: `(Array) response`_
@@ -608,10 +608,10 @@ The view is a pretty loose binding around a HTMLElement, it does not try to do m
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Object) options`_
+_Expects arguments: `(Object) options`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `ready`**_
@@ -672,10 +672,10 @@ The key `options` are:
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: unknown_
+_Expects arguments: unknown_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `render`**_
@@ -688,10 +688,10 @@ It is essential that this method is defined in your View prototype Object defini
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Mixed) element`, optional `(Object) events`_
+_Expects arguments: `(Mixed) element`, optional `(Object) events`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 </div>
 
@@ -700,9 +700,9 @@ A public method that allows you to change or set an element that powers a view. 
 ### template
 ---
 <div class="alert alert-info">
-<span class="label">Expects arguments</span>: `(Object) data`, optional `(String) template`_
+_Expects arguments: `(Object) data`, optional `(String) template`_
 
-<span class="label label-success">Returns</span> compiled template or function._
+_Returns: compiled template or function._
 </div>
 
 A simple sandbox function where you can either use the Epitome.Template templating engine or call an external engine like Mustache, Handlebars, Hogan etc. The second argument is optional and if not supplied, it will revert to `this.options.template` instead.
@@ -725,10 +725,10 @@ var myView = new Class({
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Boolean) soft`_
+_Expects arguments: `(Boolean) soft`_
 </p>
 <p>
-<span class="label label-success">Returns</span> compiled template or function._
+_Returns: compiled template or function._
 </p>
 <p>
 _**Events: `empty`**_
@@ -741,10 +741,10 @@ By default, it will empty the element through making innerHTML an empty string, 
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> compiled template or function._
+_Returns: compiled template or function._
 </p>
 <p>
 _**Events: `dispose`**_
@@ -757,10 +757,10 @@ Will detach `this.element` from the DOM. It can be injected again later on.
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> compiled template or function._
+_Returns: compiled template or function._
 </p>
 <p>
 _**Events: `dispose`**_
@@ -791,7 +791,7 @@ The following methods are added to your Class (identical to Element.Storage from
 _Expects optional arguments: `(Object) model`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `store: function(model) {}`**_
@@ -808,10 +808,10 @@ You can also pass a custom object as argument to write instead of the current mo
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 </p>
 <p>
-<span class="label label-success">Returns</span> `(Object) model` or `(Array) collection`_
+_Returns: `(Object) model` or `(Array) collection`_
 </p>
 <p>
 _**Events: `retrieve: function(model) {}`**_
@@ -842,9 +842,9 @@ var bob = new user({
 ### eliminate
 ---
 <div class="alert alert-info">
-<span class="label">Expects arguments</span>: none_
+_Expects arguments: none_
 
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 
 _**Events: `eliminate`**_
 </div>
@@ -877,10 +877,10 @@ The Router Class is a hashbang controller, useful for single page applications. 
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Object) options`_
+_Expects arguments: `(Object) options`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `ready`, `before`, `after`, mixed, `undefined`, `error`, `route:add`, `route:remove`**_
@@ -970,10 +970,10 @@ App.router = new Epitome.Router({
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(Object) route`_
+_Expects arguments: `(Object) route`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `route:add`**_
@@ -1000,10 +1000,10 @@ App.router.addRoute({
 ---
 <div class="alert alert-info">
 <p>
-<span class="label">Expects arguments</span>: `(String) route`_
+_Expects arguments: `(String) route`_
 </p>
 <p>
-<span class="label label-success">Returns</span> `this`_
+_Returns: `this`_
 </p>
 <p>
 _**Events: `route:remove`**_
