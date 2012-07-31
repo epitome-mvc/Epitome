@@ -82,7 +82,8 @@
 						'add': eventProxy('add'),
 						'remove': eventProxy('remove'),
 						'sort': eventProxy('sort'),
-						'reset': eventProxy('reset')
+						'reset': eventProxy('reset'),
+						'error': eventProxy('error')
 					});
 				}
 
@@ -104,7 +105,8 @@
 					this.model.addEvents({
 						'change': eventProxy('change'),
 						'destroy': eventProxy('destroy'),
-						'empty': eventProxy('empty')
+						'empty': eventProxy('empty'),
+						'error': eventProxy('error')
 					});
 				}
 

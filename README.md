@@ -81,6 +81,7 @@ _**Events:**_
 
  * `change: function(changedProperties) {}`
  * `change:key: function(valueForKey) {}`
+ * `error: function(objectFailedValidation) {}`
 
 </p>
 </div>
@@ -211,7 +212,7 @@ properties: {
 }
 ```
 Instead, you need to work with the `_attributes` object and mock the events:
-```
+```javascript
 properties: {
     price: {
         set: function(value) {
@@ -235,6 +236,34 @@ properties: {
 ```
 This gives you great versatility but it does require some understanding of the inner workings of Model. The important thing to remember is that the `set` method is a proxy and relies on the __private__ setter `_set`, using the MooTools [overloadSetter](http://stackoverflow.com/a/4013500/126998). The same thing applies to `get`, which is overloaded through `overloadGetter`.
 
+### Model validators*
+
+You can also include basic validators into your model. Validators are an object on the Model prototype that maps any expected key to a function that will return `true` if the validation passes or a `string` error message or `false` on failure.
+
+Here is an example:
+```javascript
+var validUser = new Class({
+    Extends: Epitome.Model,
+    validators: {
+        email: function(value) {
+            return (/(.+)@(.+){2,}\.(.+){2,}/).test(value) ? true : 'This looks like an invalid email address';
+        }
+    }
+});
+
+var userInstance = new validUser({}, {
+    onError: function(allErrors) {
+        console.log('The following fields were rejected', allErrors);
+    },
+    'onError:email': function(errorObj) {
+        // can have a custom message, action or whatever.
+        console.log('Email rejected', errorObj.error);
+    }
+});
+
+userInstance.set('email', 'this will fail!');
+```
+The `error` event is observed by collections and views and fires on all view and collection instances.
 
 ## Epitome.Model.Sync
 

@@ -85,6 +85,7 @@
 						error: validator
 					};
 					this.validationFailed.push(obj);
+					this.fireEvent('error:' + key, obj[key]);
 					return this;
 				}
 

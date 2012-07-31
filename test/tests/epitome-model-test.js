@@ -299,6 +299,15 @@ buster.testCase('Epitome model validators >', {
 		buster.assert.called(spy);
 	},
 
+	'Expect error per key to fire when validation fails >': function(done) {
+		var msg = this.errorMsg;
+		this.model.addEvent('error:bar', function(errorObj) {
+			buster.assert.equals(msg, errorObj.error);
+			done();
+		});
+		this.model.set(this.dataFail);
+	},
+
 	'Expect error event to pass the failed validation and error msg >': function(done) {
 		var msg = this.errorMsg;
 		this.model.addEvent('error', function(errors) {
