@@ -227,3 +227,98 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 	}
 
 });
+
+
+buster.testCase('Epitome model validators >', {
+	setUp: function() {
+		var self = this;
+
+		this.dataInitial = {
+			bar: 'bar'
+		};
+
+		this.dataPass = {
+			bar: 'foo'
+		};
+
+		this.dataFail = {
+			bar: 'no',
+			charlie: 'winning'
+		};
+
+		this.errorMsg = 'Bar needs to be 3 or more characters';
+
+		var modelProto = new Class({
+
+			Extends: Epitome.Model,
+
+			validators: {
+				bar: function(value) {
+					return (value.length >= 3) ? true : self.errorMsg;
+				},
+				charlie: function(value) {
+					return value === self.dataFail.charlie ? 'not winning' : true;
+				}
+			}
+		});
+
+
+		this.model = new modelProto(this.dataInitial);
+	},
+
+	tearDown: function() {
+		this.model.empty();
+		this.model.validationFailed = [];
+		this.model.removeEvents('error');
+	},
+
+	'Expect model to set value when validation passes >': function() {
+		var spy = this.spy();
+
+		this.model.addEvent('change:bar', spy);
+		this.model.set(this.dataPass);
+
+		buster.assert.calledWith(spy, this.dataPass.bar);
+	},
+
+	'Expect model not to set value when validation fails >': function() {
+		var spy = this.spy();
+
+		this.model.addEvent('change:bar', spy);
+		this.model.set(this.dataFail);
+
+		buster.refute.calledWith(spy, this.dataPass.bar);
+	},
+
+	'Expect error to fire when validation fails >': function() {
+		var spy = this.spy();
+
+		this.model.addEvent('error', spy);
+		this.model.set(this.dataFail);
+
+		buster.assert.called(spy);
+	},
+
+	'Expect error event to pass the failed validation and error msg >': function(done) {
+		var msg = this.errorMsg;
+		this.model.addEvent('error', function(errors) {
+			var error = Array.filter(errors, function(el) {
+				return el.bar;
+			})[0];
+
+			buster.assert.equals(error.bar.error, msg);
+			done();
+		});
+		this.model.set(this.dataFail);
+	},
+
+	'Expect error event to pass all failed validation objects >': function(done) {
+		var self = this;
+		this.model.addEvent('error', function(errors) {
+
+			buster.assert.equals(errors.length, Object.keys(self.dataFail).length);
+			done();
+		});
+		this.model.set(this.dataFail);
+	}
+});

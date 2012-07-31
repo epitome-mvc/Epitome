@@ -25,6 +25,9 @@
 				}
 			},
 
+			// validators per property, should return true or error message
+			validators: {},
+
 			// initial `private` object
 			options: {
 				defaults: {}
@@ -52,10 +55,11 @@
 				// call the real getter. we proxy this because we want
 				// a single event after all properties are updated and the ability to work with
 				// either a single key, value pair or an object
-				this.propertiesChanged = [];
+				this.propertiesChanged = this.validationFailed = [];
 				this._set.apply(this, arguments);
 				// if any properties did change, fire a change event with the array.
 				this.propertiesChanged.length && this.fireEvent('change', this.get(this.propertiesChanged));
+				this.validationFailed.length && this.fireEvent('error', [this.validationFailed]);
 			},
 
 			// private, real setter functions, not on prototype, see note above
@@ -67,10 +71,22 @@
 				if (this.properties[key] && this.properties[key]['set'])
 					return this.properties[key]['set'].call(this, value);
 
-
 				// no change? this is crude and works for primitives.
 				if (this._attributes[key] && Epitome.isEqual(this._attributes[key], value))
 					return this;
+
+				// basic validator support
+				var validator = this.validate(key, value);
+				if (this.validators[key] && validator !== true) {
+					var obj = {};
+					obj[key] = {
+						key: key,
+						value: value,
+						error: validator
+					};
+					this.validationFailed.push(obj);
+					return this;
+				}
 
 				if (value === null) {
 					delete this._attributes[key]; // delete = null.
@@ -143,6 +159,11 @@
 				// destroy the model, send delete to server
 				this._attributes = {};
 				this.fireEvent('destroy');
+			},
+
+			validate: function(key, value) {
+				// run validation, return true (validated) if no validator found
+				return (key in this.validators) ? this.validators[key].call(this, value) : true;
 			}
 		});
 
