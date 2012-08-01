@@ -1055,8 +1055,31 @@ For more examples of Router, have a look inside the [todomvc](https://github.com
 
 ## Examples
 
-A quick model creation with prototyping and `localStorage` looks like this:
+Epitome is modular via AMD but all the files will also work in a browser in plain script tags. When using Require.JS, you can pull in only sub-modules that you need and Epitome will resolve any dependencies automatically:
+```
+require.config({
+    baseUrl: 'src'
+});
 
+require(['epitome-model-sync'], function(ModelSync) {
+    // pulls in isEqual and Model automatically.
+    var tweet = new Class({
+        Extends: ModelSync
+    });
+});
+```
+If you'd like the whole project (all modules), you can require `main.js` (also exported via NPM):
+```
+require(['main'], function(Epitome) {
+    // Epitome is an object with all the submodules.
+    var tweet = new Class({
+        Extends: Epitome.Model.Sync,
+        Implements: Epitome.Storage.sessionStorage()
+    });
+});
+```
+
+When using it in a browser or after the Epitome Object contains all your modules, quick model creation with prototyping and `localStorage` can look something like this:
 ```javascript
 // create a new user class prototype, basing it on Epitome.Model.Sync and implement storage
 var User = new Class({
@@ -1109,22 +1132,6 @@ else {
 
 // go wild!
 userModel.save();
-```
-
-For an example via Require.JS:
-```
-require.config({
-    baseUrl: 'src'
-});
-
-require(['epitome-model-sync'], function(ModelSync) {
-    // pulls in isEqual and Model automatically.
-    var tweet = new Class({
-        Extends: ModelSync
-    });
-
-    // etc.
-});
 ```
 
 For more examples, have a look inside of `example/js/`
