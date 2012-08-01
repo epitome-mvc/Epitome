@@ -79,10 +79,11 @@ _Returns: `this`_
 <p>
 _**Events:**_
 
- * `change: function(changedProperties) {}`
- * `change:key: function(valueForKey) {}`
- * `error: function(objectFailedValidation) {}`
-
+<ul>
+ <li> `change: function(changedProperties) {}`</li>
+ <li> `change:key: function(valueForKey) {}`</li>
+ <li> `error: function(objectFailedValidation) {}`</li>
+</ul>
 </p>
 </div>
 
