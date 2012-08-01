@@ -3,9 +3,9 @@
 	// 'use strict';  // breaks tests due to mootools reliance on args.callee and fireEvent
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function(Template, Model, Collection) {
 
-		Epitome.View = new Class({
+		return new Class({
 
 			Implements: [Options, Events],
 
@@ -73,7 +73,7 @@
 						}
 					};
 
-				if (instanceOf(collection, Epitome.Collection)) {
+				if (instanceOf(collection, Collection)) {
 					this.collection = collection;
 					// listen in for changes.
 					this.collection.addEvents({
@@ -99,7 +99,7 @@
 						}
 					};
 
-				if (instanceOf(model, Epitome.Model)) {
+				if (instanceOf(model, Model)) {
 					this.model = model;
 					// listen in for changes.
 					this.model.addEvents({
@@ -140,7 +140,7 @@
 				template = template || this.options.template;
 
 				// instantiate a template engine when needed
-				var compiler = this.Template || (this.Template = new Epitome.Template());
+				var compiler = this.Template || (this.Template = new Template());
 
 				return compiler.template(template, data);
 			},
@@ -179,8 +179,6 @@
 			}
 
 		});
-
-		return Epitome;
 	}; // end wrap
 
 
@@ -189,6 +187,6 @@
 		define(['./epitome-template', './epitome-model', './epitome-collection'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection);
 	}
 }(this));

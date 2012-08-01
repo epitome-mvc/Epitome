@@ -3,15 +3,15 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function(Collection) {
 
 		var	noUrl = 'no-urlRoot-set',
 			eventPseudo = 'fetch:';
 
-		Epitome.Collection.Sync = new Class({
+		return new Class({
 			// allows for fetching collections of model from the server
 
-			Extends: Epitome.Collection,
+			Extends: Collection,
 
 			options: {
 				urlRoot: noUrl
@@ -123,15 +123,13 @@
 
 
 		});
-
-		return Epitome;
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
 		// requires epitome model and all its deps
-		define(['./epitome-model'], wrap);
+		define(['./epitome-collection'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.Collection.Sync = wrap(exports.Epitome.Collection);
 	}
 }(this));

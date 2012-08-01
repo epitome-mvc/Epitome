@@ -1,5 +1,5 @@
 if (typeof require === 'function') {
-	var Epitome = require('../../src/epitome'),
+	var Epitome = require('../../src/main'),
 		buster = require('buster');
 }
 

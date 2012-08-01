@@ -5,7 +5,7 @@
 	// wrapper function for requirejs or normal object
 	var wrap = function(Epitome) {
 
-		Epitome.Storage	= (function() {
+		var storage	= (function() {
 			// returns 2 classes for use with localStorage and sessionStorage as mixins
 
 				// feature detect if storage is available
@@ -145,7 +145,7 @@
 			};
 		})();
 
-		return Epitome;
+		return storage;
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
@@ -153,6 +153,6 @@
 		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.Storage = wrap(exports);
 	}
 }(this));

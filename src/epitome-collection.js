@@ -3,7 +3,7 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function(model) {
 
 		var	methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
 
@@ -33,12 +33,12 @@
 			}
 		});
 
-		var Collection = Epitome.Collection = new Class({
+		var collection = new Class({
 
 			Implements: [Options,Events],
 
 			// base model is just Epitome.Model
-			model: Epitome.Model,
+			model: model,
 
 			_models: [],
 
@@ -223,12 +223,12 @@
 		});
 
 		Array.each(methodMap, function(method) {
-			Collection.implement(method, function() {
+			collection.implement(method, function() {
 				return Array.prototype[method].apply(this._models, arguments);
 			});
 		});
 
-		return Epitome;
+		return collection;
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
@@ -236,6 +236,6 @@
 		define(['./epitome-model'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.Collection = wrap(exports.Epitome.Model);
 	}
 }(this));

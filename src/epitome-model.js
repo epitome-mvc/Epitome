@@ -3,9 +3,9 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function(isEqual) {
 
-		Epitome.Model = new Class({
+		return new Class({
 
 			Implements: [Options, Events],
 
@@ -72,7 +72,7 @@
 					return this.properties[key]['set'].call(this, value);
 
 				// no change? this is crude and works for primitives.
-				if (this._attributes[key] && Epitome.isEqual(this._attributes[key], value))
+				if (this._attributes[key] && isEqual(this._attributes[key], value))
 					return this;
 
 				// basic validator support
@@ -167,8 +167,6 @@
 				return (key in this.validators) ? this.validators[key].call(this, value) : true;
 			}
 		});
-
-		return Epitome;
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
@@ -176,6 +174,6 @@
 		define(['./epitome-isequal'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.Model = wrap(exports.Epitome.isEqual);
 	}
 }(this));

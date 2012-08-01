@@ -3,9 +3,9 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function() {
 
-		var eq = Epitome.isEqual = function(a, b, stack) {
+		var eq = function(a, b, stack) {
 			// this is a modified version of eq func from _.js
 
 			// Identical objects are equal. `0 === -0`, but they aren't identical.
@@ -100,7 +100,7 @@
 			return result;
 		};
 
-		return Epitome;
+		return eq;
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
@@ -108,6 +108,6 @@
 		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.isEqual = wrap(exports.Epitome);
 	}
 }(this));

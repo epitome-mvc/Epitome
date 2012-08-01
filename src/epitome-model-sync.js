@@ -3,10 +3,9 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function(Model) {
 
-		var Model = Epitome.Model,
-			syncPseudo = 'sync:';
+		var syncPseudo = 'sync:';
 
 		// define CRUD mapping.
 		var methodMap = {
@@ -18,7 +17,7 @@
 		};
 
 		// decorate the original object by adding a new property Sync
-		Model.Sync = new Class({
+		return new Class({
 
 			Extends: Model,
 
@@ -207,8 +206,6 @@
 				return this.isNewModel;
 			}
 		});
-
-		return Epitome;
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd) {
@@ -216,6 +213,6 @@
 		define(['./epitome-model'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.Model.Sync = wrap(exports.Epitome.Model);
 	}
 }(this));

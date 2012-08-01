@@ -3,7 +3,7 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function() {
 
 		var hc = 'hashchange',
 			hcSupported = ('on' + hc) in window,
@@ -42,7 +42,7 @@
 
 
 		// Router, has its own repo https://github.com/DimitarChristoff/Router
-		Epitome.Router = new Class({
+		return new Class({
 
 			Implements: [Options, Events],
 
@@ -190,8 +190,6 @@
 			}
 
 		});
-
-		return Epitome;
 	}; // end wrap
 
 
@@ -200,7 +198,7 @@
 		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.Router = wrap(exports.Epitome);
 	}
 }(this));
 

@@ -3,9 +3,9 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome) {
+	var wrap = function() {
 
-		Epitome.Template = new Class({
+		return new Class({
 			// a templating class based upon the _.js template method and john resig's work
 			// but fixed so that it doesn't suck. namely, references in templates not found in
 			// the data object do not cause exceptions.
@@ -84,8 +84,6 @@
 				return template;
 			}
 		});
-
-		return Epitome;
 	}; // end wrap
 
 
@@ -94,6 +92,6 @@
 		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = wrap(exports);
+		exports.Epitome.Template = wrap(exports.Epitome);
 	}
 }(this));
