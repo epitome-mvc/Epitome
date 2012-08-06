@@ -567,7 +567,7 @@ collection.find('[name]'); // where name is defined.
 collection.find('[name=Bob]'); // where name is exactly Bob.
 collection.find('[name*=Bob]'); // where name contains Bob.
 collection.find('[name$=Bob]'); // where name ends on Bob.
-collection.find('[name^=Bob]'); // where name starts on Bob.
+collection.find('[name^=Bob]'); // where name starts with Bob.
 collection.find('[name=Bob],[name^=Angry]'); // name Bob OR starting with Angry.
 collection.find('[name=Bob][id]'); // name Bob AND to have an id
 collection.find('#2[name=Bob],#3'); // (name Bob AND id==2) OR id==3
