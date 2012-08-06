@@ -222,58 +222,54 @@
 
 			find: function(expression) {
 				var parsed = exports.Slick.parse(expression),
-					self = this,
-					found = [],
-					combinators = {
-						'combinator: ': function(attr, operator, value) {
-							var r = self.filter(function(el) {
-								if (found.length && !found.contains(el))
-									return false;
-								return el.get(tag) !== 'undefined';
-							});
+					found = this,
+					fixOperator = function(operator) {
+						if (!operator)
+							return null;
 
-							r.length && (found = r);
-						},
-						'combinator:=': function(tag, value) {
-							var r = self.filter(function(el) {
-								console.log(found.length, found.contains(el));
-								if (found.length && !found.contains(el))
-									return false;
+						var map = {
+							'=': '==',
+							'==': '==='
+						};
+						return (map[operator]) ? map[operator] : operator;
+					},
+					finder = function(attributes) {
+						var attr = attributes.key,
+							value = attributes.value || null,
+							operator = attributes.operator || null;
 
-								console.log(el.get(tag), tag, value);
-								return el.get(tag) == value;
-							});
-							r.length && (found = r);
-						}
+						operator = fixOperator(operator);
+
+						var ret = found.filter(function(el) {
+							var a = el.get(attr);
+
+							if (a !== null && value !== null && operator !== null)
+								return eval('a ' + operator + ' value');
+
+
+							return a != null;
+						});
+
+						found = ret;
+
 					};
 
 				if (parsed.expressions.length) {
 					var j, i;
-					var combinator, tag, classes, attributes;
-					var currentExpression, currentBit, lastBit, expressions = parsed.expressions;
+					var attributes;
+					var currentExpression, currentBit, expressions = parsed.expressions;
 
 					search: for (i = 0; (currentExpression = expressions[i]); i++) for (j = 0; (currentBit = currentExpression[j]); j++){
-						console.log(i, j, currentBit);
+						attributes = currentBit.attributes;
+						if (!attributes) continue search;
 
-						combinator = 'combinator:' + currentBit.combinator;
-						if (!combinators[combinator]) continue search;
-
-						attributes = currentBit._attributes;
-						lastBit = (j === (currentExpression.length - 1));
-
-						if (j === 0){
-							combinators[combinator](attributes.key, attributes.operator, attributes.value);
-							if (lastBit && found.length) break search;
-						}
-						else {
-							combinators[combinator](tag, attributes);
-						}
+						attributes.each(finder);
 
 					}
 
 				}
 
-				console.log(found);
+				return found;
 			}
 
 		});

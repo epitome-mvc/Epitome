@@ -19,10 +19,13 @@ var testCollection = new testCollectionProto([{
 	id: '4',
 	name: 'not coda',
 	surname: 'not christoff'
+}, {
+	id: '5',
+	name: 'bob',
+	surname: 'not christoff'
 }]);
 
 
-testCollection.find('name=christoff');
-testCollection.find('[name=christoff],[surname]');
+console.log(testCollection.find('[name=coda],[name="not coda"]'));
 
 
