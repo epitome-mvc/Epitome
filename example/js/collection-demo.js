@@ -26,6 +26,7 @@ var testCollection = new testCollectionProto([{
 }]);
 
 
-console.log(testCollection.find('[name=coda],[name="not coda"]'));
+console.log(testCollection.find('[name=coda],[surname="not christoff"][id5]'));
+console.log(testCollection.find('[name=coda][surname="christoff"]'));
 
 

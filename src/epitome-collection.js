@@ -222,23 +222,23 @@
 
 			find: function(expression) {
 				var parsed = exports.Slick.parse(expression),
+					exported = [],
 					found = this,
 					fixOperator = function(operator) {
 						if (!operator)
 							return null;
 
 						var map = {
-							'=': '==',
-							'==': '==='
+							'=': '===',
+							'!=': '!=='
 						};
+
 						return (map[operator]) ? map[operator] : operator;
 					},
 					finder = function(attributes) {
 						var attr = attributes.key,
 							value = attributes.value || null,
-							operator = attributes.operator || null;
-
-						operator = fixOperator(operator);
+							operator = fixOperator(attributes.operator);
 
 						var ret = found.filter(function(el) {
 							var a = el.get(attr);
@@ -259,17 +259,22 @@
 					var attributes;
 					var currentExpression, currentBit, expressions = parsed.expressions;
 
-					search: for (i = 0; (currentExpression = expressions[i]); i++) for (j = 0; (currentBit = currentExpression[j]); j++){
-						attributes = currentBit.attributes;
-						if (!attributes) continue search;
+					search: for (i = 0; (currentExpression = expressions[i]); i++) {
+						for (j = 0; (currentBit = currentExpression[j]); j++){
+							attributes = currentBit.attributes;
 
-						attributes.each(finder);
+							if (!attributes) continue search;
 
+							attributes.each(finder);
+
+						}
+						exported[i] = found;
+						found = this;
 					}
 
 				}
 
-				return found;
+				return Array.flatten(exported);
 			}
 
 		});
