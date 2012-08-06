@@ -218,6 +218,62 @@
 				Array.reverse(this._models);
 
 				return this.fireEvent('sort');
+			},
+
+			find: function(expression) {
+				var parsed = exports.Slick.parse(expression),
+					self = this,
+					found = [],
+					combinators = {
+						'combinator: ': function(attr, operator, value) {
+							var r = self.filter(function(el) {
+								if (found.length && !found.contains(el))
+									return false;
+								return el.get(tag) !== 'undefined';
+							});
+
+							r.length && (found = r);
+						},
+						'combinator:=': function(tag, value) {
+							var r = self.filter(function(el) {
+								console.log(found.length, found.contains(el));
+								if (found.length && !found.contains(el))
+									return false;
+
+								console.log(el.get(tag), tag, value);
+								return el.get(tag) == value;
+							});
+							r.length && (found = r);
+						}
+					};
+
+				if (parsed.expressions.length) {
+					var j, i;
+					var combinator, tag, classes, attributes;
+					var currentExpression, currentBit, lastBit, expressions = parsed.expressions;
+
+					search: for (i = 0; (currentExpression = expressions[i]); i++) for (j = 0; (currentBit = currentExpression[j]); j++){
+						console.log(i, j, currentBit);
+
+						combinator = 'combinator:' + currentBit.combinator;
+						if (!combinators[combinator]) continue search;
+
+						attributes = currentBit._attributes;
+						lastBit = (j === (currentExpression.length - 1));
+
+						if (j === 0){
+							combinators[combinator](attributes.key, attributes.operator, attributes.value);
+							if (lastBit && found.length) break search;
+						}
+						else {
+							combinators[combinator](tag, attributes);
+						}
+
+					}
+
+				}
+
+				console.log(found);
 			}
 
 		});
