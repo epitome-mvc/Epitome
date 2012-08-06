@@ -441,6 +441,7 @@ buster.testCase('Basic Epitome collection.find >', {
 		}, {
 			name: 'just bob'
 		}, {
+			id: 'special',
 			surname: 'just roberts'
 		}];
 
@@ -493,5 +494,13 @@ buster.testCase('Basic Epitome collection.find >', {
 
 	'Expect search by substring model attributes ending with [attr$=val] to return matching models >': function() {
 		buster.assert.equals(this.collection.find('[name$=bob]').length, 2);
+	},
+
+	'Expect search by #id to return models matching that id >': function() {
+		buster.assert.equals(this.collection.find('#special').length, 1);
+	},
+
+	'Expect search by #id and attribute with #id[attr*=value] to return models matching  >': function() {
+		buster.assert.equals(this.collection.find('#special[surname*=roberts]').length, 1);
 	}
 });

@@ -264,16 +264,27 @@
 				if (parsed.expressions.length) {
 					var j, i;
 					var attributes;
-					var currentExpression, currentBit, expressions = parsed.expressions;
+					var currentExpression, currentBit, expressions = parsed.expressions, id, t;
 
 					search: for (i = 0; (currentExpression = expressions[i]); i++) {
 						for (j = 0; (currentBit = currentExpression[j]); j++){
 							attributes = currentBit.attributes;
 
+							// support by id
+							id = currentBit.id;
+							if (id) {
+								t = {
+									key: 'id',
+									value: id,
+									operator: '='
+								};
+								attributes || (attributes = []);
+								attributes.push(t);
+							}
+
 							if (!attributes) continue search;
 
-							attributes.each(finder);
-
+							Array.each(attributes, finder);
 						}
 						exported[i] = found;
 						found = this;
@@ -281,7 +292,7 @@
 
 				}
 
-				return Array.flatten(exported);
+				return [].combine(Array.flatten(exported));
 			}
 
 		});

@@ -551,7 +551,7 @@ _Returns: `(Array) MatchingModelObjects`_
 </div>
 
 This is an experimental API and is subject to change without notice. `Collection.find` is currently powered by the MooTools `Slick.parse` engine. This means you can
- search through your Collection for Models by attributes like you would search in a CSS selector.
+ search through your Collection for Models by attributes and `#ids` like you would search in a CSS selector.
 
 For example:
 ```javascript
@@ -569,7 +569,10 @@ collection.find('[name*=Bob]'); // where name contains Bob.
 collection.find('[name$=Bob]'); // where name ends on Bob.
 collection.find('[name^=Bob]'); // where name starts on Bob.
 collection.find('[name=Bob],[name^=Angry]'); // name Bob OR starting with Angry.
+collection.find('[name=Bob][id]'); // name Bob AND to have an id
+collection.find('#2[name=Bob],#3'); // (name Bob AND id==2) OR id==3
 collection.find('[name=Bob][id=2]'); // name Bob AND id==2
+
 ```
 
 Supported operators are `=` (equals), `!=` (not equal), `*=` (contains), `$=` (ends on), `^=` (starts with). Currently, you cannot reverse a condition by adding `!` or `not:` - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use `filter` instead.
