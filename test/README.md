@@ -79,5 +79,5 @@ Firefox 13.0.1, OS X 10.7 (Lion)
   [...]
 
 
-8 test cases, 72 tests, 72 assertions, 0 failures, 0 errors, 0 timeouts
+13 test cases, 116 tests, 116 assertions, 0 failures, 0 errors, 0 timeouts
 ```
