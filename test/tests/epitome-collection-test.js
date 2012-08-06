@@ -419,4 +419,67 @@ buster.testCase('Basic Epitome collection array methods >', {
 
 		this.collection.reverse();
 	}
+
+});
+
+
+buster.testCase('Basic Epitome collection.find >', {
+	setUp: function() {
+		this.Collection = new Class({
+			Extends: Epitome.Collection
+		});
+
+		this.models = [{
+			name: 'bob',
+			surname: 'roberts'
+		}, {
+			name: 'robert',
+			surname: 'roberts'
+		}, {
+			name: 'Robert',
+			surname: 'Roberts'
+		}, {
+			name: 'just bob'
+		}, {
+			surname: 'just roberts'
+		}];
+
+		this.collection = new this.Collection(this.models);
+	},
+
+	'Expect search by existence of a model attribute [attr] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name]').length, 4);
+	},
+
+	'Expect search by existence of a model attribute [attr] not to return if not found >': function() {
+		buster.assert.equals(this.collection.find('[foo]').length, 0);
+	},
+
+	'Expect search by existence of multiple model attributes [attr1][attr2] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name][surname]').length, 3);
+	},
+
+	'Expect search by exact model attributes [attr=value] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name=bob]').length, 1);
+	},
+
+	'Expect search by exact model attributes [attr=invalid] not to return a matching model >': function() {
+		buster.assert.equals(this.collection.find('[name=invalid]').length, 0);
+	},
+
+	'Expect search by exact model attributes [attr=WrongCase] not to return a matching model >': function() {
+		buster.assert.equals(this.collection.find('[name=Bob]').length, 0);
+	},
+
+	'Expect search by exact model multiple attributes [attr1=value][attr2=value] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name=bob][surname=roberts]').length, 1);
+	},
+
+	'Expect search by exact model multiple attributes via OR [attr1=value1],[attr1=value2] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name=bob],[name=robert]').length, 2);
+	},
+
+	'Expect search by excluding model attributes [attr!=value] to return all matching models >': function() {
+		buster.assert.equals(this.collection.find('[surname!=roberts]').length, 2);
+	}
 });
