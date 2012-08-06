@@ -218,6 +218,70 @@
 				Array.reverse(this._models);
 
 				return this.fireEvent('sort');
+			},
+
+			find: function(expression) {
+				// experimental model search engine, powered by MooTools Slick.parse
+				var parsed = exports.Slick.parse(expression),
+					exported = [],
+					found = this,
+					map = {
+						'=': function(a, b) {
+							return a == b;
+						},
+						'!=': function(a, b) {
+							return a != b;
+						},
+						'^=': function(a, b) {
+							return a.indexOf(b) === 0;
+						},
+						'*=': function(a, b) {
+							return a.indexOf(b) !== -1;
+						},
+						'$=': function(a, b) {
+							return a.indexOf(b) == a.length - b.length;
+						}
+					},
+					fixOperator = function(operator) {
+						return (!operator || !map[operator]) ? null : map[operator];
+					},
+					finder = function(attributes) {
+						var attr = attributes.key,
+							value = attributes.value || null,
+							operator = fixOperator(attributes.operator);
+
+						found = found.filter(function(el) {
+							var a = el.get(attr);
+
+							if (a !== null && value !== null && operator !== null)
+								return operator(a, value);
+
+							return a != null;
+						});
+
+					};
+
+				if (parsed.expressions.length) {
+					var j, i;
+					var attributes;
+					var currentExpression, currentBit, expressions = parsed.expressions;
+
+					search: for (i = 0; (currentExpression = expressions[i]); i++) {
+						for (j = 0; (currentBit = currentExpression[j]); j++){
+							attributes = currentBit.attributes;
+
+							if (!attributes) continue search;
+
+							attributes.each(finder);
+
+						}
+						exported[i] = found;
+						found = this;
+					}
+
+				}
+
+				return Array.flatten(exported);
 			}
 
 		});
