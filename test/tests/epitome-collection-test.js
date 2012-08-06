@@ -481,5 +481,17 @@ buster.testCase('Basic Epitome collection.find >', {
 
 	'Expect search by excluding model attributes [attr!=value] to return all matching models >': function() {
 		buster.assert.equals(this.collection.find('[surname!=roberts]').length, 2);
+	},
+
+	'Expect search by substring model attributes starts with [attr^=val] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name^=bob]').length, 1);
+	},
+
+	'Expect search by substring model attributes containing with [attr*=val] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name*=bob]').length, 2);
+	},
+
+	'Expect search by substring model attributes ending with [attr$=val] to return matching models >': function() {
+		buster.assert.equals(this.collection.find('[name$=bob]').length, 2);
 	}
 });
