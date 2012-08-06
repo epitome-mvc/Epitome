@@ -548,9 +548,6 @@ _Expects arguments: (String) expression_
 <p>
 _Returns: `(Array) MatchingModelObjects`_
 </p>
-<p>
-_**Events: `none`**_
-</p>
 </div>
 
 This is an experimental API and is subject to change without notice. `Collection.find` is currently powered by the MooTools `Slick.parse` engine. This means you can
