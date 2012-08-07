@@ -67,9 +67,9 @@ http.createServer(function (req, res) {
 			appBuild.include = ['../build_server/hash/epitome-' + id];
 		}
 		else if (u.pathname != '/' && u.pathname.length == 10 && u.pathname.match(/\/([A-Z0-9]+)/)) {
-			id = u.pathname.replace('/', ''),
-				// see if the old build exists
-				orig = './hash/epitome-' + id + '.js';
+			id = u.pathname.replace('/', '');
+			// see if the old build exists
+			var orig = './hash/epitome-' + id + '.js';
 
 			fs.exists(orig, function(exists) {
 				if (!exists) {
