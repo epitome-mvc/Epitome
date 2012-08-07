@@ -1,2 +1,2 @@
-hash/*.json
+hash/*.js*
 out/*.js
