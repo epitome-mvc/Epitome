@@ -99,21 +99,6 @@ http.createServer(function (req, res) {
 				ps.exec('r.js -o ./hash/' + id + '.json', function(error, output) {
 					console.log(output);
 
-					// remove the temporary module file, leave just config hash.
-					/*
-					var orig = './hash/epitome-' + id + '.js';
-					fs.exists(orig, function(exists) {
-						if (!exists)
-							return;
-						fs.unlink(orig, function(error) {
-							if (error)
-								throw error;
-							console.log('deleted base include file');
-						});
-					});
-					*/
-
-
 					// if error, output 500 internal code with dump
 					if (error) {
 						respond(res, 500, error.toString());
@@ -136,7 +121,7 @@ http.createServer(function (req, res) {
 				});
 			} catch (e) {
 				// something went wrong.
-				respond(res, 500, e.toString());
+				// respond(res, 500, e.toString());
 			}
 		};
 
