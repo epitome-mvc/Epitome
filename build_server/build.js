@@ -57,7 +57,7 @@ http.createServer(function (req, res) {
 			out += depsArray.join(',');
 			out += '], function(){});';
 
-			console.log('Created a custom include with ' deps.join(', '));
+			console.log('Created a custom include with ' + deps.join(', '));
 
 			fs.writeFile(file, out, function(error) {});
 			appBuild.include = ['../build_server/hash/epitome-' + id];
@@ -81,7 +81,11 @@ http.createServer(function (req, res) {
 					console.log(output);
 
 					// remove the temporary module file, leave just config hash.
-					fs.unlink('./hash/epitome-' + id + '.js');
+					fs.unlink('./hash/epitome-' + id + '.js', function(error) {
+						if (error)
+							throw error;
+						console.log('deleted base include file');
+					});
 
 
 					// if error, output 500 internal code with dump
@@ -93,11 +97,15 @@ http.createServer(function (req, res) {
 					// read the generated file and pipe through to stdout (er, browser).
 					fs.readFile('./out/epitome-' + id + '-min.js', function(error, contents) {
 						// add a hash so same build config can be reused.
-						contents = '/*Epitome hash: ' + id + ' */\n' + contents;
+						contents = '/*Epitome hash: ' + id + '\n  Download: http://' + host + ':' + port + '/' + id +'\n  Selected: ' +  deps.join(', ') + ' */\n' + contents;
 						respond(res, 200, contents);
 
 						// clean up the out file also, we can rebuild
-						fs.unlink('./out/epitome-' + id + '.js');
+						fs.unlink('./out/epitome-' + id + '-min.js', function(error) {
+							if (error)
+								throw error;
+							console.log('deleted built js file');
+						});
 					});
 				});
 			} catch (e) {
