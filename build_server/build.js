@@ -23,6 +23,7 @@ var requirejs = require('../node_modules/requirejs/bin/r.js'),
 	};
 
 function respond(res, code, contents) {
+	console.log('[LOG] ' + code);
 	res.writeHead(code, {
 		'Content-Type': (code === 200 ? 'application/javascript;charset=UTF-8' : 'text/plain'),
 		'Content-Length': contents.length
@@ -45,7 +46,8 @@ http.createServer(function (req, res) {
 
 	req.on('end', function () {
 		var deps = [],
-			depsArray = []
+			depsArray = [],
+			allowBuild = true;
 
 		// anything in the ?build= arg? needs to be comma separated.
 		if (query.build) {
@@ -70,8 +72,10 @@ http.createServer(function (req, res) {
 				orig = './hash/epitome-' + id + '.js';
 
 			fs.exists(orig, function(exists) {
-				if (!exists)
+				if (!exists) {
 					respond(res, 404, 'Failed to find existing build for ' + id);
+					allowBuild = false;
+				}
 				else {
 					console.log('Found existing hash id, rebuilding...');
 				}
@@ -88,6 +92,8 @@ http.createServer(function (req, res) {
 		appBuild.out = '../out/epitome-'+ id +'-min.js';
 
 		var handleBuilding = function() {
+			console.log('[LOG] running: r.js -o ./hash/' + id + '.json');
+
 			try {
 
 				ps.exec('r.js -o ./hash/' + id + '.json', function(error, output) {
@@ -136,9 +142,8 @@ http.createServer(function (req, res) {
 
 		fs.writeFile('./hash/' + id + '.json', JSON.stringify(appBuild), function() {
 			// what we will actually run now
-			console.log('running: r.js -o ./hash/' + id + '.json');
-
-			handleBuilding();
+			if (allowBuild)
+				handleBuilding();
 		});
 	});
 
