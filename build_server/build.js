@@ -20,9 +20,7 @@ var requirejs = require('../node_modules/requirejs/bin/r.js'),
 	generateUID = function(uniqueIndex) {
 		var now = new Date();
 		return Math.floor(Math.random() * 10) + parseInt(now.getTime()).toString(36).toUpperCase();
-	},
-	id = generateUID(),
-	file = './hash/epitome-' + id + '.js';
+	};
 
 function respond(res, code, contents) {
 	res.writeHead(code, {
@@ -35,20 +33,24 @@ function respond(res, code, contents) {
 }
 
 http.createServer(function (req, res) {
-	var included = url.parse(req.url, true)['query'],
-		out = 'require([';
-
+	var	u = url.parse(req.url, true),
+		query = u['query'],
+		out = 'require([',
+		id = generateUID(),
+		file = './hash/epitome-' + id + '.js';
 
 	req.on('close', function (err) {
 		res.end();
 	});
 
 	req.on('end', function () {
+		var deps = [],
+			depsArray = []
+
 		// anything in the ?build= arg? needs to be comma separated.
-		if (included.build) {
+		if (query.build) {
 			// make a file that requires all
-			var deps = included.build.split(','),
-				depsArray = [];
+			deps = query.build.split(',');
 
 			deps.forEach(function(el) {
 				depsArray.push('"../../src/'+el+'"');
@@ -62,30 +64,48 @@ http.createServer(function (req, res) {
 			fs.writeFile(file, out, function(error) {});
 			appBuild.include = ['../build_server/hash/epitome-' + id];
 		}
+		else if (u.pathname != '/' && u.pathname.length == 10 && u.pathname.match(/\/([A-Z0-9]+)/)) {
+			id = u.pathname.replace('/', ''),
+				// see if the old build exists
+				orig = './hash/epitome-' + id + '.js';
+
+			fs.exists(orig, function(exists) {
+				if (!exists)
+					respond(res, 404, 'Failed to find existing build for ' + id);
+				else {
+					console.log('Found existing hash id, rebuilding...');
+				}
+			});
+		}
 		else {
 			console.log('No custom includes found, returning main instead');
-
+			id = '';
+			deps = ['all'];
 			appBuild.include = ['main'];
 		}
 
 		// set output folder in out for quick reference
 		appBuild.out = '../out/epitome-'+ id +'-min.js';
 
-		fs.writeFile('./hash/' + id + '.json', JSON.stringify(appBuild), function() {
-			// what we will actually run now
-			console.log('running: r.js -o ./hash/' + id + '.json');
-
+		var handleBuilding = function() {
 			try {
 
 				ps.exec('r.js -o ./hash/' + id + '.json', function(error, output) {
 					console.log(output);
 
 					// remove the temporary module file, leave just config hash.
-					fs.unlink('./hash/epitome-' + id + '.js', function(error) {
-						if (error)
-							throw error;
-						console.log('deleted base include file');
+					/*
+					var orig = './hash/epitome-' + id + '.js';
+					fs.exists(orig, function(exists) {
+						if (!exists)
+							return;
+						fs.unlink(orig, function(error) {
+							if (error)
+								throw error;
+							console.log('deleted base include file');
+						});
 					});
+					*/
 
 
 					// if error, output 500 internal code with dump
@@ -112,6 +132,13 @@ http.createServer(function (req, res) {
 				// something went wrong.
 				respond(res, 500, e.toString());
 			}
+		};
+
+		fs.writeFile('./hash/' + id + '.json', JSON.stringify(appBuild), function() {
+			// what we will actually run now
+			console.log('running: r.js -o ./hash/' + id + '.json');
+
+			handleBuilding();
 		});
 	});
 
