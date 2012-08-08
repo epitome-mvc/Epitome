@@ -5,6 +5,7 @@ var requirejs = require('../node_modules/requirejs/bin/r.js'),
 	url = require('url'),
 	fs = require('fs'),
 	ps = require('child_process'),
+	path = require('path'),
 	host = '127.0.0.1',
 	port = 39170,
 	config,
@@ -71,15 +72,13 @@ http.createServer(function (req, res) {
 			// see if the old build exists
 			var orig = './hash/epitome-' + id + '.js';
 
-			fs.exists(orig, function(exists) {
-				if (!exists) {
-					respond(res, 404, 'Failed to find existing build for ' + id);
-					allowBuild = false;
-				}
-				else {
-					console.log('Found existing hash id, rebuilding...');
-				}
-			});
+			if (!path.existsSync(orig)) {
+				respond(res, 404, 'Failed to find existing build for ' + id);
+				allowBuild = false;
+			}
+			else {
+				console.log('Found existing hash id, rebuilding...');
+			}
 		}
 		else {
 			console.log('No custom includes found, returning main instead');
