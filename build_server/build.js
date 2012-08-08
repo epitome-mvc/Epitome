@@ -41,8 +41,6 @@ http.createServer(function (req, res) {
 		id = generateUID(),
 		file = './hash/epitome-' + id + '.js';
 
-	console.log(req);
-
 	req.on('close', function (err) {
 		res.end();
 	});
