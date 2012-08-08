@@ -1231,7 +1231,9 @@ An npm package is also available:
 
 Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you'd have to move it within your web server root. require('epitome') should then return the contents of `main.js` in the source folder, which grabs all dependencies.
 
-<div id='customDownload'></div>
+### AMD Builder
+---
+<div id='customDownload'>You can use <a href='http://fragged.org:39170/'>http://fragged.org:39170/?build=module1,module2</a> to create a custom build automatically. See the documentation page for more</div>
 
 ## Testing
 
