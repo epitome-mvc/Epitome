@@ -1231,6 +1231,8 @@ An npm package is also available:
 
 Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you'd have to move it within your web server root. require('epitome') should then return the contents of `main.js` in the source folder, which grabs all dependencies.
 
+<div id='customDownload'></div>
+
 ## Testing
 
 Tests are currently separated in 2 groups: node tests and browser tests. The distinction is that under node only,
