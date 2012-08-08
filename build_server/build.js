@@ -41,6 +41,8 @@ http.createServer(function (req, res) {
 		id = generateUID(),
 		file = './hash/epitome-' + id + '.js';
 
+	console.log(req);
+
 	req.on('close', function (err) {
 		res.end();
 	});
@@ -107,7 +109,7 @@ http.createServer(function (req, res) {
 					// read the generated file and pipe through to stdout (er, browser).
 					fs.readFile('./out/epitome-' + id + '-min.js', function(error, contents) {
 						// add a hash so same build config can be reused.
-						contents = '/*Epitome hash: ' + id + '\n  Download: http://' + host + ':' + port + '/' + id +'\n  Selected: ' +  deps.join(', ') + ' */\n' + contents;
+						contents = '/*Epitome hash: ' + id + '\n  Download: http://' + req.headers.host + '/' + id +'\n  Selected: ' +  deps.join(', ') + ' */\n' + contents;
 						respond(res, 200, contents);
 
 						// clean up the out file also, we can rebuild
@@ -131,6 +133,6 @@ http.createServer(function (req, res) {
 		});
 	});
 
-}).listen(port, host);
+}).listen(port);  // add host here to limit it
 
 console.log('Server running at http://' + host + ':' + port + '/');
