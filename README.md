@@ -701,6 +701,10 @@ var testView = new Class({
         this.element.set('html', this.template(this.model.toJSON()));
 		this.parent();
 		return this;
+	},
+
+	doEmpty: function() {
+	    this.model.empty();
 	}
 });
 
@@ -715,7 +719,7 @@ var testInstance = new testView({
 
 	// event binding
 	events: {
-		'click:relay(a.task-remove)': 'emptyModel',
+		'click:relay(a.task-remove)': 'emptyModel', // emit this event to instance
 		'click:relay(button.change-one)': 'changeModel'
 	},
 
@@ -723,7 +727,13 @@ var testInstance = new testView({
         this.render();
 	},
 
-	`onChange:model`: this.render.bind(this)
+	`onChange:model`: this.render.bind(this),
+
+	onEmptyModel: function(event, element) {
+        event && event.stop && event.stop();
+        element; // a.task-remove
+	    this.doEmpty();
+	}
 });
 ```
 
