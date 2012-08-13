@@ -34,6 +34,9 @@ config['Browser tests'] = {
 		// template
 		'src/epitome-template.js',
 
+		// template
+		'src/epitome-router.js',
+
 		// view
 		'src/epitome-view.js'
 	],
