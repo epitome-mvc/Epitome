@@ -28,9 +28,9 @@
     "main": "./src/main.js",
     "license": "MIT (http://mootools.net/license.txt)",
     "devDependencies" : {
-        "buster" : ">=0.6.1"
+        "buster" : ">=0.6.2"
     },
     "engines" : {
-        "node" : ">=0.6"
+        "node" : ">=0.8.6"
     }
 }
