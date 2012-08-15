@@ -395,6 +395,12 @@ var users = new usersCollection([{
 ```
 For reference purposes, each Model that enters a collection needs to have a `cid` - collection id. If the Model has an `id`, that is preferred. Otherwise, a `cid` will be generated. If the Model gets an `id` later on, the `cid` will not be changed.
 
+<div class="alert alert-info">
+<p>
+_Please note that Collections **observe** and bubble **all** model events. For instance, if a Model fires `change`, the Collection instance will fire `onChange`, passing the model as `arguments[0]` and then keeping the rest of the arguments in their original order. For the purposes of implementing this, a decorated local copy of each Model's `.fireEvent` method is created instead of the one from Class.Event prototype. Once a Model stops being a member of collections, the original `fireEvent` is restored by deleting the local method on the Model instance._
+</p>
+</div>
+
 ### addModel
 ---
 <div class="alert">
