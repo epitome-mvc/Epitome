@@ -84,7 +84,7 @@
 
 					setItem = function(item, value) {
 						// add a key to storage hash
-						storage = JSON.decode(exports[storageMethod].getItem(privateKey)) || storage;
+						storage = hasNativeStorage ? JSON.decode(exports[storageMethod].getItem(privateKey)) || storage : storage;
 						storage[item] = value;
 
 						if (hasNativeStorage) {
