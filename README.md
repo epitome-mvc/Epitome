@@ -583,6 +583,25 @@ collection.find('[name=Bob][id=2]'); // name Bob AND id==2
 
 Supported operators are `=` (equals), `!=` (not equal), `*=` (contains), `$=` (ends on), `^=` (starts with). Currently, you cannot reverse a condition by adding `!` or `not:` - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use `filter` instead.
 
+### findOne
+---
+<div class="alert">
+<p>
+_Expects arguments: (String) expression_
+</p>
+<p>
+_Returns: `(Model) First matching Model instance or null`_
+</p>
+</div>
+
+Useful for getting a single Model via the `.find`, this method will return the first matched Model or null if none found.
+
+```javascript
+var bob = collection.findOne('[name=bob]');
+// if found, set
+bob && bob.set('name','Robert');
+```
+
 ### Array helpers
 
 The following Array methods are also available directly on the Collection instances:
