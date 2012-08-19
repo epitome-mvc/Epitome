@@ -502,5 +502,14 @@ buster.testCase('Basic Epitome collection.find >', {
 
 	'Expect search by #id and attribute with #id[attr*=value] to return models matching  >': function() {
 		buster.assert.equals(this.collection.find('#special[surname*=roberts]').length, 1);
+	},
+
+	'Expect search via .findOne to return a single model >': function() {
+		buster.assert.isTrue(instanceOf(this.collection.findOne('[name=bob]'), Epitome.Model));
+	},
+
+	'Expect search via .findOne when no match to return null >': function() {
+		buster.assert.equals(this.collection.findOne('[name=notbob]'), null);
 	}
+
 });

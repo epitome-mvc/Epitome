@@ -293,6 +293,11 @@
 				}
 
 				return [].combine(Array.flatten(exported));
+			},
+
+			findOne: function(expression) {
+				var results = this.find(expression);
+				return results.length ? results[0] : null;
 			}
 
 		});
