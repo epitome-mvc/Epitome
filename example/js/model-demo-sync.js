@@ -61,4 +61,4 @@ testInstance.create.delay(1000, testInstance);
 testInstance.update.delay(3000, testInstance);
 
 // and now a delete
-testInstance.delete.delay(5000, testInstance);
+testInstance.delete_.delay(5000, testInstance);
