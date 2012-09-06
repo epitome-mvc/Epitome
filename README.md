@@ -827,6 +827,42 @@ var myView = new Class({
 });
 ```
 
+You can change the View prototype to always have Mustache in your views. For example, via AMD/RequireJS, you could do a
+small module that deals with the prototyping of the default View constructor. Say, `epitome-view-mustache.js`
+```javascript
+
+define(['epitome/epitome-view'], function(View){
+	// prototype it for everyone to use mustache in every view.
+
+	View.implement({
+		template: function(data, template) {
+			// refactor this to work with any other template engine in your constructor
+			template = template || this.options.template;
+
+			return Mustache.render(template, data);
+		}
+	});
+
+});
+```
+
+In your Require config (loose example):
+```
+require.config({
+	paths: {
+		epitome: '/js/vendor/epitome'
+	},
+	deps: [
+	    // always load
+		'epitome/epitome-view-mustache'
+	]
+});
+
+require(['epitome/epitome-view'], function(View){
+    // View is now with the mustache template.
+});
+```
+
 ### empty
 ---
 <div class="alert">
