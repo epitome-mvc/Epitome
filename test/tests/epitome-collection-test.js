@@ -363,6 +363,41 @@ buster.testCase('Basic Epitome collection array methods >', {
 		buster.refute.equals(current, changed);
 	},
 
+	'Expect .sort("key1,key2") to sort the collection by both model properties >': function() {
+		this.collection.empty();
+
+		this.collection.addModel({
+			id: 300,
+			name: 'B',
+			type: 'one'
+		});
+
+		this.collection.addModel({
+			id: 200,
+			name: 'B',
+			type: 'two'
+		});
+
+		this.collection.addModel({
+			id: 10,
+			name: 'A',
+			type: 'one'
+		});
+
+		var current = this.collection.toJSON().map(function(el) {
+			return el.id;
+		}).join(','); // should be "300,200,10"
+
+		this.collection.sort('type,name,id:desc');
+
+		var changed = this.collection.toJSON().map(function(el) {
+			return el.id;
+		}).join(','); // should be "10,300,200"
+
+		buster.refute.equals(current, changed);
+	},
+
+
 	'Expect .sort("key:desc") to sort the collection by that model property in reverse >': function() {
 		this.collection.empty();
 

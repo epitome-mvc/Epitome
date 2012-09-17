@@ -521,11 +521,13 @@ _**Events: `sort`**_
 </p>
 </div>
 
-Sorting is quite flexible. It works a lot like `Array.prototype.sort`. By default, you can sort based upon strings that represent keys in the Models. For example:
+Sorting is quite flexible. It works a lot like `Array.prototype.sort`. By default, you can sort based upon strings that represent keys in the Models. You can also stack up secondary, trinary etc sort keys in case the first one is equal. For example:
 ```javascript
 users.sort('name');
 // descending order pseduo
 users.sort('name:desc');
+// by type and then birthdate in reverse order (oldest first)
+users.sort('type,birthdate:desc');
 ```
 Sorting also allows you to pass a function you define yourself as per the [Array.prototype.sort](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort) interface. When done, it will fire a `sort` event.
 
