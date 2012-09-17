@@ -20,7 +20,7 @@ Current version: **0.1.1-AMD**
 
 All individual components of Epitome work as normal javscript files to be used in a browser as well as through `require.js` modules. See [Downloading + Building](#download-building)
 
-<a class="button btn-primary" href="download-building">Builder</a>
+<a class="btn btn-large btn-primary" href="#download-building">Builder</a>
 
 ## Epitome.Model
 
