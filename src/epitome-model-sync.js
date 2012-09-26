@@ -24,12 +24,12 @@
 			properties: {
 				id: {
 					get: function() {
-						// always need an id, even if we don't have one.
-						var id = this._attributes.id || (this._attributes.id = String.uniqueID());
+						// need a cid to identify model.
+						var id = this._attributes.id || String.uniqueID();
 						// always need a collection id.
 						this.cid || (this.cid = id);
 
-						return id;
+						return this._attributes.id;
 					}
 				},
 				urlRoot: {
@@ -71,8 +71,17 @@
 				if (method == methodMap.create || method == methodMap.update)
 					options.data = model || this.toJSON();
 
+				// for real REST interfaces, produce native JSON
+				if (!this.options.emulateREST) {
+					options.data = JSON.encode(options.data);
+					this.request.setHeader('Content-Type', 'application/json');
+					options.urlEncoded = false;
+				}
+
 				// make sure we have the right URL
-				options.url = this.get('urlRoot') + this.get('id') + '/';
+				options.url = [this.get('urlRoot'), this.get('id')].join('');
+
+				options.url.slice(-1) !== '/' && (options.url += '/');
 
 				// pass it all to the request
 				this.request.setOptions(options);
@@ -114,7 +123,6 @@
 						self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
 					}
 				});
-
 
 				// export crud methods to model.
 				Object.each(methodMap, function(requestMethod, protoMethod) {
