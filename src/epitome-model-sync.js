@@ -51,8 +51,8 @@
 				// by default, HTTP emulation is enabled for mootools request class.
 				// assume native REST backend
 				emulateREST: false,
-				// prefer content-type to be application/json for POST / PUT
-				useJSON: true
+				// if you prefer content-type to be application/json for POST / PUT, set to true
+				useJSON: false
 			},
 
 			initialize: function(obj, options) {
