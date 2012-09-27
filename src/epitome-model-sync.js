@@ -75,7 +75,7 @@
 					options.data = model || this.toJSON();
 
 				// for real REST interfaces, produce native JSON post
-				if (!this.options.useJSON && ['POST','PUT'].contains(method)) {
+				if (this.options.useJSON && ['POST','PUT'].contains(method)) {
 					// serialise model to a JSON string
 					options.data = JSON.encode(options.data);
 					// disable urlEncoded to escape mootools Request trap for content type form-urlencoded
