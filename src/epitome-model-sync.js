@@ -48,8 +48,11 @@
 			},
 
 			options: {
-				// by default, HTTP emulation is enabled for mootools request class. we want it off.
-				emulateREST: false
+				// by default, HTTP emulation is enabled for mootools request class.
+				// assume native REST backend
+				emulateREST: false,
+				// prefer content-type to be application/json for POST / PUT
+				useJSON: true
 			},
 
 			initialize: function(obj, options) {
@@ -71,16 +74,25 @@
 				if (method == methodMap.create || method == methodMap.update)
 					options.data = model || this.toJSON();
 
-				// for real REST interfaces, produce native JSON
-				if (!this.options.emulateREST) {
+				// for real REST interfaces, produce native JSON post
+				if (!this.options.useJSON && ['POST','PUT'].contains(method)) {
+					// serialise model to a JSON string
 					options.data = JSON.encode(options.data);
-					this.request.setHeader('Content-Type', 'application/json');
+					// disable urlEncoded to escape mootools Request trap for content type form-urlencoded
 					options.urlEncoded = false;
+
+					// declare custom content type
+					this.request.setHeader('Content-type', 'application/json');
+				}
+				else {
+					// normal get/post application/x-www-form-urlencoded
+					options.urlEncoded = true;
 				}
 
-				// make sure we have the right URL
+				// make sure we have the right URL. if model has an id, append it
 				options.url = [this.get('urlRoot'), this.get('id')].join('');
 
+				// append a trailing / if none found (no id yet)
 				options.url.slice(-1) !== '/' && (options.url += '/');
 
 				// pass it all to the request

@@ -282,6 +282,10 @@ _Expects arguments: `(Object) model`, `(Object) options`_
 
 A model `id` with your model as well as setup a `urlRoot` either as a property of the model or as an options property is required for your model to be synced. The constructor function first calls the Epitome.Model constructor and then sets up the XHR instance and methods.
 
+<div class="alert">
+`options.useJSON` (boolean) is an all-important way to control how your Model talks to your server backend. If your server is a native REST implementation, when this value is `true`, Epitome Sync will set the content-type to application/json and send a strigified JSON of your model on every POST or PUT operation.
+ </div>
+
 An additional option has been added `options.emulateREST: true || false`, which is being passed to the Request instance. If your server has no CRUD mapping, emulation can be enabled so everything will go through POST/GET requests with `_method` containing the original intent.
 
 ### sync
