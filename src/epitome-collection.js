@@ -97,7 +97,7 @@
 				return this.fireEvent('add', [model, model.cid]).fireEvent('reset', [model, model.cid]);
 			},
 
-			removeModel: function(models) {
+			removeModel: function(models, quiet) {
 				// supports a single model or an array of models
 				var	self = this;
 
@@ -115,7 +115,7 @@
 					self.length = self._models.length;
 
 					// let somebody know we lost some.
-					self.fireEvent('remove', [model, model.cid]);
+					quiet || self.fireEvent('remove', [model, model.cid]);
 				});
 
 				return this.fireEvent('reset', [models]);
@@ -161,8 +161,8 @@
 				return Array.map(this._models, getJSON);
 			},
 
-			empty: function() {
-				this.removeModel(this._models);
+			empty: function(quiet) {
+				this.removeModel(this._models, quiet);
 				return this.fireEvent('empty');
 			},
 

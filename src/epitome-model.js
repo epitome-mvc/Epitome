@@ -15,12 +15,12 @@
 			properties: {
 				id: {
 					get: function() {
-						// always need an id, even if we don't have one.
-						var id = this._attributes.id || (this._attributes.id = String.uniqueID());
+						// need a cid to identify model.
+						var id = this._attributes.id || String.uniqueID();
 						// always need a collection id.
 						this.cid || (this.cid = id);
 
-						return id;
+						return this._attributes.id;
 					}
 				}
 			},

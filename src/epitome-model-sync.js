@@ -22,16 +22,6 @@
 			Extends: Model,
 
 			properties: {
-				id: {
-					get: function() {
-						// need a cid to identify model.
-						var id = this._attributes.id || String.uniqueID();
-						// always need a collection id.
-						this.cid || (this.cid = id);
-
-						return this._attributes.id;
-					}
-				},
 				urlRoot: {
 					// normal convention - not in the model!
 					set: function(value) {
