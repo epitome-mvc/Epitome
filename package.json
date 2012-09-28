@@ -2,7 +2,7 @@
     "name" : "epitome",
     "description" : "Epitome, an MVP framework built on top of MooTools",
     "homepage": "http://dimitarchristoff.github.com/Epitome",
-    "version" : "0.1.1-AMD",
+    "version" : "0.1.2-AMD",
     "author" : "Dimitar Christoff <christoff@gmail.com> (https://twitter.com/D_mitar)",
     "keywords": [
         "mootools",
@@ -11,8 +11,7 @@
         "mvp"
     ],
     "contributors": [
-        "Garrick Cheung",
-        "Simon Smith"
+        "Garrick Cheung"
     ],
     "scripts" : {
         "test" : "node_modules/.bin/buster-test -r specification"
@@ -30,6 +29,6 @@
         "buster" : ">=0.6.2"
     },
     "engines" : {
-        "node" : ">=0.6.0"
+        "node" : ">=0.8.11"
     }
 }
