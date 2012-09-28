@@ -211,8 +211,9 @@
 			},
 
 			isNew: function() {
-				if (typeof this.isNewModel === 'undefined')
-					this.isNewModel = true;
+				if (typeof this.isNewModel === 'undefined') {
+					this.isNewModel = !this.get('id');
+				}
 
 				return this.isNewModel;
 			}
