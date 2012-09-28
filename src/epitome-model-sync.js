@@ -204,9 +204,10 @@
 				// destroy the model, send delete to server
 				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
 					this._attributes = {};
-					this.delete_();
 					this.fireEvent('destroy');
 				});
+
+				this.delete_();
 			},
 
 			isNew: function() {
