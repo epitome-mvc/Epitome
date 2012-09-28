@@ -42,7 +42,7 @@ buster.testCase('Epitome model sync >', {
 		this.model.removeEvents('update');
 		this.model.removeEvents('create');
 
-		this.model.isNewModel = true;
+		delete this.model.isNewModel;
 		// this.model._attributes = {};
 	},
 
@@ -63,7 +63,22 @@ buster.testCase('Epitome model sync >', {
 		this.model.fetch();
 	},
 
-	'Expect a save to `create` our model >': function(done) {
+	'Expect model.isNew() to return false if the model has an id >': function(){
+		// reset it.
+		buster.refute.isTrue(this.model.isNew())
+	},
+
+	'Expect model.isNew() to return true if the model has no id and not sync\'d before >': function(){
+		// reset it.
+		this.model.set('id', null);
+		buster.assert.isTrue(this.model.isNew());
+	},
+
+	'Expect a save to `create` our model when it is new >': function(done) {
+		// only works when the model has no id but this means it won't fire request anyway due to buster test
+		// bed for the ajax. simulate it and rely on isNew to help
+		this.model.isNewModel = true;
+
 		this.model.addEvent('create', function() {
 			buster.assert(true);
 			done();
