@@ -120,6 +120,8 @@
 						responseObj = self.parse && self.parse(responseObj);
 						self.fireEvent(syncPseudo + rid, [responseObj]);
 						self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
+						// only becomes an existing model after a successful sync
+						self.isNewModel = false;
 					},
 					onFailure: function() {
 						self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
@@ -195,7 +197,6 @@
 
 				// create first time we sync, update after.
 				this[method]();
-				this.isNewModel = false;
 
 				return this;
 			},
