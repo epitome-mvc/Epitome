@@ -2,6 +2,38 @@
 ;(function(exports) {
 	'use strict';
 
+	// re-implement Request.JSON correctly
+	var EpitomeRequest = new Class({
+		Extends: Request,
+		options: {
+			secure: true
+		},
+		initialize: function(options){
+			this.parent(options);
+			Object.append(this.headers, {
+				'Accept': 'application/json',
+				'X-Request': 'JSON'
+			});
+		},
+		success: function(text){
+			// fix for no content breaking JSON parser.
+
+			var json;
+
+			// eg, on DELETE with 204 response, don't fire onFailure, treat as success.
+			if (this.status == 204) return this.onSuccess();
+
+			try {
+				json = this.response.json = JSON.decode(text, this.options.secure);
+			} catch (error){
+				this.fireEvent('error', [text, error]);
+				return;
+			}
+			if (json == null) this.onFailure();
+			else this.onSuccess(json, text);
+		}
+	});
+
 	// wrapper function for requirejs or normal object
 	var wrap = function(Model) {
 
@@ -107,7 +139,7 @@
 					return rid + 1;
 				};
 
-				this.request = new Request.JSON({
+				this.request = new EpitomeRequest({
 					// one request at a time
 					link: 'chain',
 					url: this.get('urlRoot'),

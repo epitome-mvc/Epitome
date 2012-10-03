@@ -168,5 +168,12 @@ buster.testCase('Epitome model sync >', {
 
 		// this will get an object with id and foo properties. if it works, should NOT change foo as pre-processor removes it
 		protoInstance.fetch();
+	},
+
+	'Expect model.destroy() to fire the destroy method and delete the model >': function(done){
+		this.model.addEvent('destroy', function(){
+			buster.assert(true);
+			done();
+		}).destroy();
 	}
 });
