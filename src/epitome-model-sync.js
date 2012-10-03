@@ -21,7 +21,7 @@
 			var json;
 
 			// eg, on DELETE with 204 response, don't fire onFailure, treat as success.
-			if (this.status == 204) return this.onSuccess();
+			if (this.status == 204 || this.status == 1223) return this.onSuccess();
 
 			try {
 				json = this.response.json = JSON.decode(text, this.options.secure);
