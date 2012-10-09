@@ -24,7 +24,7 @@
 				this.fireEvent('error', [text, error]);
 				return;
 			}
-			if (text && (json == null || this.status != 204)) this.onFailure();
+			if (text && (json == null && this.status != 204)) this.onFailure();
 			else this.onSuccess(json, text);
 		}
 	});
