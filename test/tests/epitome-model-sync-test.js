@@ -178,11 +178,12 @@ buster.testCase('Epitome model sync >', {
 		}).destroy();
 	},
 
-	'// Expect onSync to fire after DELETE with response 204 and no data >': function(){
+	'// Expect onSync to fire after DELETE with response 204 and no data >': function(done){
 		this.server = sinon.fakeServer.create();
 		this.server.autoRespond = true;
 
 		this.server.respondWith(
+			'models/1/',
 			[204, {"content-type": "application/json"},'']
 		);
 
@@ -191,15 +192,14 @@ buster.testCase('Epitome model sync >', {
 			id: 1
 		});
 
-		var spy = this.spy();
-
-		this.model.addEvent('sync:error', spy);
+		this.model.addEvent('sync:error', function(){
+			buster.assert(true);
+			done();
+		});
 
 		this.model.delete_();
 
 		this.server.respond();
-
-		buster.assert.calledOnce(spy);
 	}
 
 });
