@@ -1,6 +1,6 @@
 if (typeof require === 'function') {
 	var Epitome = require('../../src/main'),
-		buster = require('buster');
+		buster = require('buster-sinon');
 }
 
 buster.testRunner.timeout = 1000;
@@ -44,6 +44,7 @@ buster.testCase('Epitome model sync >', {
 
 		delete this.model.isNewModel;
 		// this.model._attributes = {};
+		this.server && this.server.restore();
 	},
 
 	'Expect the model to have a request >': function() {
@@ -175,5 +176,30 @@ buster.testCase('Epitome model sync >', {
 			buster.assert(true);
 			done();
 		}).destroy();
+	},
+
+	'// Expect onSync to fire after DELETE with response 204 and no data >': function(){
+		this.server = sinon.fakeServer.create();
+		this.server.autoRespond = true;
+
+		this.server.respondWith(
+			[204, {"content-type": "application/json"},'']
+		);
+
+		this.model.set({
+			urlRoot: 'models/',
+			id: 1
+		});
+
+		var spy = this.spy();
+
+		this.model.addEvent('sync:error', spy);
+
+		this.model.delete_();
+
+		this.server.respond();
+
+		buster.assert.calledOnce(spy);
 	}
+
 });
