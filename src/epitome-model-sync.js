@@ -17,19 +17,14 @@
 		},
 		success: function(text){
 			// fix for no content breaking JSON parser.
-
 			var json;
-
-			// eg, on DELETE with 204 response, don't fire onFailure, treat as success.
-			if (this.status == 204 || this.status == 1223) return this.onSuccess();
-
 			try {
 				json = this.response.json = JSON.decode(text, this.options.secure);
 			} catch (error){
 				this.fireEvent('error', [text, error]);
 				return;
 			}
-			if (json == null) this.onFailure();
+			if (text && (json == null || this.status != 204)) this.onFailure();
 			else this.onSuccess(json, text);
 		}
 	});
