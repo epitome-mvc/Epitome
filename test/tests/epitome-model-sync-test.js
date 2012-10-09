@@ -178,7 +178,7 @@ buster.testCase('Epitome model sync >', {
 		}).destroy();
 	},
 
-	'// Expect onSync to fire after DELETE with response 204 and no data >': function(done){
+	'Expect onSync to fire after DELETE with response 204 and no data >': function(done){
 		this.server = sinon.fakeServer.create();
 		this.server.autoRespond = true;
 
@@ -187,12 +187,12 @@ buster.testCase('Epitome model sync >', {
 			[204, {"content-type": "application/json"},'']
 		);
 
-		this.model.set({
+		this.model = new Epitome.Model.Sync({
 			urlRoot: 'models/',
 			id: 1
 		});
 
-		this.model.addEvent('sync:error', function(){
+		this.model.addEvent('sync', function(){
 			buster.assert(true);
 			done();
 		});
