@@ -255,6 +255,9 @@
 						},
 						'$=': function(a, b) {
 							return a.indexOf(b) == a.length - b.length;
+						},
+						'*': function(a){
+							return typeof a !== 'undefined';
 						}
 					},
 					fixOperator = function(operator) {
@@ -268,14 +271,16 @@
 
 						found = found.filter(function(el) {
 							var t, a;
-							if (tag) {
-								t = el.get(tag);
-								attr && t && (a = t[attr]);
+							if (tag && attr) {
+								t = el.get(tag),
+								a = t ? t[attr] : null;
+							}
+							else if (tag) {
+								a = el.get(tag);
 							}
 							else {
 								a = el.get(attr);
 							}
-
 
 							if (a !== null && value !== null && operator !== null)
 								return operator(a, value);
@@ -306,7 +311,13 @@
 							}
 							// by tag
 							tag = currentBit.tag;
-							if (tag && tag != '*' && attributes.length) {
+							if (tag && tag != '*') {
+								attributes || (attributes = [{
+									key: null,
+									value: '',
+									operator: '*'
+								}]);
+
 								attributes = Array.map(attributes, function(a){
 									a.tag = tag;
 									return a;

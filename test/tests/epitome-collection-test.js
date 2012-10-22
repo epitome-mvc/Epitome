@@ -466,10 +466,16 @@ buster.testCase('Basic Epitome collection.find >', {
 
 		this.models = [{
 			name: 'bob',
-			surname: 'roberts'
+			surname: 'roberts',
+			type: {
+				role: 'admin'
+			}
 		}, {
 			name: 'robert',
-			surname: 'roberts'
+			surname: 'roberts',
+			type: {
+				role: 'user'
+			}
 		}, {
 			name: 'Robert',
 			surname: 'Roberts'
@@ -485,6 +491,10 @@ buster.testCase('Basic Epitome collection.find >', {
 
 	'Expect search by existence of a model attribute [attr] to return matching models >': function() {
 		buster.assert.equals(this.collection.find('[name]').length, 4);
+	},
+
+	'Expect search by deeper object property for type to return matchign models >': function(){
+		buster.assert.equals(this.collection.find('type').length, 2);
 	},
 
 	'Expect search by existence of a model attribute [attr] not to return if not found >': function() {

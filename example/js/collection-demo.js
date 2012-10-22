@@ -21,7 +21,10 @@ var testCollection = new testCollectionProto([{
 }, {
 	id: '4',
 	name: 'not coda',
-	surname: 'not christoff'
+	surname: 'not christoff',
+	foo: {
+		bar: 2
+	}
 }, {
 	id: '5',
 	name: 'bob',
@@ -33,4 +36,5 @@ console.log(testCollection.find('[name=coda],[surname="not christoff"][id!=5]'))
 console.log(testCollection.find('[name*=coda][surname^="christoff"]'));
 console.log(testCollection.find('#5,[name=bob]'));
 console.log(testCollection.findOne('[name=bob]'));
-console.log('with tag', testCollection.find('foo[bar=1]'));
+console.log('with tag and value of sub property', testCollection.find('foo[bar=1]'));
+console.log('with tag only', testCollection.find('foo'));
