@@ -14,7 +14,10 @@ var testCollectionProto = new Class({
 var testCollection = new testCollectionProto([{
 	id: '3',
 	name: 'coda',
-	surname: 'christoff'
+	surname: 'christoff',
+	foo: {
+		bar: 1
+	}
 }, {
 	id: '4',
 	name: 'not coda',
@@ -30,4 +33,4 @@ console.log(testCollection.find('[name=coda],[surname="not christoff"][id!=5]'))
 console.log(testCollection.find('[name*=coda][surname^="christoff"]'));
 console.log(testCollection.find('#5,[name=bob]'));
 console.log(testCollection.findOne('[name=bob]'));
-
+console.log('with tag', testCollection.find('foo[bar=1]'));

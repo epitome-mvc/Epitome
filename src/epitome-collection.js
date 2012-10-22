@@ -263,10 +263,19 @@
 					finder = function(attributes) {
 						var attr = attributes.key,
 							value = attributes.value || null,
+							tag = attributes.tag || null,
 							operator = fixOperator(attributes.operator);
 
 						found = found.filter(function(el) {
-							var a = el.get(attr);
+							var t, a;
+							if (tag) {
+								t = el.get(tag);
+								attr && t && (a = t[attr]);
+							}
+							else {
+								a = el.get(attr);
+							}
+
 
 							if (a !== null && value !== null && operator !== null)
 								return operator(a, value);
@@ -279,12 +288,11 @@
 				if (parsed.expressions.length) {
 					var j, i;
 					var attributes;
-					var currentExpression, currentBit, expressions = parsed.expressions, id, t;
+					var currentExpression, currentBit, expressions = parsed.expressions, id, t, tag;
 
 					search: for (i = 0; (currentExpression = expressions[i]); i++) {
 						for (j = 0; (currentBit = currentExpression[j]); j++){
 							attributes = currentBit.attributes;
-
 							// support by id
 							id = currentBit.id;
 							if (id) {
@@ -295,6 +303,14 @@
 								};
 								attributes || (attributes = []);
 								attributes.push(t);
+							}
+							// by tag
+							tag = currentBit.tag;
+							if (tag && tag != '*' && attributes.length) {
+								attributes = Array.map(attributes, function(a){
+									a.tag = tag;
+									return a;
+								});
 							}
 
 							if (!attributes) continue search;
