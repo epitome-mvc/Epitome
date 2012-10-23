@@ -292,7 +292,7 @@ An additional option has been added `options.emulateREST: true || false`, which 
 ---
 <div class="alert">
 <p>
-_Expects optional arguments: `(String) method`, `(Object) model`_
+Expects optional arguments: `(String) method`, `(Object) model`_
 </p>
 <p>
 _**Events: `sync: function(responseObj, method, options) {}`**_
@@ -590,6 +590,30 @@ collection.find('[name=Bob][id=2]'); // name Bob AND id==2
 ```
 
 Supported operators are `=` (equals), `!=` (not equal), `*=` (contains), `$=` (ends on), `^=` (starts with). Currently, you cannot reverse a condition by adding `!` or `not:` - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use `filter` instead.
+
+A new 'feature' has been added that alows you to quickly select deeper object properties by treating any parent keys as tags. For instance:
+
+```
+var collection = new Epitome.Collection([{
+    name: 'Bob',
+    permissions: {
+        edit: true
+    }
+}, {
+    name: 'Angry Bob',
+    permissions: {
+        edit: false
+    }
+}]);
+
+
+collection.find('permissions[edit]'); // all where there is an edit property
+collection.find('permissions[edit=true]'); // all where there edit is true
+
+```
+
+However, this is more of a syntactic sugar than convention. It won't allow you to do complex CSS-like selections as you cannot combine 'tag' with properties. This means you cannot do `permissions[edit][name=Bob]` as the context changes to the permissions property. This kind of structure is possibly an anti-pattern anyway, try to keep your models flat.
+
 
 ### findOne
 ---
