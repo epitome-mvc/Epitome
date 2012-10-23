@@ -493,8 +493,16 @@ buster.testCase('Basic Epitome collection.find >', {
 		buster.assert.equals(this.collection.find('[name]').length, 4);
 	},
 
-	'Expect search by deeper object property for type to return matchign models >': function(){
+	'Expect search by deeper object property for type to return matching models >': function(){
 		buster.assert.equals(this.collection.find('type').length, 2);
+	},
+
+	'Expect search by deeper object property for type.role to return matchign models >': function(){
+		buster.assert.equals(this.collection.find('type[role]').length, 2);
+	},
+
+	'Expect search by deeper object property for type.role=admin to return matchign models >': function(){
+		buster.assert.equals(this.collection.find('type[role=admin]').length, 1);
 	},
 
 	'Expect search by existence of a model attribute [attr] not to return if not found >': function() {

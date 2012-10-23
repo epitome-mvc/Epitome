@@ -272,7 +272,7 @@
 						found = found.filter(function(el) {
 							var t, a;
 							if (tag && attr) {
-								t = el.get(tag),
+								t = el.get(tag);
 								a = t ? t[attr] : null;
 							}
 							else if (tag) {
