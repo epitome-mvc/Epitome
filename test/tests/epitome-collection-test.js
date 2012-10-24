@@ -363,6 +363,29 @@ buster.testCase('Basic Epitome collection array methods >', {
 		buster.refute.equals(current, changed);
 	},
 
+	'Expect .empty() to remove all models from collection >': function() {
+		this.collection.empty();
+
+		this.collection.addModel({
+			id: 300,
+			name: 'A'
+		});
+
+		this.collection.addModel({
+			id: 200,
+			name: 'B'
+		});
+
+		this.collection.addModel({
+			id: 400,
+			name: 'C'
+		});
+
+		this.collection.empty();
+		buster.assert.equals(this.collection.length, 0);
+	},
+
+
 	'Expect .sort("key1,key2") to sort the collection by both model properties >': function() {
 		this.collection.empty();
 
