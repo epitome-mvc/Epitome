@@ -101,7 +101,7 @@
 				// supports a single model or an array of models
 				var	self = this;
 
-				models = Array.from(models);
+				models = Array.from(models).slice(); // need to dereference or loop will fail
 
 				Array.each(models, function(model) {
 					model.collections.erase(self);
