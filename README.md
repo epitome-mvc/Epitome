@@ -1221,6 +1221,8 @@ require(['main'], function(Epitome) {
 });
 ```
 
+an example skeleton of an Epitome-powered AMD app for RequireJS is available [here](https://github.com/DimitarChristoff/epitome-skeleton-amd)
+
 When using it in a browser or after the Epitome Object contains all your modules, quick model creation with prototyping and `localStorage` can look something like this:
 ```javascript
 // create a new user class prototype, basing it on Epitome.Model.Sync and implement storage
@@ -1275,6 +1277,73 @@ else {
 // go wild!
 userModel.save();
 ```
+
+### Sync and Storage
+
+Here's an example pattern that allows you to use Storage and Sync on a model to reconcile data on the client and on the server. In a scenario where a model is being updated on the client with an implicit Save button that does the Sync but a `onChange` event that saves any changes in `localStorage` in the meanwhile, this is how you'd reconcile the differences:
+
+```javascript
+var Model = new Class({
+   // extends always before implements
+	Extends: Epitome.Model.Sync,
+	// use storage
+	Implements: Epitome.Storage.localStorage('model')
+});
+
+// typically, this will be bound in a view
+var model = new Model({
+	id: 3
+}, {
+	onChange: function(){
+		this.store();
+	},
+	onFetch: function(){
+		var data = this.retrieve();
+
+		if (!Epitome.isEqual(data, this.toJSON)){
+			if (confirm('Local copy differs from server, use it?')) {
+				this.set(data);
+			}
+		}
+    }
+});
+
+// get latest
+model.fetch();
+
+```
+
+This pattern can be applied from views as well. Essentially, you are saying: when a model is fetched (and you already know the id), compare server-side version to what storage knows of this model. If a difference is found, you can either prompt the user to accept the client version and load it or you can automatically merge the changes into the model. Since a change always saves into storage, the client-side version will always have an upto date version of data. This is useful when a model is bound to a view and a user modifies it and then reloads the page or navigates away before saving.
+
+### Prototyping Views
+
+It is sometimes useful to prototype the view, including the events that will be bound - as opposed to doing it in the instantiation.
+
+```javascript
+var myView = new Class({
+	Extends: Epitome.View,
+	options: {
+		events: {
+			// these relate to this.element. if an element is not passed, they won't matter
+			'click:relay(button.save)': 'saveData'
+		},
+		onSaveData: function(){
+			var data = {};
+			this.element.getElements('input').each(function(el){
+				data[el.get('name')] = el.get('value').stripScripts().clean()
+			});
+			// notice there is no onChange:model saving via sync, we save on demand
+			this.model.set(data);
+			this.model.save();
+		},
+		'onChange:model': function(){
+			this.model.store(); // changes in-between go to storage
+		}
+	}
+});
+
+```
+
 
 For more examples, have a look inside of `example/js/`
 
