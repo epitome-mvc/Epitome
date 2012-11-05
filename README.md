@@ -359,10 +359,10 @@ _Expected return: `(Object) response`_
 </p>
 </div>
 
-A method that you can extend in your definition of Models for doing any pre-processing of data before using CREATE or UPDATE via sync to the server. For example:
+A method that you can add to your definition of Models for doing any pre-processing of data before using CREATE or UPDATE via sync to the server. For example:
 
 ```javascript
-prePaarse: function(data) {
+preParse: function(data) {
     // remove local property 'meta' which the server does not like.
     delete data.meta;
     return data;
