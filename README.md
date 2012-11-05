@@ -348,6 +348,27 @@ The save should send the contents of the model to the server for storage. If it 
 
 If the optional `key` => `value` pair is passed, it will set them on the model and then save the updated model.
 
+### preParse
+---
+<div class="alert">
+<p>
+_Expects arguments: `(Object) response`_
+</p>
+<p>
+_Expected return: `(Object) response`_
+</p>
+</div>
+
+A method that you can extend in your definition of Models for doing any pre-processing of data before using CREATE or UPDATE via sync to the server. For example:
+
+```javascript
+prePaarse: function(data) {
+    // remove local property 'meta' which the server does not like.
+    delete data.meta;
+    return data;
+}
+```
+
 ### fetch
 ---
 <div class="alert">
