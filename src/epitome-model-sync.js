@@ -88,8 +88,12 @@
 				options.method = method;
 
 				// if it's a method via POST, append passed object or use exported model
-				if (method == methodMap.create || method == methodMap.update)
+				if (method == methodMap.create || method == methodMap.update){
 					options.data = model || this.toJSON();
+
+					// pre-processor of data support
+					this.preParse && (options.data = this.preParse(options.data));
+				}
 
 				// for real REST interfaces, produce native JSON post
 				if (this.options.useJSON && ['POST','PUT','DELETE'].contains(method)) {

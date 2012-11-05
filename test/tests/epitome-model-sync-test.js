@@ -125,6 +125,23 @@ buster.testCase('Epitome model sync >', {
 		this.model.fetch();
 	},
 
+	'Expect the pre-processing sync parser to be able to modify data before it is being sent >': function(done) {
+
+		var protoModel = new Class({
+
+			Extends: Epitome.Model.Sync,
+
+			preParse: function(obj) {
+				buster.assert(true);
+				done();
+				return obj;
+			}
+		});
+
+		var protoInstance = new protoModel(this.dataInitial, this.options);
+		protoInstance.save();
+	},
+
 	'Expect the pre-processing parser to get the object before the model does after a sync >': function(done) {
 
 		var protoModel = new Class({
