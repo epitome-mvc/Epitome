@@ -156,6 +156,7 @@
 					},
 					onFailure: function() {
 						self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+						self.fireEvent('requestFailure', [this.status, this.response.text]);
 					}
 				});
 
@@ -179,10 +180,13 @@
 					throwAway = {};
 
 				throwAway[eventName] = function(responseObj) {
+					// if we have a response object
 					if (responseObj && typeof responseObj == 'object') {
 						self.set(responseObj);
-						callback && callback.call(self, responseObj);
 					}
+
+					// tell somebody anyway, object or not.
+					callback && callback.call(self, responseObj);
 
 					// remove this one-off event.
 					self.removeEvents(throwAway);
