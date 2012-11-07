@@ -131,7 +131,7 @@ buster.testCase('Epitome model sync >', {
 
 			Extends: Epitome.Model.Sync,
 
-			preParse: function(obj) {
+			preProcessor: function(obj) {
 				buster.assert(true);
 				done();
 				return obj;
@@ -142,13 +142,13 @@ buster.testCase('Epitome model sync >', {
 		protoInstance.save();
 	},
 
-	'Expect the pre-processing parser to get the object before the model does after a sync >': function(done) {
+	'Expect the post-processing parser to get the object before the model does after a sync >': function(done) {
 
 		var protoModel = new Class({
 
 			Extends: Epitome.Model.Sync,
 
-			parse: function(obj) {
+			postProcessor: function(obj) {
 				buster.assert(true);
 				done();
 			}
@@ -158,14 +158,14 @@ buster.testCase('Epitome model sync >', {
 		protoInstance.fetch();
 	},
 
-	'Expect the pre-processing parser to precede model sets/changes >': function(done) {
+	'Expect the post-processing parser to precede model sets/changes >': function(done) {
 
 		var spy = this.spy(),
 			protoModel = new Class({
 
 				Extends: Epitome.Model.Sync,
 
-				parse: function(obj) {
+				postProcessor: function(obj) {
 					delete obj.foo;
 					return obj
 				}

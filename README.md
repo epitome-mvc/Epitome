@@ -2,21 +2,26 @@
 
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
-Epitome is a new extensible and modular open-source MVP* framework, built out of MooTools Classes and Events. See [credits and licensing](#credits-and-licensing)
+Epitome is a new extensible and modular open-source MVC* framework, built out of MooTools Classes and Events. See [credits and licensing](#credits-and-licensing)
 
 [![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master)](http://travis-ci.org/DimitarChristoff/Epitome)
 
-**BUT, IS IT MVC?**
+**BUT, IS IT REALLY MVC?**
 
 > &lt;jiggliemon> MVD, Model View Don'task
 
-Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementation than a classic MVC one, with thin logic around the views, represented by `Epitome.Template`. However, because `Epitome.View` is very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.
+Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementation than a classic MVC one, with thin controller logic around the views. However, because `Epitome.View` is also very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.
 
 If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently.
 
 Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-Current version: **0.1.3-AMD**
+Current version: **0.1.4-AMD**
+
+## Changelog
+
+- 0.1.4
+ - breaking API change. deprecated: `model.sync.parse`, replaced with `preProcessor` and `postProcessor`
 
 All individual components of Epitome work as normal javscript files to be used in a browser as well as through `require.js` modules. See [Downloading + Building](#download-building)
 
@@ -309,7 +314,7 @@ The second argument `model` is optional and should be a simple object. If it is 
 
 As a whole, you should NOT use the sync directly but elect to use the API methods for each specific request task.
 
-### parse
+### postProcessor
 ---
 <div class="alert">
 <p>
@@ -320,10 +325,10 @@ _Expected return: `(Object) response`_
 </p>
 </div>
 
-A method that you can extend in your definition of Models for doing any pre-processing of data returned by sync from the server. For example:
+A method that you can extend in your definition of Models for doing any post-processing of data `returned` by sync from the server. For example:
 
 ```javascript
-parse: function(response) {
+postProcessor: function(response) {
     // data comes back with decoration. split them first.
     this.meta = response.meta;
     return response.data;
@@ -348,7 +353,7 @@ The save should send the contents of the model to the server for storage. If it 
 
 If the optional `key` => `value` pair is passed, it will set them on the model and then save the updated model.
 
-### preParse
+### preProcessor
 ---
 <div class="alert">
 <p>
@@ -359,10 +364,10 @@ _Expected return: `(Object) response`_
 </p>
 </div>
 
-A method that you can add to your definition of Models for doing any pre-processing of data before using CREATE or UPDATE via sync to the server. For example:
+A method that you can add to your definition of Models for doing any pre-processing of data before using `CREATE` or `UPDATE` (so, `save`) via sync to the server. For example:
 
 ```javascript
-preParse: function(data) {
+preProcessor: function(data) {
     // remove local property 'meta' which the server does not like.
     delete data.meta;
     return data;

@@ -92,7 +92,7 @@
 					options.data = model || this.toJSON();
 
 					// pre-processor of data support
-					this.preParse && (options.data = this.preParse(options.data));
+					this.preProcessor && (options.data = this.preProcessor(options.data));
 				}
 
 				// for real REST interfaces, produce native JSON post
@@ -148,7 +148,7 @@
 						this.removeEvents(syncPseudo + rid);
 					},
 					onSuccess: function(responseObj) {
-						responseObj = self.parse && self.parse(responseObj);
+						responseObj = self.postProcessor && self.postProcessor(responseObj);
 						self.fireEvent(syncPseudo + rid, [responseObj]);
 						self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
 						// only becomes an existing model after a successful sync
@@ -191,9 +191,14 @@
 				return this.addEvents(throwAway);
 			}.protect(),
 
-			parse: function(resp) {
-				// pre-processor for json object from response.
+			postProcessor: function(resp) {
+				// post-processor for json response being passed to the model.
 				return resp;
+			},
+
+			preProcessor: function(data) {
+				// pre-processor for json object before they are sent to server
+				return data;
 			},
 
 			fetch: function() {
