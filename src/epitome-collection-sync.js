@@ -46,7 +46,7 @@
 						this.removeEvents(eventPseudo + rid);
 					},
 					onSuccess: function(responseObj) {
-						responseObj = self.parse && self.parse(responseObj);
+						responseObj = self.postProcessor && self.postProcessor(responseObj);
 						self.fireEvent(eventPseudo + rid, [[responseObj]]);
 					},
 					onFailure: function() {
@@ -119,8 +119,12 @@
 				};
 
 				return this.addEvents(throwAway);
-			}.protect()
+			}.protect(),
 
+			postProcessor: function(jsonResponse){
+				// apply a post-processor to response
+				return jsonResponse;
+			}
 
 		});
 	}; // end wrap

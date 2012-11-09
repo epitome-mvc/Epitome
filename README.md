@@ -730,7 +730,7 @@ When called, it will asynchronously try to go and fetch Model data. When data ar
 
 Returns the instance 'now' but because it is async, applying anything to the collection before the `fetch` event has fired may have unexpected results.
 
-### parse
+### postProcessor
 ---
 <div class="alert">
 <p>
@@ -744,7 +744,7 @@ _Expected return: `(Array) response`_
 A method that you can extend in your definition of Epitome.Collection.Sync for doing any pre-processing of data returned by sync from the server. For example:
 
 ```javascript
-parse: function(response) {
+postProcessor: function(response) {
     // data comes back with decoration. split them first.
     // { meta: { something: 'here' }, models: [] }
     this.meta = response.meta;
