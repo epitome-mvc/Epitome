@@ -811,7 +811,9 @@ var testInstance = new testView({
         this.render();
 	},
 
-	'onChange:model': this.render.bind(this),
+	'onChange:model': function(){
+	    this.render();
+	},
 
 	onEmptyModel: function(event, element) {
         event && event.stop && event.stop();
