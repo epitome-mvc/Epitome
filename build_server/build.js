@@ -15,10 +15,19 @@ var requirejs = require('../node_modules/requirejs/bin/r.js'),
 		out:'./Epitome-min.js',
 		name:'epitome',
 		include: [
-			'../build_server/hash/test.js'
+            'epitome',
+            'epitome-isequal',
+            'epitome-model',
+            'epitome-model-sync',
+            'epitome-storage',
+            'epitome-collection',
+            'epitome-collection-sync',
+            'epitome-template',
+            'epitome-view',
+            'epitome-router'
 		]
 	}),
-	generateUID = function(uniqueIndex) {
+	generateUID = function() {
 		var now = new Date();
 		return Math.floor(Math.random() * 10) + parseInt(now.getTime()).toString(36).toUpperCase();
 	};
@@ -41,6 +50,7 @@ http.createServer(function (req, res) {
 		id = generateUID(),
 		file = './hash/epitome-' + id + '.js';
 
+
 	req.on('close', function (err) {
 		res.end();
 	});
@@ -55,17 +65,10 @@ http.createServer(function (req, res) {
 			// make a file that requires all
 			deps = query.build.split(',');
 
-			deps.forEach(function(el) {
-				depsArray.push('"../../src/'+el+'"');
-			});
-
-			out += depsArray.join(',');
-			out += '], function(){});';
-
 			console.log('Created a custom include with ' + deps.join(', '));
 
-			fs.writeFile(file, out, function(error) {});
-			appBuild.include = ['../build_server/hash/epitome-' + id];
+			fs.writeFile(file, deps.join(','), function(error) {});
+			appBuild.include = deps;
 		}
 		else if (u.pathname != '/' && u.pathname.length == 10 && u.pathname.match(/\/([A-Z0-9]+)/)) {
 			id = u.pathname.replace('/', '');
@@ -82,9 +85,8 @@ http.createServer(function (req, res) {
 		}
 		else {
 			console.log('No custom includes found, returning main instead');
-			id = '';
-			deps = ['all'];
-			appBuild.include = ['main'];
+			id = 'base.js';
+			deps = appBuild.include;
 		}
 
 		// set output folder in out for quick reference
@@ -94,30 +96,37 @@ http.createServer(function (req, res) {
 			console.log('[LOG] running: r.js -o ./hash/' + id + '.json');
 
 			try {
+                // read original
+                fs.readFile('./hash/' + id + '.json', function(error, build) {
+                    var ab = JSON.parse(build);
 
-				ps.exec('r.js -o ./hash/' + id + '.json', function(error, output) {
-					console.log(output);
 
-					// if error, output 500 internal code with dump
-					if (error) {
-						respond(res, 500, error.toString());
-						return;
-					}
+                    ps.exec('r.js -o ./hash/' + id + '.json', function(error, output) {
+                        console.log(output);
 
-					// read the generated file and pipe through to stdout (er, browser).
-					fs.readFile('./out/epitome-' + id + '-min.js', function(error, contents) {
-						// add a hash so same build config can be reused.
-						contents = '/*Epitome hash: ' + id + '\n  Download: http://' + req.headers.host + '/' + id +'\n  Selected: ' +  deps.join(', ') + ' */\n' + contents;
-						respond(res, 200, contents);
+                        // if error, output 500 internal code with dump
+                        if (error) {
+                            respond(res, 500, error.toString());
+                            return;
+                        }
 
-						// clean up the out file also, we can rebuild
-						fs.unlink('./out/epitome-' + id + '-min.js', function(error) {
-							if (error)
-								throw error;
-							console.log('deleted built js file');
-						});
-					});
-				});
+
+
+                        // read the generated file and pipe through to stdout (er, browser).
+                        fs.readFile('./out/epitome-' + id + '-min.js', function(error, contents) {
+                            // add a hash so same build config can be reused.
+                            contents = '/*Epitome hash: ' + id + '\n  Download: http://' + req.headers.host + '/' + id +'\n  Selected: ' +  ab.include.join(', ') + ' */\n' + contents;
+                            respond(res, 200, contents);
+
+                            // clean up the out file also, we can rebuild
+                            /*fs.unlink('./out/epitome-' + id + '-min.js', function(error) {
+                                if (error)
+                                    throw error;
+                                console.log('deleted built js file');
+                            });*/
+                        });
+                    });
+                }); // json read
 			} catch (e) {
 				// something went wrong.
 				// respond(res, 500, e.toString());
