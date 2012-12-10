@@ -1390,6 +1390,8 @@ git submodule update
 
 And you can keep it updated by going to `~/example/todo/` and doing a pull
 
+A RequireJS version of the todo app is available here as a branch of the main todo app:
+[Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo/tree/rjs)
 
 ## Download + Building
 
