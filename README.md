@@ -1377,7 +1377,7 @@ For more examples, have a look inside of `example/js/`
 
 ### TodoMVC reference
 ---
-A standard [TodoMVC](http://todomvc.com/) reference implementation has been provided here: [Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo).
+A standard [TodoMVC](http://todomvc.com/) reference implementation has been provided here in both AMD and normal namespaced modules: [Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo).
 
 You can view it in action here:
 [http://fragged.org/Epitome/example/todo/epitome/#!/](http://fragged.org/Epitome/example/todo/epitome/#!/)
@@ -1391,7 +1391,7 @@ git submodule update
 And you can keep it updated by going to `~/example/todo/` and doing a pull
 
 A RequireJS version of the todo app is available here as a branch of the main todo app:
-[Epitome-todo](https://github.com/DimitarChristoff/Epitome-todo/tree/rjs)
+[Epitome-todo AMD](http://fragged.org/Epitome/example/todo/epitome-amd/#!/)
 
 ## Download + Building
 
