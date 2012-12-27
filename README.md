@@ -1383,7 +1383,7 @@ You can view it in action here:
 [http://fragged.org/Epitome/example/todo/epitome/#!/](http://fragged.org/Epitome/example/todo/epitome/#!/)
 
 The todo app is also a submodule of Epitome so you can add it by doing this at the root of the repo:
-```
+```sh
 git submodule init
 git submodule update
 ```
@@ -1424,13 +1424,17 @@ Uglifying file: /projects/Epitome/Epitome-min.js
 ```
 Install requirejs via npm, if you haven't:
 
-    npm install -g requirejs
+```sh
+npm install -g requirejs
+```
 
 Alternatively, grab r.js and put it inside the project, then do `node r.js -o app.build.js`
 
 An npm package is also available:
 
-    npm install epitome
+```sh
+npm install epitome
+```
 
 Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you'd have to move it within your web server root. require('epitome') should then return the contents of `main.js` in the source folder, which grabs all dependencies.
 
