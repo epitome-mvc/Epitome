@@ -1,4 +1,0 @@
-{
-  "glob": ["src/*.js", "README.md", "test/README.md", "test/buster.js", "test/tests/*.js", "example/js/*.js"],
-  "github": false
-}
