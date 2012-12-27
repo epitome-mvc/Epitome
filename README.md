@@ -52,7 +52,7 @@ _Expects arguments: `(Object) model`, `(Object) options`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `ready`**_
+_Events: `ready`_
 </p>
 </div>
 
@@ -85,7 +85,7 @@ _Expects arguments: mixed: `(String) key`, `(Mixed) value` - pair - or: `(Object
 _Returns: `this`_
 </p>
 <p>
-_**Events:**_
+_Events:_
 
 <ul>
  <li> `change: function(changedProperties) {}`</li>
@@ -145,7 +145,7 @@ _Expects arguments: none_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `empty`**_
+_Events: `empty`_
 </p>
 </div>
 
@@ -161,7 +161,7 @@ _Expects arguments: none_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `destroy`**_
+_Events: `destroy`_
 </p>
 </div>
 
@@ -301,7 +301,7 @@ An additional option has been added `options.emulateREST: true || false`, which 
 Expects optional arguments: `(String) method`, `(Object) model`_
 </p>
 <p>
-_**Events: `sync: function(responseObj, method, options) {}`**_
+_Events: `sync: function(responseObj, method, options) {}`_
 </p>
 </div>
 
@@ -345,7 +345,7 @@ _Expects optional arguments: `(String) key`, `(String) value`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `save`, `sync`, possibly `create`, `update`**_
+_Events: `save`, `sync`, possibly `create`, `update`_
 </p>
 </div>
 
@@ -384,7 +384,7 @@ _Expects arguments: none_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `fetch`, `sync`, `read`**_
+_Events: `fetch`, `sync`, `read`_
 </p>
 </div>
 
@@ -404,7 +404,7 @@ _Expects arguments: `(Array) models / objects` (or a single model /object), `(Ob
 _Returns: `this`_
 </p>
 <p>
-_**Events: `ready`**_
+_Events: `ready`_
 </p>
 </div>
 
@@ -444,7 +444,7 @@ _Expects arguments: `(Mixed) model` , `(Boolean) replace`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `add: function(model, cid) {}`**_
+_Events: `add: function(model, cid) {}`_
 </p>
 </div>
 
@@ -462,7 +462,7 @@ _Expects arguments: `(Mixed) model(s)`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `remove: function(model, cid) {}`, `reset`**_
+_Events: `remove: function(model, cid) {}`, `reset`_
 </p>
 </div>
 
@@ -534,7 +534,7 @@ _Expects arguments: none_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `remove`, `reset`, `empty`**_
+_Events: `remove`, `reset`, `empty`_
 </p>
 </div>
 
@@ -550,7 +550,7 @@ _Expects arguments: (Mixed) how_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `sort`**_
+_Events: `sort`_
 </p>
 </div>
 
@@ -574,7 +574,7 @@ _Expects arguments: none_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `sort`**_
+_Events: `sort`_
 </p>
 </div>
 
@@ -706,7 +706,7 @@ _Expects arguments: `(Array) models / objects` (or a single model /object), `(Ob
 _Returns: `this`_
 </p>
 <p>
-_**Events: `ready`**_
+_Events: `ready`_
 </p>
 </div>
 
@@ -722,7 +722,7 @@ _Expects optional arguments: (Boolean) refresh_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `fetch`**_
+_Events: `fetch`_
 </p>
 </div>
 
@@ -766,7 +766,7 @@ _Expects arguments: `(Object) options`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `ready`**_
+_Events: `ready`_
 </p>
 </div>
 
@@ -842,7 +842,7 @@ _Expects arguments: unknown_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `render`**_
+_Events: `render`_
 </p>
 </div>
 
@@ -934,7 +934,7 @@ _Expects arguments: `(Boolean) soft`_
 _Returns: compiled template or function._
 </p>
 <p>
-_**Events: `empty`**_
+_Events: `empty`_
 </p>
 </div>
 
@@ -950,7 +950,7 @@ _Expects arguments: none_
 _Returns: compiled template or function._
 </p>
 <p>
-_**Events: `dispose`**_
+_Events: `dispose`_
 </p>
 </div>
 
@@ -966,7 +966,7 @@ _Expects arguments: none_
 _Returns: compiled template or function._
 </p>
 <p>
-_**Events: `dispose`**_
+_Events: `dispose`_
 </p>
 </div>
 
@@ -997,7 +997,7 @@ _Expects optional arguments: `(Object) model`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `store: function(model) {}`**_
+_Events: `store: function(model) {}`_
 </p>
 </div>
 
@@ -1017,7 +1017,7 @@ _Expects arguments: none_
 _Returns: `(Object) model` or `(Array) collection`_
 </p>
 <p>
-_**Events: `retrieve: function(model) {}`**_
+_Events: `retrieve: function(model) {}`_
 </p>
 </div>
 
@@ -1052,7 +1052,7 @@ _Expects arguments: none_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `eliminate`**_
+_Events: `eliminate`_
 </p>
 </div>
 
@@ -1090,7 +1090,7 @@ _Expects arguments: `(Object) options`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `ready`, `before`, `after`, mixed, `undefined`, `error`, `route:add`, `route:remove`**_
+_Events: `ready`, `before`, `after`, mixed, `undefined`, `error`, `route:add`, `route:remove`_
 </p>
 </div>
 
@@ -1183,7 +1183,7 @@ _Expects arguments: `(Object) route`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `route:add`**_
+_Events: `route:add`_
 <p>
 </div>
 
@@ -1213,7 +1213,7 @@ _Expects arguments: `(String) route`_
 _Returns: `this`_
 </p>
 <p>
-_**Events: `route:remove`**_
+_Events: `route:remove`_
 </p>
 </div>
 
@@ -1468,8 +1468,6 @@ The creation and logic employed in the writing of Epitome has been documented in
 Concept and development by [Dimitar Christoff](http://twitter.com/D_mitar) with help from [Garrick Cheung](http://twitter.com/garrickcheung), [Chase Wilson](http://twitter.com/jiggliemon) & [Simon Smith](http://twitter.com/blinkdesign)
 
 Developed for use by QMetric Group Limited, kindly released with their permission.
-
-![QMetric](http://tech.qmetric.co.uk/wp-content/themes/the-bootstrap/images/qmetric-logo-on.png)
 
 Released under the MIT license [http://mootools.net/license.txt](http://mootools.net/license.txt)
 
