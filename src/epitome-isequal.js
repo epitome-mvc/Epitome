@@ -109,7 +109,7 @@
 	}
 	else {
 		if (typeof module !== 'undefined' && module.exports) {
-			exports = module.exports.isEqual = wrap({});
+			exports = module.exports.isEqual = wrap(exports);
 		}
 		else {
 			exports.Epitome.isEqual = wrap(exports.Epitome);

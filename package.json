@@ -23,7 +23,7 @@
 	"bugs": {
 		"url": "https://github.com/DimitarChristoff/Epitome/issues"
 	},
-	"main": "./src/epitome-cjs.js",
+	"main": "index.js",
 	"license": "MIT (http://mootools.net/license.txt)",
 	"dependencies": {
 		"mootools": ">=1.4.5"
