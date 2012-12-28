@@ -92,6 +92,7 @@
 		define(['./epitome'], wrap);
 	}
 	else {
+		exports.Epitome = exports.Epitome || {};
 		exports.Epitome.Template = wrap(exports.Epitome);
 	}
 }(this));

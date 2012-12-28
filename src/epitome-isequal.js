@@ -108,6 +108,7 @@
 		define(['./epitome'], wrap);
 	}
 	else {
+		exports.Epitome = exports.Epitome || {};
 		exports.Epitome.isEqual = wrap(exports.Epitome);
 	}
 }(this));

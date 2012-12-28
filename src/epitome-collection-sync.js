@@ -134,6 +134,7 @@
 		define(['./epitome-collection'], wrap);
 	}
 	else {
+		exports.Epitome = exports.Epitome || {Collection:{}};
 		exports.Epitome.Collection.Sync = wrap(exports.Epitome.Collection);
 	}
 }(this));

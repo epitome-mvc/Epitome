@@ -174,6 +174,7 @@
 		define(['./epitome-isequal'], wrap);
 	}
 	else {
+		exports.Epitome = exports.Epitome || {isEqual:{}};
 		exports.Epitome.Model = wrap(exports.Epitome.isEqual);
 	}
 }(this));

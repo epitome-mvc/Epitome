@@ -358,6 +358,7 @@
 		define(['./epitome-model'], wrap);
 	}
 	else {
+		exports.Epitome = exports.Epitome || {Model:{}};
 		exports.Epitome.Collection = wrap(exports.Epitome.Model);
 	}
 }(this));

@@ -153,6 +153,7 @@
 		define(['./epitome'], wrap);
 	}
 	else {
+		exports.Epitome = exports.Epitome || {};
 		exports.Epitome.Storage = wrap(exports);
 	}
 }(this));
