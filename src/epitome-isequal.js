@@ -108,7 +108,11 @@
 		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = exports.Epitome || {};
-		exports.Epitome.isEqual = wrap(exports.Epitome);
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = wrap(exports.Epitome)
+		}
+		else {
+			exports.Epitome.isEqual = wrap(exports.Epitome);
+		}
 	}
 }(this));

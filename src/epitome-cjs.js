@@ -3,8 +3,8 @@
 
 	var Epitome = {};
 
-	Epitome.isEqual = require('./epitome-isequal').isEqual;
-	Epitome.model = require('./epitome-model').Model;
+	Epitome.isEqual = require('./epitome-isequal');
+	Epitome.model = require('./epitome-model');
 
 	module.exports.Epitome = exports.Epitome = Epitome;
 
