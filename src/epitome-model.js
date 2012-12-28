@@ -175,7 +175,7 @@
 	}
 	else {
 		if (typeof module !== 'undefined' && module.exports) {
-			exports = module.exports = wrap(exports.Epitome.isEqual);
+			exports = module.exports.Model = wrap(exports.isEqual);
 		}
 		else {
 			exports.Epitome.Model = wrap(exports.Epitome.isEqual);
