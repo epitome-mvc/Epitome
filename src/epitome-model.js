@@ -174,7 +174,11 @@
 		define(['./epitome-isequal'], wrap);
 	}
 	else {
-		exports.Epitome = exports.Epitome || {isEqual:{}};
-		exports.Epitome.Model = wrap(exports.Epitome.isEqual);
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = wrap(exports.Epitome.isEqual);
+		}
+		else {
+			exports.Epitome.Model = wrap(exports.Epitome.isEqual);
+		}
 	}
 }(this));
