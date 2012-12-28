@@ -92,7 +92,11 @@
 		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = exports.Epitome || {};
-		exports.Epitome.Template = wrap(exports.Epitome);
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports.Template = wrap(exports);
+		}
+		else {
+			exports.Epitome.Template = wrap(exports.Epitome);
+		}
 	}
 }(this));
