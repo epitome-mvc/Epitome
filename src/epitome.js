@@ -6,10 +6,10 @@
 	var wrap = function() {
 		// this is just the host object for the Epitome modules
 
-		(function(){
+		var emitter = (function(){
 			var EID = 0;
 
-			var emitter = new Class({
+			return new Class({
 				// custom emitter ported from prime.
 				on: function (event, fn) {
 					var listeners = this._listeners || (this._listeners = {}),
