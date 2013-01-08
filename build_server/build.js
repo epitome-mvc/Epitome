@@ -48,7 +48,10 @@ http.createServer(function (req, res) {
 		query = u['query'],
 		out = 'require([',
 		id = generateUID(),
-		file = './hash/epitome-' + id + '.js';
+		file = './hash/epitome-' + id + '.js',
+		ip = req.connection.remoteAddress;
+
+	console.log('Started session for ' + ip);;
 
 
 	req.on('close', function (err) {
