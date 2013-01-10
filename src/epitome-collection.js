@@ -20,7 +20,7 @@
 				orig = orig || this;
 
 				// has the events class been mixed in?
-				if (!(listener && listener.fireEvent))
+				if (!(listener && listener.fireEvent && !listener.hasOwnProperty('fireEvent')))
 					return this;
 
 				return function(type, args, delay) {
