@@ -48,7 +48,6 @@ var testCollectionProto = new Class({
 var testCollection = new testCollectionProto();
 testCollection.fetch();
 
-
 var testInstance = new testView({
 
 	collection: testCollection,
@@ -66,6 +65,7 @@ var testInstance = new testView({
 	},
 
 	onReady: function() {
+		this.render();
 	},
 
 	'onSort:collection': function() {
@@ -73,6 +73,14 @@ var testInstance = new testView({
 	},
 
 	'onChange:collection': function() {
+		this.render();
+	},
+
+	'onAdd:collection': function() {
+		this.render();
+	},
+
+	'onFetch:collection': function() {
 		this.render();
 	},
 
@@ -109,5 +117,3 @@ var testInstance = new testView({
 		this.collection.sort(el.get('data-sort'));
 	}
 });
-
-testInstance.render();
