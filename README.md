@@ -195,6 +195,10 @@ A MooTools default options set, which can be on the prototype of the Model const
 --------------------
 An object with default Model Attributes to use when instantiating. Merged with Model object when creating.
 
+#### changedProperties: []
+--------------
+An array of all property keys that reflect the last `change` event. Available on all instances.
+
 #### properties: {}
 --------------
 A collection of custom accessors that override default `model.get` and `model.set` methods. For example:
