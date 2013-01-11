@@ -19,7 +19,7 @@ Epitome's API is still subject to small changes and improvements (mostly additio
 Current version: **0.1.6-AMD**
 
 <a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
-<a class="btn btn-large" href="http://epitome.tenderapp.com/discussion/new" target="_blank">Issue / Discussion on Tender</a>
+<!--<a class="btn btn-large" href="http://epitome.tenderapp.com/discussion/new" target="_blank">Issue / Discussion on Tender</a>-->
 
 ## Changelog
 - 0.1.6
@@ -1451,7 +1451,7 @@ Please note this will grab it inside of your node_modules and if you use browser
 
 ### AMD Builder
 ---
-<div id='customDownload'>You can use <a href='http://fragged.org:39170/'>http://fragged.org:39170/?build=module1,module2</a> to create a custom build automatically. See the documentation page for more</div>
+<div id='customDownload'>You can use <a href='http://fragged.org:39170/' rel='nofollow'>http://fragged.org:39170/?build=module1,module2</a> to create a custom build automatically. See the documentation page for more</div>
 
 ## Testing
 
