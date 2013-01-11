@@ -180,27 +180,25 @@ Empties the model. No change event. Event is observed by Collections the model i
 There are several additional properties each model instance will have.
 
 #### _attributes: {}
----------------
 The attributes object is __public__ (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by `model.toJSON()`
-
-#### collections: []
 ---------------
+#### collections: []
 An array that contains references to all instances of Epitome.Collection that the model is currently a member of. Useful for iteration as well as utilised by collections that want to know if Event observers are required.
+---------------
 
 #### options: {}
------------
 A MooTools default options set, which can be on the prototype of the Model constructor.
+-----------
 
 #### options.defaults: {}
---------------------
 An object with default Model Attributes to use when instantiating. Merged with Model object when creating.
+--------------------
 
 #### changedProperties: []
---------------
 An array of all property keys that reflect the last `change` event. Available on all instances.
+--------------
 
 #### properties: {}
---------------
 A collection of custom accessors that override default `model.get` and `model.set` methods. For example:
 
 ```javascript
@@ -255,6 +253,7 @@ properties: {
 }
 ```
 This gives you great versatility but it does require some understanding of the inner workings of Model. The important thing to remember is that the `set` method is a proxy and relies on the __private__ setter `_set`, using the MooTools [overloadSetter](http://stackoverflow.com/a/4013500/126998). The same thing applies to `get`, which is overloaded through `overloadGetter`.
+--------------
 
 ### Model validators*
 
