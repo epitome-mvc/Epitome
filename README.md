@@ -18,6 +18,9 @@ Epitome's API is still subject to small changes and improvements (mostly additio
 
 Current version: **0.1.6-AMD**
 
+<a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
+<a class="btn btn-large" href="http://epitome.tenderapp.com/discussion/new" target="_blank">Issue / Discussion on Tender</a>
+
 ## Changelog
 - 0.1.6
  - build.js server changes
@@ -31,9 +34,6 @@ Current version: **0.1.6-AMD**
  - breaking API change. deprecated: `model.sync.parse`, replaced with `preProcessor` and `postProcessor`
 
 All individual components of Epitome work as normal javscript files to be used in a browser as well as through `require.js` modules. See [Downloading + Building](#download-building)
-
-<a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
-<a class="btn btn-large" href="http://epitome.tenderapp.com/discussion/new" target="_blank">Issue / Discussion on Tender</a>
 
 ## Epitome.Model
 
