@@ -179,7 +179,8 @@ Empties the model. No change event. Event is observed by Collections the model i
 
 There are several additional properties each model instance will have.
 
-#### _attributes: {}
+#### \_attributes: {}
+
 The attributes object is __public__ (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by `model.toJSON()`
 ---------------
 #### collections: []
