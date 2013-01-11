@@ -16,10 +16,17 @@ If you feel strongly about semantics of the patterns used, you should look at [D
 
 Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-Current version: **0.1.4-AMD**
+Current version: **0.1.6-AMD**
 
 ## Changelog
-
+- 0.1.6
+ - build.js server changes
+ - moved to uglify2 for minification
+ - updated Epitome-min.js to reflect
+ - prevented stacking up for function deocration for Model instances' `.fireEvent`
+ - merged example tweak PR
+- 0.1.5
+ - small tweaks to AMD/browser wrappers, no breaking changes
 - 0.1.4
  - breaking API change. deprecated: `model.sync.parse`, replaced with `preProcessor` and `postProcessor`
 
