@@ -14,11 +14,12 @@
 				evaluate: /<%([\s\S]+?)%>/g,
 				// literal out is <%=property%>
 				normal: /<%=([\s\S]+?)%>/g,
+				// safe scripts
+				escape: /<%-([\s\S]+?)%>/g,
 
 				// these are internals you can change if you like
 				noMatch: /.^/,
-				escaper: /\\|'|\r|\n|\t|\u2028|\u2029/g,
-				unescaper: /\\(\\|'|r|n|t|u2028|u2029)/g
+				escaper: /\\|'|\r|\n|\t|\u2028|\u2029/g
 			},
 
 			Implements: [Options],
@@ -26,8 +27,7 @@
 			initialize: function(options) {
 				this.setOptions(options);
 
-				var unescaper = this.options.unescaper,
-					escapes = this.escapes = {
+				var escapes = this.escapes = {
 						'\\': '\\',
 						"'": "'",
 						'r': '\r',
@@ -41,45 +41,63 @@
 					this[value] = key;
 				}, escapes);
 
+				this.matcher = new RegExp([
+					(this.options.escape || this.options.noMatch).source,
+					(this.options.normal || this.options.noMatch).source,
+					(this.options.evaluate || this.options.noMatch).source
+				].join('|') + '|$', 'g');
 
-				this.unescape = function(code) {
-					return code.replace(unescaper, function(match, escape) {
-						return escapes[escape];
-					});
-				};
 				return this;
 			},
 
-			template: function(str, data) {
+			template: function(text, data, options) {
 				// the actual method that compiles a template with some data.
-				var o = this.options,
+				var o = options ? Object.merge(this.options, options) : this.options,
+					render,
 					escapes = this.escapes,
-					unescape = this.unescape,
-					noMatch = o.noMatch,
 					escaper = o.escaper,
-					template,
-					source = [
-						'var __p=[],print=function(){__p.push.apply(__p,arguments);};',
-						'with(obj||{}){__p.push(\'',
-						str.replace(escaper, function(match) {
-							return '\\' + escapes[match];
-						}).replace(o.normal || noMatch, function(match, code) {
-							// these are normal literal output first, eg. <%= %>
-							return "',\nobj['" + unescape(code) + "'],\n'";
-						}).replace(o.evaluate || noMatch, function(match, code) {
-							// the evaluating block is after so <% logic %>
-							return "');\n" + unescape(code) + "\n;__p.push('";
-						}),
-						"');\n}\nreturn __p.join('');"
-					].join(''),
-					render = new Function('obj', '_', source);
+					index = 0,
+					source = "__p+='";
+
+				text.replace(this.matcher, function(match, escape, interpolate, evaluate, offset) {
+					source += text.slice(index, offset)
+						.replace(escaper, function(match) { return '\\' + escapes[match]; });
+
+					if (escape) {
+						source += "'+\n((__t=(" + escape + "))==null?'':__t.stripScripts())+\n'";
+					}
+					if (interpolate) {
+						source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
+					}
+					if (evaluate) {
+						source += "';\n" + evaluate + "\n__p+='";
+					}
+					index = offset + match.length;
+					return match;
+				});
+				source += "';\n";
+
+				// If a variable is not specified, place data values in local scope.
+				if (!o.variable) source = 'with(obj||{}){\n' + source + '}\n';
+
+				source = "var __t,__p='',__j=Array.prototype.join," +
+					"print=function(){__p+=__j.call(arguments,'');};\n" +
+					source + "return __p;\n";
+
+				try {
+					render = new Function(o.variable || 'obj', source);
+				} catch (e) {
+					e.source = source;
+					throw e;
+				}
 
 				if (data) return render(data);
-
-				template = function(data) {
+				var template = function(data) {
 					return render.call(this, data);
 				};
-				template.source = 'function(obj){\n' + source + '\n}';
+
+				// Provide the compiled function source as a convenience for precompilation.
+				template.source = 'function(' + (o.variable || 'obj') + '){\n' + source + '}';
 
 				return template;
 			}
@@ -96,3 +114,4 @@
 		exports.Epitome.Template = wrap(exports.Epitome);
 	}
 }(this));
+
