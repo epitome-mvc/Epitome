@@ -2,6 +2,28 @@
 ;(function(exports) {
 	'use strict';
 
+	(function(){
+		// Add to string proto 
+		var escapes = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#x27;',
+			'/': '&#x2F;'
+		}, escaper = new RegExp('['+Object.keys(escapes).join('')+']', 'g');
+	
+		String.implement({
+			escape: function () {
+				// Escapes a string for insertion into HTML, 
+				// replacing &, <, >, ", ', and / characters. 
+				return String(this).replace(escaper, function(match){
+					return escapes[match];
+				});
+			}
+		});
+	}());
+
 	// wrapper function for requirejs or normal object
 	var wrap = function() {
 
@@ -14,7 +36,7 @@
 				evaluate: /<%([\s\S]+?)%>/g,
 				// literal out is <%=property%>
 				normal: /<%=([\s\S]+?)%>/g,
-				// safe scripts
+				// safe scripts and tags, <%-property%>
 				escape: /<%-([\s\S]+?)%>/g,
 
 				// these are internals you can change if you like
@@ -64,10 +86,10 @@
 						.replace(escaper, function(match) { return '\\' + escapes[match]; });
 
 					if (escape) {
-						source += "'+\n((__t=(" + escape + "))==null?'':__t.stripScripts())+\n'";
+						source += "'+\n((__t=(obj['" + escape + "']))==null?'':String.escape(__t))+\n'";
 					}
 					if (interpolate) {
-						source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
+						source += "'+\n((__t=(obj['" + interpolate + "']))==null?'':__t)+\n'";
 					}
 					if (evaluate) {
 						source += "';\n" + evaluate + "\n__p+='";
@@ -78,7 +100,7 @@
 				source += "';\n";
 
 				// If a variable is not specified, place data values in local scope.
-				if (!o.variable) source = 'with(obj||{}){\n' + source + '}\n';
+				if (!o.variable) source = 'obj=obj||{};with(obj){\n' + source + '}\n';
 
 				source = "var __t,__p='',__j=Array.prototype.join," +
 					"print=function(){__p+=__j.call(arguments,'');};\n" +
@@ -98,7 +120,6 @@
 
 				// Provide the compiled function source as a convenience for precompilation.
 				template.source = 'function(' + (o.variable || 'obj') + '){\n' + source + '}';
-
 				return template;
 			}
 		});

@@ -26,6 +26,8 @@ buster.testCase('Basic Epitome template test >', {
 		this.expectSimple = 'This is a template test';
 		this.expectLogic = 'This is a template logic test';
 
+		this.templateEscapes = 'This is an <%-escaped%> variable';
+
 		this.templateEngine = new Epitome.Template();
 	},
 
@@ -46,6 +48,11 @@ buster.testCase('Basic Epitome template test >', {
 	'Expect a compiled template to be a re-usable function >': function() {
 		var compiled = this.templateEngine.template(this.templateLogic);
 		buster.assert.isFunction(compiled);
+	},
+
+	'Expect escaped variables to strip tags >': function(){
+		var text = this.templateEngine.template(this.templateEscapes, {escaped:'esca<script>alert("hi");</script>ped'});
+		buster.assert.equals(text, "This is an esca&lt;script&gt;alert(&quot;hi&quot;);&lt;&#x2F;script&gt;ped variable");  
 	}
 
 });

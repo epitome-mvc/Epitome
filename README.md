@@ -22,6 +22,11 @@ Current version: **0.1.6-AMD**
 <a class="btn btn-large" href="http://epitome.tenderapp.com/discussion/new" target="_blank">Issue / Discussion on Tender</a>
 
 ## Changelog
+- 0.1.7
+ - updated templating engine to a later version based on the one in _.js
+ - added support for `<%-var%>` syntax to allow escaping of entities
+ - Internally, extending the MooTools String proto and adding `escape` for dealing with entities in strings.
+ - Updated tests
 - 0.1.6
  - build.js server changes
  - moved to uglify2 for minification
@@ -1074,18 +1079,25 @@ Calling eliminate on a model or a collection will destroy the stored data the br
 The Template module is a dumbed down implementation of the `underscore.js` _.template(), which in turn was based on work by John Resig. The main differences are the following:
 
 * referencing object keys in the template that have no matching data causes no javascript exception
-* only 2 types of tags are supported: `<%=normalKey%>` and `<% evaluated logic %>`
-* conditional returns do not output. blocks are preferred, eg. `<% if (foo) { %>is foo<% } else { %>is not foo<% } %>`
+* blocks can be used like so: `<% if (foo) { %>is foo<% } else { %>is not foo<% } %>`
+* conditional output can also work through `print` like this: 
+
+```javascript
+<%-address_1%> <% if(address_2){ print(', ', address_2) } %>
+```
 
 You can modify the syntax for the tags by altering the regex in the constructor:
 ```javascript
 options: {
-    // default block logic syntax is <% if (data.prop) { %>
-    evaluate: /<%([\s\S]+?)%>/g,
-    // literal out is <%=property%>
-    normal: /<%=([\s\S]+?)%>/g
+	// evaluated logic syntax: <% if (data.prop) { %>
+	evaluate: /<%([\s\S]+?)%>/g,
+	// literal output: <%=property%>
+	normal: /<%=([\s\S]+?)%>/g,
+	// DOM safe scripts and tags: <%-property%>
+	escape: /<%-([\s\S]+?)%>/g
 }
 ```
+For more info, read the underscore.js documentation. We still recommend using Mustache or Handlebars instead.
 
 ## Eptiome.Router
 
