@@ -198,7 +198,7 @@
 		define(['./epitome'], wrap);
 	}
 	else {
-		exports.Epitome = exports.Epitome || {};
+		exports.Epitome || (exports.Epitome = {});
 		exports.Epitome.Router = wrap(exports.Epitome);
 	}
 }(this));

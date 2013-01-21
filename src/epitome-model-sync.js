@@ -266,7 +266,7 @@
 		define(['./epitome-model'], wrap);
 	}
 	else {
-		exports.Epitome = exports.Epitome || {Model:{}};
+		exports.Epitome || (exports.Epitome = {Model:{}});
 		exports.Epitome.Model.Sync = wrap(exports.Epitome.Model);
 	}
 }(this));

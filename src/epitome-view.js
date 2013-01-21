@@ -187,7 +187,7 @@
 		define(['./epitome-template', './epitome-model', './epitome-collection'], wrap);
 	}
 	else {
-		exports.Epitome = exports.Epitome || {Template:{},Model:{},Collection:{}};
+		exports.Epitome || (exports.Epitome = {Template:{},Model:{},Collection:{}});
 		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection);
 	}
 }(this));
