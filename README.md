@@ -748,8 +748,9 @@ When called, it will asynchronously try to go and fetch Model data. When data ar
 
 Returns the instance 'now' but because it is async, applying anything to the collection before the `fetch` event has fired may have unexpected results.
 
-The `queryParams` object, which is also optional, allows you to pass on any `GET` arguments to the `baseUrl`. So if your default endpoint looks like this:
-`/comments/2/` and you call `.fetch(false, {page: 2})`, it will actually get `/comments/2/?page=2`.  
+The `queryParams` object, which is also optional, allows you to pass on any `GET` arguments to the `baseUrl`. If your default endpoint looks like this:
+
+`/comments/2/` and you call `collection.fetch(false, {page: 2})`, it will actually get `/comments/2/?page=2`.
 
 ### postProcessor
 ---
