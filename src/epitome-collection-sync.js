@@ -62,8 +62,9 @@
 				return resp;
 			},
 
-			fetch: function(refresh) {
-				// get a list of models. `@refresh (boolean)` will empty collection first
+			fetch: function(refresh, queryParams) {
+				// get a list of models. `@refresh (boolean)` will empty collection first, queryParams passed as get args
+				queryParams || (queryParams = {});
 
 				// set the onSuccess event for this fetch call
 				this._throwAwayEvent(function(models) {
@@ -79,7 +80,7 @@
 					this.fireEvent('fetch', [models])
 				});
 
-				this.request.get();
+				this.request.get(queryParams);
 
 				// dangerous. async stuff coming.
 				return this;

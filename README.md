@@ -22,6 +22,8 @@ Current version: **0.1.7**
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a>
 
 ## Changelog
+- 0.1.8
+ - added `queryParams` support to Collection.Sync::fetch, allows for pagination etc.
 - 0.1.7
  - updated templating engine to a later version based on the one in _.js
  - added support for `<%-var%>` syntax to allow escaping of entities
@@ -732,7 +734,7 @@ In terms of differences with the original prototype, the `options`, needs just o
 ---
 <div class="alert">
 <p>
-_Expects optional arguments: (Boolean) refresh_
+_Expects optional arguments: `(Boolean) refresh`, `(Object) queryParams`_
 </p>
 <p>
 _Returns: `this`_
@@ -745,6 +747,8 @@ _Events: `fetch`_
 When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by `id`. If they exist already, a `set()` is called that will merge new data into the Model instance and fire `change` events as appropriate. If the optional `refresh` argument is set to true, the current collection will be emptied first via [empty](#epitome-collection/empty).
 
 Returns the instance 'now' but because it is async, applying anything to the collection before the `fetch` event has fired may have unexpected results.
+
+The queryParams
 
 ### postProcessor
 ---

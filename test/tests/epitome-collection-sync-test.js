@@ -47,5 +47,5 @@ buster.testCase('Basic Epitome empty collection via sync creation >', {
 	'Expect models in collection not to be 0 >': function() {
 		buster.assert.equals(this.collection._models.length, 10);
 	}
-
 });
+

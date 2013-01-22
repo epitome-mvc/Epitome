@@ -1,44 +1,45 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Epitome view test</title>
-</head>
+	<meta charset="utf-8">
+	<title>Epitome view collection test</title>
 <style>
-    div.task {
-        background: white;
-        margin: 5px;
-        padding: 5px;
-        font-family: arial;
-    }
+	div.task {
+		background: white;
+		margin: 5px;
+		padding: 5px;
+		font-family: arial;
+	}
 
-    div.task-title {
-        font-weight: bold;
-    }
+	div.task-title {
+		font-weight: bold;
+	}
 
-    .floatRight {
-        float: right;
-    }
+	.floatRight {
+		float: right;
+	}
 
-    .clear {
-        clear: both;
-    }
+	.clear {
+		clear: both;
+	}
 </style>
+</head>
 <body>
 
 <div id="demo" style='padding:5px;background:#c1c1c1'>
 
-    <div class="task-controls">
-        <button class="task-create">new</button>
-        <button class="change-one">change model 1</button>
-        <button class="sort" data-sort="id">sort id</button>
-        <button class="sort" data-sort="id:desc">sort id desc</button>
-        <button class="sort" data-sort="titte">sort title</button>
-        <button class="sort" data-sort="titte:desc">sort title desc</button>
-    </div>
+	<div class="task-controls">
+		<button class="task-create">new</button>
+		<button class="change-one">change model 1</button>
+		<button class="sort" data-sort="id">sort id</button>
+		<button class="sort" data-sort="id:desc">sort id desc</button>
+		<button class="sort" data-sort="titte">sort title</button>
+		<button class="sort" data-sort="titte:desc">sort title desc</button>
+	</div>
 </div>
 <script src='lib/mootools-core.js'></script>
 <script src='../Epitome-min.js'></script>
+<script src='../src/epitome-collection-sync.js'></script>
 <script src='js/view-collection-demo.js'></script>
 </body>
 </html>

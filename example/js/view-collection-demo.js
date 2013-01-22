@@ -46,7 +46,10 @@ var testCollectionProto = new Class({
 });
 
 var testCollection = new testCollectionProto();
-testCollection.fetch();
+testCollection.fetch(false, {
+	page: 1,
+	perPage: 50
+});
 
 var testInstance = new testView({
 
