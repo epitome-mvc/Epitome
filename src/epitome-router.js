@@ -1,20 +1,20 @@
 /*jshint mootools:true */
-;(function(exports) {
+;(function(exports){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function() {
+	var wrap = function(){
 
 		var hc = 'hashchange',
 			hcSupported = ('on' + hc) in window,
 			eventHosts = [window, document],
 			timer,
-			getQueryString = function(queryString) {
+			getQueryString = function(queryString){
 				var result = {},
 					re = /([^&=]+)=([^&]*)/g,
 					m;
 
-				while (m = re.exec(queryString)) {
+				while (m = re.exec(queryString)){
 					result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 				}
 
@@ -23,9 +23,9 @@
 
 		Element.Events.hashchange = {
 			// Cross browser support for onHashChange event - http://github.com/greggoryhz/MooTools-onHashChange-Event/
-			onAdd: function () {
+			onAdd: function(){
 				var hash = location.hash,
-					check = function () {
+					check = function(){
 						if (hash == location.hash)
 							return;
 
@@ -47,7 +47,7 @@
 			Implements: [Options, Events],
 
 			options: {
-				triggerOnLoad : true // check route on load
+				triggerOnLoad: true // check route on load
 			},
 
 			routes: {
@@ -56,33 +56,33 @@
 
 			boundEvents: {},
 
-			initialize: function(options) {
+			initialize: function(options){
 				var self = this;
 
 				this.setOptions(options);
 				this.options.routes && (this.routes = this.options.routes);
 
-				window.addEvent(hc, function(e) {
+				window.addEvent(hc, function(e){
 					var hash = location.hash,
 						path = hash.split('?')[0],
 						query = hash.split('?')[1] || '',
 						notfound = true,
 						route;
 
-					for(route in self.routes) {
+					for (route in self.routes){
 						var keys = [],
 							regex = self.normalize(route, keys, true, false),
 							found = regex.exec(path),
 							routeEvent = false;
 
-						if (found) {
+						if (found){
 							notfound = false;
 							self.req = found[0];
 
 							var args = found.slice(1),
 								param = {};
 
-							Array.each(args, function(a, i) {
+							Array.each(args, function(a, i){
 								typeof keys[i] !== 'undefined' && (param[keys[i].name] = a);
 							});
 
@@ -97,7 +97,7 @@
 							self.fireEvent('before', routeEvent);
 
 							// if there is an identifier and an event added
-							if (routeEvent && self.$events[routeEvent]) {
+							if (routeEvent && self.$events[routeEvent]){
 								// route event was defined, fire specific before pseudo
 								self.fireEvent(routeEvent + ':before');
 								// call the route event handler itself, pass params as arguments
@@ -125,8 +125,8 @@
 				this.options.triggerOnLoad && window.fireEvent(hc);
 			},
 
-			navigate: function(route, trigger) {
-				if (location.hash == route && trigger) {
+			navigate: function(route, trigger){
+				if (location.hash == route && trigger){
 					window.fireEvent(hc);
 				}
 				else {
@@ -134,15 +134,15 @@
 				}
 			},
 
-			normalize: function(path, keys, sensitive, strict) {
+			normalize: function(path, keys, sensitive, strict){
 				// normalize by https://github.com/visionmedia/express
 				if (path instanceof RegExp) return path;
 
-				path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g, function(_, slash, format, key, capture, optional) {
+				path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g,function(_, slash, format, key, capture, optional){
 
 					keys.push({
 						name: key,
-						optional: !! optional
+						optional: !!optional
 					});
 
 					slash = slash || '';
@@ -159,7 +159,7 @@
 				return new RegExp('^' + path + '$', sensitive ? '' : 'i');
 			},
 
-			addRoute: function(obj) {
+			addRoute: function(obj){
 				// adds a new route, expects keys @route (string), @id (string), @events (object)
 				if (!obj || !obj.route || !obj.id || !obj.events)
 					return this.fireEvent('error', 'Please include route, id and events in the argument object when adding a route');
@@ -177,7 +177,7 @@
 				return this.fireEvent('route:add', obj);
 			},
 
-			removeRoute: function(route) {
+			removeRoute: function(route){
 				if (!route || !this.routes[route] || !this.boundEvents[route])
 					return this.fireEvent('error', 'Could not find route or route is not removable');
 
@@ -193,7 +193,7 @@
 	}; // end wrap
 
 
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === 'function' && define.amd){
 		// requires epitome object only.
 		define(['./epitome'], wrap);
 	}
@@ -202,4 +202,3 @@
 		exports.Epitome.Router = wrap(exports.Epitome);
 	}
 }(this));
-

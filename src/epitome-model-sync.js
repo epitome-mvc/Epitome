@@ -1,5 +1,6 @@
 /*jshint mootools:true */
-;(function(exports) {
+/*jshint mootools:true */
+;(function(exports){
 	'use strict';
 
 	// re-implement Request.JSON correctly
@@ -20,7 +21,7 @@
 			var json;
 			try {
 				json = this.response.json = JSON.decode(text, this.options.secure);
-			} catch (error){
+			} catch (error) {
 				this.fireEvent('error', [text, error]);
 				return;
 			}
@@ -30,7 +31,7 @@
 	});
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Model) {
+	var wrap = function(Model){
 
 		var syncPseudo = 'sync:';
 
@@ -51,11 +52,11 @@
 			properties: {
 				urlRoot: {
 					// normal convention - not in the model!
-					set: function(value) {
+					set: function(value){
 						this.urlRoot = value;
 						delete this._attributes['urlRoot'];
 					},
-					get: function() {
+					get: function(){
 						// make sure we return a sensible url.
 						var base = this.urlRoot || this.options.urlRoot || 'no-urlRoot-set';
 						base.charAt(base.length - 1) != '/' && (base += '/');
@@ -70,16 +71,20 @@
 				emulateREST: false,
 				// if you prefer content-type to be application/json for POST / PUT, set to true
 				useJSON: false
+				// request headers
+				// , headers: {}
 			},
 
-			initialize: function(obj, options) {
+			initialize: function(obj, options){
 				// needs to happen first before events are added,
 				// in case we have custom accessors in the model object.
+				this.setOptions(options);
 				this.setupSync();
-				this.parent(obj, options);
+
+				this.parent(obj, this.options);
 			},
 
-			sync: function(method, model) {
+			sync: function(method, model){
 				// internal low level api that works with the model request instance.
 				var options = {};
 
@@ -96,7 +101,7 @@
 				}
 
 				// for real REST interfaces, produce native JSON post
-				if (this.options.useJSON && ['POST','PUT','DELETE'].contains(method)) {
+				if (this.options.useJSON && ['POST', 'PUT', 'DELETE'].contains(method)){
 					// serialise model to a JSON string
 					options.data = JSON.encode(options.data);
 					// disable urlEncoded to escape mootools Request trap for content type form-urlencoded
@@ -125,44 +130,51 @@
 				return this;
 			},
 
-			setupSync: function() {
+			setupSync: function(){
 				var self = this,
 					rid = 0,
-					incrementRequestId = function() {
+					incrementRequestId = function(){
 						// request ids are unique and private. private to up them.
 						rid++;
-					};
+					},
+					obj;
 
 				// public methods - next likely is current rid + 1
-				this.getRequestId = function() {
+				this.getRequestId = function(){
 					return rid + 1;
 				};
 
-				this.request = new EpitomeRequest({
+				obj = {
 					// one request at a time
 					link: 'chain',
 					url: this.get('urlRoot'),
 					emulation: this.options.emulateREST,
 					onRequest: incrementRequestId,
-					onCancel: function() {
+					onCancel: function(){
 						this.removeEvents(syncPseudo + rid);
 					},
-					onSuccess: function(responseObj) {
+					onSuccess: function(responseObj){
 						responseObj = self.postProcessor && self.postProcessor(responseObj);
 						self.fireEvent(syncPseudo + rid, [responseObj]);
 						self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
 						// only becomes an existing model after a successful sync
 						self.isNewModel = false;
 					},
-					onFailure: function() {
+					onFailure: function(){
 						self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
 						self.fireEvent('requestFailure', [this.status, this.response.text]);
 					}
-				});
+				};
+
+				if (this.options.headers){
+					obj.headers = this.options.headers;
+				}
+
+				this.request = new EpitomeRequest(obj);
 
 				// export crud methods to model.
-				Object.each(methodMap, function(requestMethod, protoMethod) {
-					self[protoMethod] = function(model) {
+				Object.each(methodMap, function(requestMethod, protoMethod){
+					self[protoMethod] = function(model){
 						this.sync(protoMethod, model);
 					};
 				});
@@ -170,7 +182,7 @@
 				return this;
 			},
 
-			_throwAwaySyncEvent: function(eventName, callback) {
+			_throwAwaySyncEvent: function(eventName, callback){
 				// a pseudo :once event for each sync that sets the model to response and can do more callbacks.
 
 				// normally, methods that implement this will be the only ones to auto sync the model to server version.
@@ -179,9 +191,9 @@
 				var self = this,
 					throwAway = {};
 
-				throwAway[eventName] = function(responseObj) {
+				throwAway[eventName] = function(responseObj){
 					// if we have a response object
-					if (responseObj && typeof responseObj == 'object') {
+					if (responseObj && typeof responseObj == 'object'){
 						self.set(responseObj);
 					}
 
@@ -195,19 +207,19 @@
 				return this.addEvents(throwAway);
 			}.protect(),
 
-			postProcessor: function(resp) {
+			postProcessor: function(resp){
 				// post-processor for json response being passed to the model.
 				return resp;
 			},
 
-			preProcessor: function(data) {
+			preProcessor: function(data){
 				// pre-processor for json object before they are sent to server
 				return data;
 			},
 
-			fetch: function() {
+			fetch: function(){
 				// perform a .read and then set returned object key/value pairs to model.
-				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
+				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
 					this.fireEvent('fetch');
 					this.isNewModel = false;
 				});
@@ -216,11 +228,11 @@
 				return this;
 			},
 
-			save: function(key, value) {
+			save: function(key, value){
 				// saves model or accepts a key/value pair/object, sets to model and then saves.
-				var method = ['update','create'][+this.isNew()];
+				var method = ['update', 'create'][+this.isNew()];
 
-				if (key) {
+				if (key){
 					// if key is an object, go to overloadSetter.
 					var ktype = typeOf(key),
 						canSet = ktype == 'object' || (ktype == 'string' && typeof value != 'undefined');
@@ -229,7 +241,7 @@
 				}
 
 				// we want to set this.
-				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
+				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
 					this.fireEvent('save');
 					this.fireEvent(method);
 				});
@@ -241,9 +253,9 @@
 				return this;
 			},
 
-			destroy: function() {
+			destroy: function(){
 				// destroy the model, send delete to server
-				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function() {
+				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
 					this._attributes = {};
 					this.fireEvent('destroy');
 				});
@@ -251,8 +263,8 @@
 				this.delete_();
 			},
 
-			isNew: function() {
-				if (typeof this.isNewModel === 'undefined') {
+			isNew: function(){
+				if (typeof this.isNewModel === 'undefined'){
 					this.isNewModel = !this.get('id');
 				}
 
@@ -261,12 +273,12 @@
 		});
 	}; // end wrap
 
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === 'function' && define.amd){
 		// requires epitome object only.
 		define(['./epitome-model'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Model:{}});
+		exports.Epitome || (exports.Epitome = {Model: {}});
 		exports.Epitome.Model.Sync = wrap(exports.Epitome.Model);
 	}
 }(this));
