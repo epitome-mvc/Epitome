@@ -314,6 +314,8 @@ A model `id` with your model as well as setup a `urlRoot` either as a property o
 
 An additional option has been added `options.emulateREST: true || false`, which is being passed to the Request instance. If your server has no CRUD mapping, emulation can be enabled so everything will go through POST/GET requests with `_method` containing the original intent.
 
+`headers` (object) is an extra argument that gets passed to the Request instance, allowing you to set whatever you want for CSRF or CORS on your Model.Sync calls.
+
 ### sync
 ---
 <div class="alert">
