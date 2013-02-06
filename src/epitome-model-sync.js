@@ -1,5 +1,4 @@
 /*jshint mootools:true */
-/*jshint mootools:true */
 ;(function(exports){
 	'use strict';
 
