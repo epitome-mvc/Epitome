@@ -55,7 +55,12 @@ http.createServer(function(req, res){
 		ip = req.connection.remoteAddress;
 
 	require('dns').reverse(ip, function(err, domains){
-		console.log('Started session for ' + greenOn + ip + greenOff + ' - ' + domains.join(' '));
+		if (!err){
+			console.log('Started session for ' + greenOn + ip + greenOff + ' - ' + domains.join(' '));
+		}
+		else {
+			console.log('Started session for ' + greenOn + ip + greenOff);
+		}
 	});
 
 	req.on('close', function(err){
