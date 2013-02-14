@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+'use strict';
+
+require('colors');
 
 var http = require('http'),
 	url = require('url'),
@@ -8,10 +11,6 @@ var http = require('http'),
 	host = '127.0.0.1',
 	port = 39170,
 	config,
-	greenOn = '\033[32m',
-	greenOff = '\033[39m',
-	redOn = '\033[31m',
-	redOff = greenOff,
 	appBuild = ({
 		baseUrl: '../../src/',
 		optimize: 'uglify2',
@@ -36,7 +35,7 @@ var http = require('http'),
 	};
 
 function respond(res, code, contents){
-	console.log('[' + greenOn + 'LOG' + greenOff +'] ' + code);
+	console.log('[' + 'LOG'.green + '] ' + code);
 	res.writeHead(code, {
 		'Content-Type': (code === 200 ? 'application/javascript;charset=UTF-8' : 'text/plain'),
 		'Content-Length': contents.length
@@ -56,10 +55,10 @@ http.createServer(function(req, res){
 
 	require('dns').reverse(ip, function(err, domains){
 		if (!err){
-			console.log('Started session for ' + greenOn + ip + greenOff + ' - ' + domains.join(' '));
+			console.log('Started session for ' + ip.green + ' - ' + domains.join(' '));
 		}
 		else {
-			console.log('Started session for ' + greenOn + ip + greenOff);
+			console.log('Started session for ' + ip.green);
 		}
 	});
 
@@ -69,18 +68,34 @@ http.createServer(function(req, res){
 
 	req.on('end', function(){
 		var deps = [],
+			temp,
 			allowBuild = true;
 
 		// anything in the ?build= arg? needs to be comma separated.
 		if (query.build){
 			// make a file that requires all
-			deps = query.build.split(',');
+			temp = query.build.split(',');
 
 			console.log('Created a custom include with ' + deps.join(', '));
 
-			fs.writeFile(file, deps.join(','), function(error){
+			temp = temp.filter(function(dep){
+				var e = fs.existsSync('../src/' + dep + '.js');
+				e || console.log('Error:'.red + ' skipping ' + dep.green);
+				return e;
 			});
-			appBuild.include = deps;
+
+			if (!temp.length){
+				console.log('No custom includes found, returning main instead');
+				id = 'base.js';
+				deps = appBuild.include;
+			}
+			else {
+				deps = temp;
+				fs.writeFile(file, deps.join(','), function(error){
+					error && console.log('Error'.red + ' - failed to write ' + file.green);
+				});
+				appBuild.include = deps;
+			}
 		}
 		else if (u.pathname != '/' && u.pathname.length == 10 && u.pathname.match(/\/([A-Z0-9]+)/)){
 			id = u.pathname.replace('/', '');
@@ -106,9 +121,9 @@ http.createServer(function(req, res){
 
 		var buildFile = './hash/' + id + '.json',
 			handleBuilding = function(){
-				ab = require(buildFile);
+				var ab = require(buildFile);
 
-				console.log('['+greenOn+'LOG'+greenOff+'] running: r.js -o ' + file);
+				console.log('[' + 'LOG'.green +'] running: r.js -o ' + file);
 
 				ps.exec('r.js -o ' + buildFile, function(error, output){
 					console.log(output);
@@ -138,4 +153,4 @@ http.createServer(function(req, res){
 
 }).listen(port);  // add host here to limit it
 
-console.log(greenOn + 'Epitome' + greenOff + ' Build Server running at http://' + host + ':' + port + '/');
+console.log('Epitome'.green + ' Build Server running at http://' + host + ':' + port + '/');

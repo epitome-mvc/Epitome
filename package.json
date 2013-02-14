@@ -26,7 +26,8 @@
   "main": "./src/epitome-cjs.js",
   "license": "MIT (http://mootools.net/license.txt)",
   "devDependencies": {
-    "buster": ">=0.6.2"
+    "buster": ">=0.6.2",
+	"colors": "*"
   },
   "engines": {
     "node": ">=0.8.17"
