@@ -57,11 +57,6 @@
 				return this;
 			},
 
-			parse: function(resp) {
-				// pre-processor for json object from response.
-				return resp;
-			},
-
 			fetch: function(refresh, queryParams) {
 				// get a list of models. `@refresh (boolean)` will empty collection first, queryParams passed as get args
 				queryParams || (queryParams = {});
