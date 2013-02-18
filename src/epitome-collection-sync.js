@@ -54,6 +54,7 @@
 					}
 				});
 
+                this.request.setHeader('Accept', 'application/json,text/plain;q=0.2,text/html;q=0.1');
 				return this;
 			},
 

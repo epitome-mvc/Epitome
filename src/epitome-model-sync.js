@@ -11,7 +11,8 @@
 		initialize: function(options){
 			this.parent(options);
 			Object.append(this.headers, {
-				'Accept': 'application/json',
+                // even though we want json, we will accept more CT so we can fire failure on mismatch.
+				'Accept': 'application/json,text/plain;q=0.2,text/html;q=0.1',
 				'X-Request': 'JSON'
 			});
 		},
@@ -65,12 +66,17 @@
 			},
 
 			options: {
-				// by default, HTTP emulation is enabled for mootools request class.
+                // can override Request constructor with a compatible MooTools Request
+                request: EpitomeRequest,
+
+                // by default, HTTP emulation is enabled for mootools request class.
 				// assume native REST backend
 				emulateREST: false,
+
 				// if you prefer content-type to be application/json for POST / PUT, set to true
 				useJSON: false
-				// request headers
+
+				// pass on custom request headers
 				// , headers: {}
 			},
 
@@ -170,7 +176,7 @@
 					obj.headers = this.options.headers;
 				}
 
-				this.request = new EpitomeRequest(obj);
+				this.request = new this.options.request(obj);
 
 				// export crud methods to model.
 				Object.each(methodMap, function(requestMethod, protoMethod){
