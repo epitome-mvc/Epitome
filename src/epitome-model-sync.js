@@ -11,7 +11,7 @@
 		initialize: function(options){
 			this.parent(options);
 			Object.append(this.headers, {
-                // even though we want json, we will accept more CT so we can fire failure on mismatch.
+				// even though we want json, we will accept more CT so we can fire failure on mismatch.
 				'Accept': 'application/json,text/plain;q=0.2,text/html;q=0.1',
 				'X-Request': 'JSON'
 			});
@@ -66,10 +66,10 @@
 			},
 
 			options: {
-                // can override Request constructor with a compatible MooTools Request
-                request: EpitomeRequest,
+				// can override Request constructor with a compatible MooTools Request
+				request: EpitomeRequest,
 
-                // by default, HTTP emulation is enabled for mootools request class.
+				// by default, HTTP emulation is enabled for mootools request class.
 				// assume native REST backend
 				emulateREST: false,
 
