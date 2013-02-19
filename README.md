@@ -22,6 +22,14 @@ Current version: **0.1.10**
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a>
 
 ## Changelog
+- 0.2.0
+ - big shift in he way Sync works with servers. Previously, Model and Collection were only accepting `application/json` as
+ content type to be returned. Failing to receive that caused the browser not to fire any readystatechange events, which in
+ turn caused all change/save/sync/error events not to bubble. As of this version, Epitome will also accept `text/plain` and
+ `text/html` as fallbacks. There is still an expectation to convert the responseText to an Object, so failure to do so will
+ fire `error` events instead.
+ - Model.Sync now accept an optional argument `request`, which accepts a Class constructor for the MooTools Request with
+ your own definition of what success/failure is and conversion to JSON.
 - 0.1.10
  - fixed bug where fetch/save/create/update events were firing before model.isNew was being changed
 - 0.1.9
@@ -316,7 +324,9 @@ A model `id` with your model as well as setup a `urlRoot` either as a property o
 
 An additional option has been added `options.emulateREST: true || false`, which is being passed to the Request instance. If your server has no CRUD mapping, emulation can be enabled so everything will go through POST/GET requests with `_method` containing the original intent.
 
-`headers` (object) is an extra argument that gets passed to the Request instance, allowing you to set whatever you want for CSRF or CORS on your Model.Sync calls.
+`options.headers` (object) is an extra argument that gets passed to the Request instance, allowing you to set whatever you want for CSRF or CORS on your Model.Sync calls.
+
+`options.request` (Class) is a constructor to instantiate into `this.request` on the model instance. It needs to support all the APIs and functionality of MooTools' Request.JSON.
 
 ### sync
 ---
@@ -337,6 +347,10 @@ If no method is supplied, a `read` is performed.
 The second argument `model` is optional and should be a simple object. If it is not supplied, the default `model.toJSON()` is used instead.
 
 As a whole, you should NOT use the sync directly but elect to use the API methods for each specific request task.
+
+__WARNING:__ Epitome is a REST framework. Please make sure you are returning a valid JSON string or 204 (no content) after all requests -
+otherwise, the save events may not fire. Additionally, try to ensure `application/json` content type of your response, although
+`text/html` and `text/plain` will also be accepted, as long as the responseText can be parsed into an Object.
 
 ### postProcessor
 ---
