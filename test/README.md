@@ -51,7 +51,7 @@ Auto-testing is experimental but fairly good for MacOSX at present. You can see 
 
 The following console output is just an example, there are currently the following tests:
 ```
-Browser: 8 test cases, 72 tests, 72 assertions, 0 failures, 0 errors, 0 timeouts
+Browser: 14 test cases, 140 tests, 140 assertions, 0 failures, 0 errors, 0 timeouts
 Node: 5 test cases, 54 tests, 54 assertions, 0 failures, 0 errors, 0 timeout
 ```
 
@@ -61,23 +61,23 @@ When running tests, it goes something like this:
 
 ```sh
 dchristoff@Dimitars-iMac:~/projects/Epitome (master):
-> buster server &
+$ buster server &
 buster-server running on http://localhost:1111
 dchristoff@Dimitars-iMac:~/projects/Epitome (master):
-> buster test -r specification
-Firefox 13.0.1, OS X 10.7 (Lion)
-  ✓ Basic Epitome collection with a model creation > Expect models to be equal to number passed in constructor >
-  ✓ Basic Epitome collection with a model creation > Expect onChange on a model to fire for collection >
-  ✓ Basic Epitome collection with a model creation > Expect any Event on any model to fire for collection observer >
-Firefox 13.0.1, OS X 10.7 (Lion)
-  ✓ Basic Epitome empty collection creation > Expect a collection to be created >
+$ buster test -r specification
+Firefox 19.0, Mac OS X 10.7
+  ✓ Basic Epitome empty collection via sync creation > Expect a collection to be created >
+  ✓ Basic Epitome empty collection via sync creation > Expect a collection to have fetch >
+  ✓ Basic Epitome empty collection via sync creation > Expect models in collection not to be 0 >
+Firefox 19.0, Mac OS X 10.7
   ✓ Basic Epitome empty collection creation > Expect adding models to collection to fire onAdd event >
-  ✓ Basic Epitome empty collection creation > Expect removing models to collection to fire onRemove event >
-  ✓ Basic Epitome empty collection creation > Expect to be able to add models to the collection
-  ✓ Basic Epitome empty collection creation > Expect to be able to remove models from the collection
+  ✓ Basic Epitome empty collection creation > Expect not to be able to add the same model twice to the collection >
+  ✓ Basic Epitome empty collection creation > Expect a collection to be created >
+  ✓ Basic Epitome empty collection creation > Expect adding a model with the same cid twice to fire an add:error event >
+  ✓ Basic Epitome empty collection creation > Expect adding a model via an object only to create a model and add it >
 
   [...]
 
-
-13 test cases, 116 tests, 116 assertions, 0 failures, 0 errors, 0 timeouts
+14 test cases, 140 tests, 140 assertions, 0 failures, 0 errors, 0 timeouts
+Finished in 0.881s
 ```
