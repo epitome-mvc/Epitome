@@ -21,6 +21,11 @@ Current version: **0.2.0**
 <a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a>
 
+A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
+```HTML
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/epitome/0.2.0/Epitome-min.js"></script>
+```
+
 ## Changelog
 - 0.2.0
  - big shift in he way Sync works with servers. Previously, Model and Collection were only accepting `application/json` as
