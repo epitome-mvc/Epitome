@@ -27,6 +27,9 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
+- 0.2.1
+ - the default Epitome Object now returns an instance of Events so you can mediate like `Epitome.fireEvent('awesome')`
+ between components. 
 - 0.2.0
  - big shift in he way Sync works with servers. Previously, Model and Collection were only accepting `application/json` as
  content type to be returned. Failing to receive that caused the browser not to fire any readystatechange events, which in

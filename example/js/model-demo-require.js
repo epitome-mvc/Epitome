@@ -3,8 +3,12 @@ require.config({
 });
 
 // this will require main module, isequal and model
-require(['epitome-model-sync'], function(Model) {
+require(['epitome', 'epitome-model-sync'], function(Epitome, Model) {
 	// define a prototype for our model. You can just make an instance of Model but this is cleaner
+	Epitome.addEvent('ready', function(){
+		console.log('ready');
+	});
+
 	var testModel = new Class({
 
 		Extends: Model,
@@ -32,5 +36,7 @@ require(['epitome-model-sync'], function(Model) {
 	testInstance.set('foo', 'bar');
 
 	console.log(testInstance.toJSON());
+
+	Epitome.fireEvent('ready');
 
 });

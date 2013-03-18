@@ -5,7 +5,7 @@
 	// wrapper function for requirejs or normal object
 	var wrap = function() {
 		// this is just the host object for the Epitome modules
-		return {};
+		return new Events();
 	};
 
 	if (typeof define === 'function' && define.amd) {
