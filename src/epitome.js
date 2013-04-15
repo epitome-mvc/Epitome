@@ -60,6 +60,21 @@
 					});
 
 					console.log(obj.$subscribers);
+				},
+
+				stopListening: function(obj, type, fn){
+					var len;
+					Object.each(obj.$subscribers, function(value, key){
+						len = value.length;
+						if (typeof type !== 'undefined'){
+							if (key === type) while(len--)
+								(((fn && fn === value[len].fn) || !fn) && value[len].context === obj) && value.splice(len, 1);
+						}
+						else {
+							// no type, unsubscribe from all for that context object
+							while(len--) value[len].context === obj && value.splice(len, 1);
+						}
+					});
 				}
 			});
 
