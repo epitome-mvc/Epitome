@@ -11,11 +11,21 @@
 				return string.replace(/^on([A-Z])/, function(full, first){
 					return first.toLowerCase();
 				});
-			}, addEvent = function(type, fn, internal){
+			},
+			addEvent = function(type, fn, internal){
 				type = removeOn(type);
 
 				this.$events[type] = (this.$events[type] || []).include(fn);
-				if (internal) fn.internal = true;
+				return this;
+			}.overloadSetter(),
+			removeEvent = function(type, fn){
+				// does not remove remote subscribers. careful, can cause memory issues if you don't clean up
+				type = removeOn(type);
+				var events = this.$events[type];
+				if (events){
+					var index = events.indexOf(fn);
+					if (index != -1) delete events[index];
+				}
 				return this;
 			}.overloadSetter(),
 			all = '*',
@@ -24,6 +34,8 @@
 				Extends: Events,
 
 				on: addEvent,
+
+				off: removeEvent,
 
 				trigger: function(type, args, delay){
 					type = removeOn(type);
@@ -48,21 +60,24 @@
 				},
 
 				listenTo: function(obj, type, fn){
-					var args = [].slice.call(arguments);
-					if (args.length === 2){
+					// obj: instance to subscribe to
+					// type: particular event type or all events, defaults to '*'
+					// last argument is the function to call, can shift to 2nd argument.
+					if (typeof type === 'function'){
 						fn = type;
 						type = all;
 					}
-					obj.$subscribers[type] || (obj.$subscribers[type] = []);
-					obj.$subscribers[type].include({
+
+					obj.$subscribers[type] = (obj.$subscribers[type] || []).include({
 						context: obj,
 						fn: fn
 					});
-
-					console.log(obj.$subscribers);
 				},
 
 				stopListening: function(obj, type, fn){
+					// obj: instance to stop listening to
+					// type: particular event to unsubscribe from, or all events by default. '*' for wildcard events only
+					// fn: particular callback fn to unsubscribe from
 					var len;
 					Object.each(obj.$subscribers, function(value, key){
 						len = value.length;
