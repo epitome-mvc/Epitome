@@ -40,7 +40,9 @@
 
 			undefined = 'undefined',
 
-			func = 'function';
+			func = 'function',
+
+			evnt = 'event';
 
 		var EpitomeEvents = new Class({
 			// custom event implementation
@@ -74,9 +76,13 @@
 					}
 					else {
 						// runs on subscriber, shifting arguments to pass on instance with a fake event object.
+
+						// this use is not recommended as it can cause event storms, use with caution and
+						// inspect the 'event object'. result of .listenTo(obj) with no other args or with type but no callback.
 						sub.subscriber.trigger(type, Array.combine([{
 							target: sub.context,
-							type: type
+							type: type,
+							$family: evnt
 						}], args));
 					}
 				});
@@ -88,6 +94,8 @@
 				// obj: instance to subscribe to
 				// type: particular event type or all events, defaults to '*'
 				// last argument is the function to call, can shift to 2nd argument.
+
+				// not using type and callbacks can subscribe locally but use with caution.
 				var t = typeof type,
 					event = {
 						context: obj,
