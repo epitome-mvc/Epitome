@@ -39,7 +39,9 @@ buster.testCase('Basic Epitome view test >', {
 
 	tearDown: function() {
 		this.view.destroy();
-		this.view.removeEvents();
+		this.view.off('handleClick');
+		this.view.off('render');
+
 	},
 
 	'Expect a view to be created >': function() {
@@ -52,7 +54,7 @@ buster.testCase('Basic Epitome view test >', {
 
 	'Expect the view to render and call the onRender event >': function() {
 		var spy = this.spy();
-		this.view.addEvent('render', spy);
+		this.view.on('render', spy);
 		this.view.render();
 		buster.assert.called(spy);
 	},
@@ -68,7 +70,7 @@ buster.testCase('Basic Epitome view test >', {
 	},
 
 	'Expect the view to render the compiled template >': function(done) {
-		this.view.addEvent('render', function() {
+		this.view.on('render', function() {
 			buster.assert.equals(this.element.get('html'), 'This is a View test render app');
 			done();
 		});
@@ -81,7 +83,7 @@ buster.testCase('Basic Epitome view test >', {
 
 	'Expect the events on the element to bubble to class instance >': function() {
 		var spy = this.spy();
-		this.view.addEvent('handleClick', spy);
+		this.view.on('handleClick', spy);
 		this.view.element.fireEvent('click', {});
 		buster.assert.called(spy);
 	}

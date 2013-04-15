@@ -3,11 +3,11 @@
 	// 'use strict';  // breaks tests due to mootools reliance on args.callee and fireEvent
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Template, Model, Collection) {
+	var wrap = function(Template, Model, Collection, Epitome) {
 
 		return new Class({
 
-			Implements: [Options, Events],
+			Implements: [Epitome.Events],
 
 			// a string or element to render to and bind events on
 			element: null,
@@ -52,7 +52,7 @@
 				}
 
 				// let the instance know
-				return this.fireEvent('ready');
+				return this.trigger('ready');
 			},
 
 			setElement: function(el, events) {
@@ -69,14 +69,14 @@
 				var self = this,
 					eventProxy = function(type) {
 						return function() {
-							self.fireEvent(type + ':collection', arguments);
+							self.trigger(type + ':collection', arguments);
 						}
 					};
 
 				if (instanceOf(collection, Collection)) {
 					this.collection = collection;
 					// listen in for changes.
-					this.collection.addEvents({
+					this.collection.on({
 						'change': eventProxy('change'),
 						'fetch': eventProxy('fetch'),
 						'add': eventProxy('add'),
@@ -95,14 +95,14 @@
 				var self = this,
 					eventProxy = function(type) {
 						return function() {
-							self.fireEvent(type + ':model', arguments);
+							self.trigger(type + ':model', arguments);
 						}
 					};
 
 				if (instanceOf(model, Model)) {
 					this.model = model;
 					// listen in for changes.
-					this.model.addEvents({
+					this.model.on({
 						'change': eventProxy('change'),
 						'destroy': eventProxy('destroy'),
 						'empty': eventProxy('empty'),
@@ -118,7 +118,7 @@
 				var self = this;
 				Object.each(events, function(method, type) {
 					self.element.addEvent(type, function(e) {
-						self.fireEvent(method, arguments);
+						self.trigger(method, arguments);
 					});
 				});
 
@@ -149,7 +149,7 @@
 				// refactor this in your constructor object. for example:
 				// this.element.set('html', this.template(this.options.data));
 				// this.parent(); // fires the render event.
-				return this.fireEvent('render');
+				return this.trigger('render');
 			},
 
 			empty: function(soft) {
@@ -161,21 +161,21 @@
 					this.element.set('html', '');
 				}
 
-				return this.fireEvent('empty');
+				return this.trigger('empty');
 			},
 
 			dispose: function() {
 				// detach the element from the dom.
 				this.element.dispose();
 
-				return this.fireEvent('dispose');
+				return this.trigger('dispose');
 			},
 
 			destroy: function() {
 				// remove element from dom and memory.
 				this.element.destroy();
 
-				return this.fireEvent('destroy');
+				return this.trigger('destroy');
 			}
 
 		});
@@ -184,10 +184,10 @@
 
 	if (typeof define === 'function' && define.amd) {
 		// requires epitome-template and at least eptiome-model and eptiome-collection for implementation
-		define(['./epitome-template', './epitome-model', './epitome-collection'], wrap);
+		define(['./epitome-template', './epitome-model', './epitome-collection', './epitome'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Template:{},Model:{},Collection:{}});
-		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection);
+		exports.Epitome || (exports.Epitome = {Template:{},Model:{},Collection:{}, Events:Events});
+		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection, exports.Epitome);
 	}
 }(this));
