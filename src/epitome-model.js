@@ -3,11 +3,11 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(isEqual) {
+	var wrap = function(isEqual, Epitome) {
 
 		return new Class({
 
-			Implements: [Options, Events],
+			Implements: [Options, Epitome.Events],
 
 			_attributes: {},
 
@@ -48,7 +48,7 @@
 				// merge options overload, will now add the events.
 				this.setOptions(options);
 
-				return this.fireEvent('ready');
+				return this.trigger('ready');
 			},
 
 			set: function() {
@@ -58,8 +58,8 @@
 				this.propertiesChanged = this.validationFailed = [];
 				this._set.apply(this, arguments);
 				// if any properties did change, fire a change event with the array.
-				this.propertiesChanged.length && this.fireEvent('change', this.get(this.propertiesChanged));
-				this.validationFailed.length && this.fireEvent('error', [this.validationFailed]);
+				this.propertiesChanged.length && this.trigger('change', this.get(this.propertiesChanged));
+				this.validationFailed.length && this.trigger('error', [this.validationFailed]);
 			},
 
 			// private, real setter functions, not on prototype, see note above
@@ -85,7 +85,7 @@
 						error: validator
 					};
 					this.validationFailed.push(obj);
-					this.fireEvent('error:' + key, obj[key]);
+					this.trigger('error:' + key, obj[key]);
 					return this;
 				}
 
@@ -97,7 +97,7 @@
 				}
 
 				// fire an event.
-				this.fireEvent('change:' + key, value);
+				this.trigger('change:' + key, value);
 
 				// store changed keys...
 				this.propertiesChanged.push(key);
@@ -145,21 +145,21 @@
 					self = this;
 
 				// let the instance know.
-				this.fireEvent('change', [keys]);
+				this.trigger('change', [keys]);
 
 				// fire change for all keys in the model.
 				Array.each(keys, function(key) {
-					self.fireEvent('change:' + key, null);
+					self.trigger('change:' + key, null);
 				}, this);
 
 				this._attributes = {};
-				this.fireEvent('empty');
+				this.trigger('empty');
 			},
 
 			destroy: function() {
 				// destroy the model, send delete to server
 				this._attributes = {};
-				this.fireEvent('destroy');
+				this.trigger('destroy');
 			},
 
 			validate: function(key, value) {
@@ -171,10 +171,10 @@
 
 	if (typeof define === 'function' && define.amd) {
 		// requires epitome object only.
-		define(['./epitome-isequal'], wrap);
+		define(['./epitome-isequal','./epitome'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {isEqual:{}});
-		exports.Epitome.Model = wrap(exports.Epitome.isEqual);
+		exports.Epitome || (exports.Epitome = {isEqual:{},Events:Events});
+		exports.Epitome.Model = wrap(exports.Epitome.isEqual, exports.Epitome);
 	}
 }(this));

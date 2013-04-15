@@ -40,7 +40,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 	},
 
 	tearDown: function() {
-		this.model.removeEvents('change');
+		this.model.off('change');
 	},
 
 	'Expect a model to be created >': function() {
@@ -67,7 +67,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
 	'Expect a model change not to fire if values have not changed >': function() {
 		var spy = this.spy();
-		this.model.addEvent('change', function() {
+		this.model.on('change', function() {
 			spy();
 		});
 		this.model.set(this.dataInitial);
@@ -79,7 +79,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 		this.model.set('obj', {
 			foo: 'bar'
 		});
-		this.model.addEvent('change', function() {
+		this.model.on('change', function() {
 			spy();
 		});
 		this.model.set('obj', {
@@ -91,7 +91,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
 	'Expect a model change to fire if values have changed >': function(done) {
 		var self = this;
-		this.model.addEvent('change:bar', function(val) {
+		this.model.on('change:bar', function(val) {
 			buster.assert.equals(val, self.dataAfter.bar);
 			done();
 		});
@@ -101,7 +101,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
 	'Expect a model to fire change event for each property passed >': function() {
 		var spy = this.spy();
-		this.model.addEvent('change', function() {
+		this.model.on('change', function() {
 			spy();
 		});
 
@@ -156,7 +156,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
 	'Expect model to fire a change passing all changed properties as an object >': function() {
 		var self = this;
-		this.model.addEvent('change', function(changed) {
+		this.model.on('change', function(changed) {
 			buster.assert.equals(changed, self.dataMany);
 		});
 
@@ -208,7 +208,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
 	'Expect empty to fire the event and empty the model >': function() {
 
-		this.model.addEvent('empty', function() {
+		this.model.on('empty', function() {
 			buster.assert.equals(this._attributes, {});
 		});
 
@@ -219,7 +219,7 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 
 		var keys = Object.keys(this.model.toJSON());
 
-		this.model.addEvent('change', function(properties) {
+		this.model.on('change', function(properties) {
 			buster.assert.equals(properties, keys);
 		});
 
@@ -269,13 +269,13 @@ buster.testCase('Epitome model validators >', {
 	tearDown: function() {
 		this.model.empty();
 		this.model.validationFailed = [];
-		this.model.removeEvents('error');
+		this.model.off('error');
 	},
 
 	'Expect model to set value when validation passes >': function() {
 		var spy = this.spy();
 
-		this.model.addEvent('change:bar', spy);
+		this.model.on('change:bar', spy);
 		this.model.set(this.dataPass);
 
 		buster.assert.calledWith(spy, this.dataPass.bar);
@@ -284,7 +284,7 @@ buster.testCase('Epitome model validators >', {
 	'Expect model not to set value when validation fails >': function() {
 		var spy = this.spy();
 
-		this.model.addEvent('change:bar', spy);
+		this.model.on('change:bar', spy);
 		this.model.set(this.dataFail);
 
 		buster.refute.calledWith(spy, this.dataPass.bar);
@@ -293,7 +293,7 @@ buster.testCase('Epitome model validators >', {
 	'Expect error to fire when validation fails >': function() {
 		var spy = this.spy();
 
-		this.model.addEvent('error', spy);
+		this.model.on('error', spy);
 		this.model.set(this.dataFail);
 
 		buster.assert.called(spy);
@@ -301,7 +301,7 @@ buster.testCase('Epitome model validators >', {
 
 	'Expect error per key to fire when validation fails >': function(done) {
 		var msg = this.errorMsg;
-		this.model.addEvent('error:bar', function(errorObj) {
+		this.model.on('error:bar', function(errorObj) {
 			buster.assert.equals(msg, errorObj.error);
 			done();
 		});
@@ -310,7 +310,7 @@ buster.testCase('Epitome model validators >', {
 
 	'Expect error event to pass the failed validation and error msg >': function(done) {
 		var msg = this.errorMsg;
-		this.model.addEvent('error', function(errors) {
+		this.model.on('error', function(errors) {
 			var error = Array.filter(errors, function(el) {
 				return el.bar;
 			})[0];
@@ -323,7 +323,7 @@ buster.testCase('Epitome model validators >', {
 
 	'Expect error event to pass all failed validation objects >': function(done) {
 		var self = this;
-		this.model.addEvent('error', function(errors) {
+		this.model.on('error', function(errors) {
 
 			buster.assert.equals(errors.length, Object.keys(self.dataFail).length);
 			done();

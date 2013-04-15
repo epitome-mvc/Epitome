@@ -78,12 +78,8 @@
 						// runs on subscriber, shifting arguments to pass on instance with a fake event object.
 
 						// this use is not recommended as it can cause event storms, use with caution and
-						// inspect the 'event object'. result of .listenTo(obj) with no other args or with type but no callback.
-						sub.subscriber.trigger(type, Array.combine([{
-							target: sub.context,
-							type: type,
-							$family: evnt
-						}], args));
+						// argument shift, arg1 = context. result of .listenTo(obj) with no other args or with type but no callback.
+						sub.subscriber.trigger(type, Array.flatten([self, args]));
 					}
 				});
 

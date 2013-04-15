@@ -32,8 +32,8 @@ buster.testCase('Basic Epitome empty collection via sync creation >', {
 	},
 
 	tearDown: function() {
-		this.collection.removeEvents('add');
-		this.collection.removeEvents('remove');
+		this.collection.off('add');
+		this.collection.off('remove');
 	},
 
 	'Expect a collection to be created >': function() {

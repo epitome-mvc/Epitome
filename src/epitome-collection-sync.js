@@ -47,10 +47,10 @@
 					},
 					onSuccess: function(responseObj) {
 						responseObj = self.postProcessor && self.postProcessor(responseObj);
-						self.fireEvent(eventPseudo + rid, [[responseObj]]);
+						self.trigger(eventPseudo + rid, [[responseObj]]);
 					},
 					onFailure: function() {
-						self.fireEvent(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+						self.trigger(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
 					}
 				});
 
@@ -73,7 +73,7 @@
 					}
 
 					// finaly fire the event to instance
-					this.fireEvent('fetch', [models])
+					this.trigger('fetch', [models])
 				});
 
 				this.request.get(queryParams);
@@ -112,10 +112,10 @@
 					callback.apply(self, responseObj);
 
 					// remove this one-off event.
-					self.removeEvents(throwAway);
+					self.off(throwAway);
 				};
 
-				return this.addEvents(throwAway);
+				return this.on(throwAway);
 			}.protect(),
 
 			postProcessor: function(jsonResponse){

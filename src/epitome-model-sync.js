@@ -163,12 +163,12 @@
 						// only becomes an existing model after a successful sync
 						self.isNewModel = false;
 
-						self.fireEvent(syncPseudo + rid, [responseObj]);
-						self.fireEvent('sync', [responseObj, this.options.method, this.options.data]);
+						self.trigger(syncPseudo + rid, [responseObj]);
+						self.trigger('sync', [responseObj, this.options.method, this.options.data]);
 					},
 					onFailure: function(){
-						self.fireEvent(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
-						self.fireEvent('requestFailure', [this.status, this.response.text]);
+						self.trigger(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+						self.trigger('requestFailure', [this.status, this.response.text]);
 					}
 				};
 
@@ -207,10 +207,10 @@
 					callback && callback.call(self, responseObj);
 
 					// remove this one-off event.
-					self.removeEvents(throwAway);
+					self.off(throwAway);
 				};
 
-				return this.addEvents(throwAway);
+				return this.on(throwAway);
 			}.protect(),
 
 			postProcessor: function(resp){
@@ -227,7 +227,7 @@
 				// perform a .read and then set returned object key/value pairs to model.
 				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
 					this.isNewModel = false;
-					this.fireEvent('fetch');
+					this.trigger('fetch');
 				});
 				this.read();
 
@@ -248,8 +248,8 @@
 
 				// we want to set this.
 				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
-					this.fireEvent('save');
-					this.fireEvent(method);
+					this.trigger('save');
+					this.trigger(method);
 				});
 
 
@@ -263,7 +263,7 @@
 				// destroy the model, send delete to server
 				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
 					this._attributes = {};
-					this.fireEvent('destroy');
+					this.trigger('destroy');
 				});
 
 				this.delete_();

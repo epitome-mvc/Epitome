@@ -57,20 +57,20 @@
 							// saves model or argument into storage
 							model = model || this.toJSON();
 							setItem([storagePrefix, this.get('id')].join(':'), model);
-							this.fireEvent('store', model);
+							this.trigger('store', model);
 						},
 
 						eliminate: function() {
 							// deletes model from storage but does not delete the model
 							removeItem([storagePrefix, this.get('id')].join(':'));
-							return this.fireEvent('eliminate');
+							return this.trigger('eliminate');
 						},
 
 						retrieve: function() {
 							// return model from storage. don't set to Model!
 							var model = getItem([storagePrefix, this.get('id')].join(':')) || null;
 
-							this.fireEvent('retrieve', model);
+							this.trigger('retrieve', model);
 
 							return model;
 						}
