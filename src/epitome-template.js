@@ -1,5 +1,5 @@
 /*jshint mootools:true */
-;(function(exports) {
+;(function(exports){
 	'use strict';
 
 	(function(){
@@ -11,10 +11,10 @@
 			'"': '&quot;',
 			"'": '&#x27;',
 			'/': '&#x2F;'
-		}, escaper = new RegExp('['+Object.keys(escapes).join('')+']', 'g');
-	
+		}, escaper = new RegExp('[' + Object.keys(escapes).join('') + ']', 'g');
+
 		String.implement({
-			escape: function () {
+			escape: function(){
 				// Escapes a string for insertion into HTML, 
 				// replacing &, <, >, ", ', and / characters. 
 				return String(this).replace(escaper, function(match){
@@ -25,7 +25,7 @@
 	}());
 
 	// wrapper function for requirejs or normal object
-	var wrap = function() {
+	var wrap = function(){
 
 		return new Class({
 			// a templating class based upon the _.js template method and john resig's work
@@ -44,22 +44,22 @@
 				escaper: /\\|'|\r|\n|\t|\u2028|\u2029/g
 			},
 
-			Implements: [Options],
+			Implements: Options,
 
-			initialize: function(options) {
+			initialize: function(options){
 				this.setOptions(options);
 
 				var escapes = this.escapes = {
-						'\\': '\\',
-						"'": "'",
-						'r': '\r',
-						'n': '\n',
-						't': '\t',
-						'u2028': '\u2028',
-						'u2029': '\u2029'
-					};
+					'\\': '\\',
+					"'": "'",
+					'r': '\r',
+					'n': '\n',
+					't': '\t',
+					'u2028': '\u2028',
+					'u2029': '\u2029'
+				};
 
-				Object.each(escapes, function(value, key) {
+				Object.each(escapes, function(value, key){
 					this[value] = key;
 				}, escapes);
 
@@ -72,7 +72,7 @@
 				return this;
 			},
 
-			template: function(text, data, options) {
+			template: function(text, data, options){
 				// the actual method that compiles a template with some data.
 				var o = options ? Object.merge(this.options, options) : this.options,
 					render,
@@ -81,17 +81,19 @@
 					index = 0,
 					source = "__p+='";
 
-				text.replace(this.matcher, function(match, escape, interpolate, evaluate, offset) {
+				text.replace(this.matcher, function(match, escape, interpolate, evaluate, offset){
 					source += text.slice(index, offset)
-						.replace(escaper, function(match) { return '\\' + escapes[match]; });
+						.replace(escaper, function(match){
+							return '\\' + escapes[match];
+						});
 
-					if (escape) {
+					if (escape){
 						source += "'+\n((__t=(obj['" + escape + "']))==null?'':String.escape(__t))+\n'";
 					}
-					if (interpolate) {
+					if (interpolate){
 						source += "'+\n((__t=(obj['" + interpolate + "']))==null?'':__t)+\n'";
 					}
-					if (evaluate) {
+					if (evaluate){
 						source += "';\n" + evaluate + "\n__p+='";
 					}
 					index = offset + match.length;
@@ -114,7 +116,7 @@
 				}
 
 				if (data) return render(data);
-				var template = function(data) {
+				var template = function(data){
 					return render.call(this, data);
 				};
 
@@ -126,7 +128,7 @@
 	}; // end wrap
 
 
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === 'function' && define.amd){
 		// requires epitome object only.
 		define(['./epitome'], wrap);
 	}

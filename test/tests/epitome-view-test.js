@@ -3,7 +3,7 @@ if (typeof require === 'function') {
 		buster = require('buster');
 }
 
-buster.testRunner.timeout = 1000;
+buster.testRunner.timeout = 2000;
 
 buster.testCase('Basic Epitome view test >', {
 	setUp: function() {
@@ -34,7 +34,13 @@ buster.testCase('Basic Epitome view test >', {
 				}
 			});
 
-		this.view = new viewProto();
+		this.model = new Epitome.Model({
+			name: 'bob'
+		});
+
+		this.view = new viewProto({
+			model: this.model
+		});
 	},
 
 	tearDown: function() {
@@ -85,6 +91,14 @@ buster.testCase('Basic Epitome view test >', {
 		var spy = this.spy();
 		this.view.on('handleClick', spy);
 		this.view.element.fireEvent('click', {});
+		buster.assert.called(spy);
+	},
+
+	'Expect a view to be able to listenTo any model changes >': function(){
+		var spy = this.spy();
+		this.view.on('change:model', spy);
+
+		this.model.set('name', 'garry');
 		buster.assert.called(spy);
 	}
 

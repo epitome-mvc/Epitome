@@ -3,17 +3,17 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(model, Epitome) {
+	var wrap = function(Model, Events) {
 
 		var	methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
 
 		// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
 		var collection = new Class({
 
-			Implements: [Epitome.Events],
+			Implements: [Events],
 
 			// base model is just Epitome.Model
-			model: model,
+			model: Model,
 
 			_models: [],
 
@@ -334,10 +334,10 @@
 
 	if (typeof define === 'function' && define.amd) {
 		// requires epitome model and all its deps
-		define(['./epitome-model', './epitome'], wrap);
+		define(['./epitome-model', './epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Model:{},Events:Events});
-		exports.Epitome.Collection = wrap(exports.Epitome.Model, exports.Epitome);
+		exports.Epitome || (exports.Epitome = {Model:{},Events:{}});
+		exports.Epitome.Collection = wrap(exports.Epitome.Model, exports.Epitome.Events);
 	}
 }(this));

@@ -3,11 +3,11 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(isEqual, Epitome) {
+	var wrap = function(isEqual, Events) {
 
 		return new Class({
 
-			Implements: [Epitome.Events],
+			Implements: [Events],
 
 			_attributes: {},
 
@@ -173,10 +173,10 @@
 
 	if (typeof define === 'function' && define.amd) {
 		// requires epitome object only.
-		define(['./epitome-isequal','./epitome'], wrap);
+		define(['./epitome-isequal','./epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {isEqual:{},Events:Events});
-		exports.Epitome.Model = wrap(exports.Epitome.isEqual, exports.Epitome);
+		exports.Epitome || (exports.Epitome = {isEqual:{},Events:{}});
+		exports.Epitome.Model = wrap(exports.Epitome.isEqual, exports.Epitome.Events);
 	}
 }(this));
