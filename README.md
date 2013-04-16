@@ -83,7 +83,15 @@ _Returns: `this`_
 </p>
 </div>
 
-Attaches an event or an event object on any Epitome instance (Model, Collection, View)
+Attaches an event or an event object on any Epitome instance (Model, Collection, View). You can also add multiple events
+that will trigger the same callback function. Examples:
+```javascript
+// single
+this.on('change', this.modelChange.bind(this));
+
+// multiple
+this.model.on('fetch change', this.render.bind(this));
+```
 
 ### off
 ---
