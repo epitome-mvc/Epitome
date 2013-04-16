@@ -117,6 +117,17 @@ buster.testCase('Basic Epitome Events test >', {
 		foo.trigger('test', [data]);
 
 		buster.assert.calledWith(spy, foo, data);
+	},
+
+	'Expect space separated events to same fn to all add >': function(){
+		var spy = this.spy(),
+			foo = new this.Foo();
+
+		foo.on('test1 test2', spy);
+
+		foo.trigger('test1').trigger('test2');
+
+		buster.assert.calledTwice(spy);
 	}
 
 });
