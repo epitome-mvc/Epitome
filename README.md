@@ -16,7 +16,7 @@ If you feel strongly about semantics of the patterns used, you should look at [D
 
 Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-Current version: **0.2.0**
+Current version: **0.3.0**
 
 <a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a>
@@ -27,8 +27,13 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
+- 0.3.0
+ - Breaking API change, all events are now via `.on` / `.off` / `.trigger` 
+ - Added `.listenTo(obj, event, cb)` and `.stopListening(obj, event, cb)` methods for easy pubsub and event bubbling
+- 0.2.2
+ - fixed a validators error firing errors without there being any.
 - 0.2.1
- - the default Epitome Object now returns an instance of Events so you can mediate like `Epitome.fireEvent('awesome')`
+ - the default Epitome Object now returns an instance of Events so you can mediate like `Epitome.trigger('awesome')`
  between components. 
 - 0.2.0
  - big shift in he way Sync works with servers. Previously, Model and Collection were only accepting `application/json` as
@@ -62,9 +67,84 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 
 All individual components of Epitome work as normal javscript files to be used in a browser as well as through `require.js` modules. See [Downloading + Building](#download-building)
 
+
+## Epitome.Events
+
+A lightweight replacement for the default MooTools Events class that adds shorthand for ease of use.
+
+### on
+---
+<div class="alert">
+<p>
+_Expects arguments mixed: `(String) name, (Function) callback` or `(Object) name:callback` pairs_
+</p>
+<p>
+_Returns: `this`_
+</p>
+</div>
+
+Attaches an event or an event object on any Epitome instance (Model, Collection, View)
+
+### off
+---
+<div class="alert">
+<p>
+_Expects arguments mixed: `(String) name`, optional `(Function) callback` or `(Object) name:callback` pairs_
+</p>
+<p>
+_Returns: `this`_
+</p>
+</div>
+
+Removes a specific event callback (if supplied) or all events sharing the same name (wildcard) when not.
+
+### trigger
+---
+<div class="alert">
+<p>
+_Expects arguments mixed: `(String) name`, optional `(Array) arguments`_
+</p>
+<p>
+_Returns: `this`_
+</p>
+</div>
+
+Fires an event on the current instance, passing any arguments passed (as Array or mixed).
+
+### listenTo
+---
+<div class="alert">
+<p>
+_Expects arguments mixed: `(Object) instance`, optional `(String) name`, optional `(Function) callback`_
+</p>
+<p>
+_Returns: `this`_
+</p>
+</div>
+
+Subscribes to another instance's events. Can be broad or specific in how it attaches a listener. If no event name is
+supplied, it will subscribe to ANY event fired by the other object instance. If no function callback is supplied, it will
+bubble the event onto the host object instance but shift the callback arguments by 1, placing the other object instance
+as the first argument. Use with caution as it can cause `event storms` if not much specificity has been set.
+
+### stopListening
+---
+<div class="alert">
+<p>
+_Expects arguments mixed: `(Object) instance`, optional `(String) name`, optional `(Function) callback`_
+</p>
+<p>
+_Returns: `this`_
+</p>
+</div>
+
+Un-subscribes your instance from another instance's Events. If no arguments supplied other than the other instance, it
+will remove all subscriptions. You can optionally narrow it down by adding an event name or a name and a function in
+particular you'd like to un-subscribe from.
+
 ## Epitome.Model
 
-The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the MooTools Options and Events classes are implemented already.
+The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the it comes with Epitome.Events and Options setters already (similar to the MooTools Class.Extras ones).
 
 The Model can fire the following events:
 
@@ -273,7 +353,7 @@ properties: {
             // see if we need to raise change events
             if (!Epitome.isEqual(currentValue, newValue)) {
                 // individual event
-                this.fireEvent('change:price', newValue);
+                this.trigger('change:price', newValue);
                 // if a part of a set({obj}), general change as well.
                 this.propertiesChanged.push('price');
             }
@@ -494,7 +574,7 @@ _Events: `add: function(model, cid) {}`_
 </p>
 </div>
 
-Adding a Model to a Collection must always happen through this method. It either appends the Model instance to the internal `_models` Array or it creates a new Model and then appends it. It also starts observing the Model's events and emitting them to the Collection instance with an additional argument passed `Model`. So, if you add a Model stored in `bob` and then do `bob.fireEvent('hai', 'there')`, the collection will also fire an event like this: `this.fireEvent('hai', [bob, 'there']); Adding a Model also increases the `Collection.length` property.
+Adding a Model to a Collection must always happen through this method. It either appends the Model instance to the internal `_models` Array or it creates a new Model and then appends it. It also starts observing the Model's events and emitting them to the Collection instance with an additional argument passed `Model`. So, if you add a Model stored in `bob` and then do `bob.trigger('hai', 'there')`, the collection will also fire an event like this: `this.trigger('hai', [bob, 'there']); Adding a Model also increases the `Collection.length` property.
 
 The monitoring of the events (Observer) is done through creating a local function override / decoration of the Model's `fireEvent` method, normally inherited from the MooTools Events Class. If a model stops being a part of a collection, the override is destroyed and the default `fireEvent`.
 
