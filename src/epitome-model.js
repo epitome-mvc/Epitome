@@ -7,7 +7,7 @@
 
 		return new Class({
 
-			Implements: [Options, Epitome.Events],
+			Implements: [Epitome.Events],
 
 			_attributes: {},
 
@@ -55,7 +55,9 @@
 				// call the real getter. we proxy this because we want
 				// a single event after all properties are updated and the ability to work with
 				// either a single key, value pair or an object
-				this.propertiesChanged = this.validationFailed = [];
+				this.propertiesChanged = [];
+				this.validationFailed = [];
+				
 				this._set.apply(this, arguments);
 				// if any properties did change, fire a change event with the array.
 				this.propertiesChanged.length && this.trigger('change', this.get(this.propertiesChanged));
