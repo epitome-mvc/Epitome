@@ -284,7 +284,7 @@ buster.testCase('Epitome model validators >', {
 	'Expect no errors to be fired when validation passes >': function() {
 		var spy = this.spy();
 
-		this.model.addEvent('error', spy);
+		this.model.on('error', spy);
 		this.model.set(this.dataPass);
 
 		buster.refute.called(spy);
