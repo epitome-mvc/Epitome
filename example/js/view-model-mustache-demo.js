@@ -1,6 +1,6 @@
 // redefine the template method to useMustache
 Epitome.View.implement({
-	template: function(data, template) {
+	template: function(data, template){
 		// refactor this to work with any other template engine in your constructor
 		template = template || this.options.template;
 
@@ -13,13 +13,13 @@ var testView = new Class({
 
 	Extends: Epitome.View,
 
-	render: function() {
+	render: function(){
 		var controls = this.element.getElement('div.task-controls').dispose(),
 			data = this.model.toJSON();
 
 		this.empty();
 
-		if (!Object.keys(data).length) {
+		if (!Object.keys(data).length){
 			return; // gone!
 		}
 
@@ -45,7 +45,6 @@ var testModel = new Class({
 });
 
 
-
 var testInstance = new testView({
 
 	model: new testModel(),
@@ -60,24 +59,24 @@ var testInstance = new testView({
 		'click:relay(button.change-one)': 'changeModel'
 	},
 
-	onReady: function() {
+	onReady: function(){
 	},
 
-	'onChange:model': function() {
+	'onChange:model': function(){
 		this.render();
 	},
 
-	onEmptyModel: function(e, el) {
+	onEmptyModel: function(e, el){
 		e && e.stop && e.stop();
 
 		this.model.empty();
 		this.render();
 	},
 
-	onChangeModel: function(e, el) {
+	onChangeModel: function(e, el){
 
 		var model = this.model.toJSON();
-		Object.each(model, function(value, key) {
+		Object.each(model, function(value, key){
 			model[key] = String.uniqueID();
 		});
 

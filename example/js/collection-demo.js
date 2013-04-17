@@ -11,25 +11,29 @@ var testCollectionProto = new Class({
 	model: testModel
 });
 
-var testCollection = new testCollectionProto([{
-	id: '3',
-	name: 'coda',
-	surname: 'christoff',
-	foo: {
-		bar: 1
+var testCollection = new testCollectionProto([
+	{
+		id: '3',
+		name: 'coda',
+		surname: 'christoff',
+		foo: {
+			bar: 1
+		}
+	},
+	{
+		id: '4',
+		name: 'not coda',
+		surname: 'not christoff',
+		foo: {
+			bar: 2
+		}
+	},
+	{
+		id: '5',
+		name: 'bob',
+		surname: 'not christoff'
 	}
-}, {
-	id: '4',
-	name: 'not coda',
-	surname: 'not christoff',
-	foo: {
-		bar: 2
-	}
-}, {
-	id: '5',
-	name: 'bob',
-	surname: 'not christoff'
-}]);
+]);
 
 
 console.log(testCollection.find('[name=coda],[surname="not christoff"][id!=5]'));

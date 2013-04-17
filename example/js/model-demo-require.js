@@ -5,7 +5,7 @@ require.config({
 // this will require main module, isequal and model
 require(['epitome', 'epitome-model-sync'], function(Epitome, Model) {
 	// define a prototype for our model. You can just make an instance of Model but this is cleaner
-	Epitome.addEvent('ready', function(){
+	Epitome.trigger('ready', function(){
 		console.log('ready');
 	});
 
@@ -37,6 +37,6 @@ require(['epitome', 'epitome-model-sync'], function(Epitome, Model) {
 
 	console.log(testInstance.toJSON());
 
-	Epitome.fireEvent('ready');
+	Epitome.trigger('ready');
 
 });
