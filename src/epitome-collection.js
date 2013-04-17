@@ -3,42 +3,17 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(model) {
+	var wrap = function(Model, Events) {
 
 		var	methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
 
 		// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
-		Function.extend({
-			monitorModelEvents: function(listener, orig) {
-				// `@listener` - subscriber class to also get the event, required.
-				// `@orig` - orig model instance for scope, required.
-
-				var self = this;
-				// the original func is `this`, now saved ref.
-
-				// this is brave, may affect scope in edge cases: `.fireEvent.apply(otherobj, args)`
-				orig = orig || this;
-
-				// has the events class been mixed in?
-				if (!(listener && listener.fireEvent && !listener.hasOwnProperty('fireEvent')))
-					return this;
-
-				return function(type, args, delay) {
-					// now pass orig bound to orig scope, or at least the function.
-					self.apply(orig, arguments);
-
-					// let controller know and place instance. Make sure model is managed still!
-					listener.getModelByCID(orig.cid) && listener.fireEvent(type, Array.flatten([orig, args]), delay);
-				};
-			}
-		});
-
 		var collection = new Class({
 
-			Implements: [Options,Events],
+			Implements: [Events],
 
 			// base model is just Epitome.Model
-			model: model,
+			model: Model,
 
 			_models: [],
 
@@ -48,7 +23,7 @@
 				// collections should have an id for storage
 				this.id = this.options.id || String.uniqueID();
 
-				return this.fireEvent('ready');
+				return this.trigger('ready');
 			},
 
 			setUp: function(models) {
@@ -56,7 +31,7 @@
 				Array.each(models, this.addModel.bind(this));
 
 				// if a model is destroyed, remove from the collection
-				this.addEvent('destroy', this.removeModel.bind(this));
+				this.on('destroy', this.removeModel.bind(this));
 
 				return this;
 			},
@@ -78,13 +53,13 @@
 
 				// if not asked to replace, bail out.
 				if (exists && replace !== true)
-					return this.fireEvent('add:error', model);
+					return this.trigger('add:error', model);
 
 				// replace an existing model when requested
 				exists && replace === true && (this._models[this._models.indexOf(model)] = model);
 
-				// decorate `fireEvent` by making it local on the model instance. we are a quiet subscriber
-				model.fireEvent = Function.monitorModelEvents.apply(model.fireEvent, [this, model]);
+				// subscribe to all model events and bubble them locally.
+				this.listenTo(model);
 
 				// add to models array.
 				this._models.push(model);
@@ -94,7 +69,11 @@
 				this.length = this._models.length;
 
 				// let somebody know.
-				return this.fireEvent('add', [model, model.cid]).fireEvent('reset', [model, model.cid]);
+				return this.trigger('add', [model, model.cid]).trigger('reset', [model, model.cid]);
+			},
+
+			modelEvent: function(){
+				
 			},
 
 			removeModel: function(models, quiet) {
@@ -115,10 +94,10 @@
 					self.length = self._models.length;
 
 					// let somebody know we lost some.
-					quiet || self.fireEvent('remove', [model, model.cid]);
+					quiet || self.trigger('remove', [model, model.cid]);
 				});
 
-				return this.fireEvent('reset', [models]);
+				return this.trigger('reset', [models]);
 			},
 
 			get: function(what) {
@@ -163,20 +142,20 @@
 
 			empty: function(quiet) {
 				this.removeModel(this._models, quiet);
-				return this.fireEvent('empty');
+				return this.trigger('empty');
 			},
 
 			sort: function(how) {
 				// no arg. natural sort
 				if (!how) {
 					this._models.sort();
-					return this.fireEvent('sort');
+					return this.trigger('sort');
 				}
 
 				// callback function
 				if (typeof how === 'function') {
 					this.model.sort(how);
-					return this.fireEvent('sort');
+					return this.trigger('sort');
 				}
 
 				// string keys, supports `:asc` (default) and `:desc` order
@@ -225,14 +204,14 @@
 					return ret;
 				});
 
-				return this.fireEvent('sort');
+				return this.trigger('sort');
 			},
 
 			reverse: function() {
 				// reversing is just sorting in reverse.
 				Array.reverse(this._models);
 
-				return this.fireEvent('sort');
+				return this.trigger('sort');
 			},
 
 			find: function(expression) {
@@ -355,10 +334,10 @@
 
 	if (typeof define === 'function' && define.amd) {
 		// requires epitome model and all its deps
-		define(['./epitome-model'], wrap);
+		define(['./epitome-model', './epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Model:{}});
-		exports.Epitome.Collection = wrap(exports.Epitome.Model);
+		exports.Epitome || (exports.Epitome = {Model:{},Events:{}});
+		exports.Epitome.Collection = wrap(exports.Epitome.Model, exports.Epitome.Events);
 	}
 }(this));

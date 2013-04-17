@@ -1,13 +1,13 @@
 /*jshint mootools:true */
-;(function(exports) {
+;(function(exports){
 	// 'use strict';  // breaks tests due to mootools reliance on args.callee and fireEvent
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Template, Model, Collection) {
+	var wrap = function(Template, Model, Collection, Events){
 
 		return new Class({
 
-			Implements: [Options, Events],
+			Implements: [Events],
 
 			// a string or element to render to and bind events on
 			element: null,
@@ -27,17 +27,17 @@
 				events: {}
 			},
 
-			initialize: function(options) {
+			initialize: function(options){
 				// constructor like function.
 
 				// deal with collection first to avoid reference errors with object.clone / merge for setOptions
-				if (options && options.collection) {
+				if (options && options.collection){
 					this.setCollection(options.collection);
 					delete options.collection;
 				}
 
 				// deal with model as well
-				if (options && options.model) {
+				if (options && options.model){
 					this.setModel(options.model);
 					delete options.model;
 				}
@@ -46,16 +46,16 @@
 				this.setOptions(options);
 
 				// define the element.
-				if (this.options.element) {
+				if (this.options.element){
 					this.setElement(this.options.element, this.options.events);
 					delete this.options.element;
 				}
 
 				// let the instance know
-				return this.fireEvent('ready');
+				return this.trigger('ready');
 			},
 
-			setElement: function(el, events) {
+			setElement: function(el, events){
 				// set the element and clean-up old one
 				this.element && this.detachEvents() && this.destroy();
 				this.element = document.id(el);
@@ -64,19 +64,19 @@
 				return this;
 			},
 
-			setCollection: function(collection) {
+			setCollection: function(collection){
 				// a collection should be a real collection.
 				var self = this,
-					eventProxy = function(type) {
-						return function() {
-							self.fireEvent(type + ':collection', arguments);
+					eventProxy = function(type){
+						return function(){
+							self.trigger(type + ':collection', arguments);
 						}
 					};
 
-				if (instanceOf(collection, Collection)) {
+				if (instanceOf(collection, Collection)){
 					this.collection = collection;
 					// listen in for changes.
-					this.collection.addEvents({
+					this.collection.on({
 						'change': eventProxy('change'),
 						'fetch': eventProxy('fetch'),
 						'add': eventProxy('add'),
@@ -90,19 +90,19 @@
 				return this;
 			},
 
-			setModel: function(model) {
+			setModel: function(model){
 				// a model should be an Epitome model
 				var self = this,
-					eventProxy = function(type) {
-						return function() {
-							self.fireEvent(type + ':model', arguments);
+					eventProxy = function(type){
+						return function(){
+							self.trigger(type + ':model', arguments);
 						}
 					};
 
-				if (instanceOf(model, Model)) {
+				if (instanceOf(model, Model)){
 					this.model = model;
 					// listen in for changes.
-					this.model.addEvents({
+					this.model.on({
 						'change': eventProxy('change'),
 						'destroy': eventProxy('destroy'),
 						'empty': eventProxy('empty'),
@@ -113,12 +113,12 @@
 				return this;
 			},
 
-			attachEvents: function(events) {
+			attachEvents: function(events){
 				// add events to main element.
 				var self = this;
-				Object.each(events, function(method, type) {
-					self.element.addEvent(type, function(e) {
-						self.fireEvent(method, arguments);
+				Object.each(events, function(method, type){
+					self.element.addEvent(type, function(e){
+						self.trigger(method, arguments);
 					});
 				});
 
@@ -127,7 +127,7 @@
 				return this;
 			},
 
-			detachEvents: function() {
+			detachEvents: function(){
 				// remove attached events from an element
 				var events = this.element.retrieve('attachedEvents');
 				events && this.element.removeEvents(events).eliminate('attachedEvents');
@@ -135,7 +135,7 @@
 				return this;
 			},
 
-			template: function(data, template) {
+			template: function(data, template){
 				// refactor this to work with any other template engine in your constructor
 				template = template || this.options.template;
 
@@ -145,49 +145,49 @@
 				return compiler.template(template, data);
 			},
 
-			render: function() {
+			render: function(){
 				// refactor this in your constructor object. for example:
 				// this.element.set('html', this.template(this.options.data));
 				// this.parent(); // fires the render event.
-				return this.fireEvent('render');
+				return this.trigger('render');
 			},
 
-			empty: function(soft) {
+			empty: function(soft){
 				// with soft flag it does not destroy child elements but detaches from dom
-				if (soft) {
+				if (soft){
 					this.element.empty();
 				}
 				else {
 					this.element.set('html', '');
 				}
 
-				return this.fireEvent('empty');
+				return this.trigger('empty');
 			},
 
-			dispose: function() {
+			dispose: function(){
 				// detach the element from the dom.
 				this.element.dispose();
 
-				return this.fireEvent('dispose');
+				return this.trigger('dispose');
 			},
 
-			destroy: function() {
+			destroy: function(){
 				// remove element from dom and memory.
 				this.element.destroy();
 
-				return this.fireEvent('destroy');
+				return this.trigger('destroy');
 			}
 
 		});
 	}; // end wrap
 
 
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === 'function' && define.amd){
 		// requires epitome-template and at least eptiome-model and eptiome-collection for implementation
-		define(['./epitome-template', './epitome-model', './epitome-collection'], wrap);
+		define(['./epitome-template', './epitome-model', './epitome-collection', './epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Template:{},Model:{},Collection:{}});
-		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection);
+		exports.Epitome || (exports.Epitome = {Template: {}, Model: {}, Collection: {}, Events: {}});
+		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection, exports.Epitome.Events);
 	}
 }(this));

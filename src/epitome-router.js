@@ -3,7 +3,7 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(){
+	var wrap = function(Events){
 
 		var hc = 'hashchange',
 			hcSupported = ('on' + hc) in window,
@@ -44,7 +44,7 @@
 		// Router, has its own repo https://github.com/DimitarChristoff/Router
 		return new Class({
 
-			Implements: [Options, Events],
+			Implements: [Events],
 
 			options: {
 				triggerOnLoad: true // check route on load
@@ -94,34 +94,34 @@
 							routeEvent = self.routes[route];
 
 							// generic before route, pass route id, if avail
-							self.fireEvent('before', routeEvent);
+							self.trigger('before', routeEvent);
 
 							// if there is an identifier and an event added
 							if (routeEvent && self.$events[routeEvent]){
 								// route event was defined, fire specific before pseudo
-								self.fireEvent(routeEvent + ':before');
+								self.trigger(routeEvent + ':before');
 								// call the route event handler itself, pass params as arguments
-								self.fireEvent(routeEvent, Object.values(self.param));
+								self.trigger(routeEvent, Object.values(self.param));
 							}
 							else {
 								// requested route was expected but not found or event is missing
-								self.fireEvent('error', ['Route', routeEvent, 'is undefined'].join(' '));
+								self.trigger('error', ['Route', routeEvent, 'is undefined'].join(' '));
 							}
 
 							// fire a generic after event
-							self.fireEvent('after', routeEvent);
+							self.trigger('after', routeEvent);
 
 							// if route is defined, also fire a specific after pseudo
-							routeEvent && self.fireEvent(routeEvent + ':after');
+							routeEvent && self.trigger(routeEvent + ':after');
 							break;
 						}
 					}
 
-					notfound && self.fireEvent('undefined');
+					notfound && self.trigger('undefined');
 
 				});
 
-				this.fireEvent('ready');
+				this.trigger('ready');
 				this.options.triggerOnLoad && window.fireEvent(hc);
 			},
 
@@ -162,31 +162,31 @@
 			addRoute: function(obj){
 				// adds a new route, expects keys @route (string), @id (string), @events (object)
 				if (!obj || !obj.route || !obj.id || !obj.events)
-					return this.fireEvent('error', 'Please include route, id and events in the argument object when adding a route');
+					return this.trigger('error', 'Please include route, id and events in the argument object when adding a route');
 
 				if (!obj.id.length)
-					return this.fireEvent('error', 'Route id cannot be empty, aborting');
+					return this.trigger('error', 'Route id cannot be empty, aborting');
 
 				if (this.routes[obj.route])
-					return this.fireEvent('error', 'Route "{route}" or id "{id}" already exists, aborting'.substitute(obj));
+					return this.trigger('error', 'Route "{route}" or id "{id}" already exists, aborting'.substitute(obj));
 
 
 				this.routes[obj.route] = obj.id;
-				this.addEvents(this.boundEvents[obj.route] = obj.events);
+				this.on(this.boundEvents[obj.route] = obj.events);
 
-				return this.fireEvent('route:add', obj);
+				return this.trigger('route:add', obj);
 			},
 
 			removeRoute: function(route){
 				if (!route || !this.routes[route] || !this.boundEvents[route])
-					return this.fireEvent('error', 'Could not find route or route is not removable');
+					return this.trigger('error', 'Could not find route or route is not removable');
 
-				this.removeEvents(this.boundEvents[route]);
+				this.off(this.boundEvents[route]);
 
 				delete this.routes[route];
 				delete this.boundEvents[route];
 
-				return this.fireEvent('route:remove', route);
+				return this.trigger('route:remove', route);
 			}
 
 		});
@@ -195,10 +195,10 @@
 
 	if (typeof define === 'function' && define.amd){
 		// requires epitome object only.
-		define(['./epitome'], wrap);
+		define(['./epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {});
-		exports.Epitome.Router = wrap(exports.Epitome);
+		exports.Epitome || (exports.Epitome = {Events:{}});
+		exports.Epitome.Router = wrap(exports.Epitome.Events);
 	}
 }(this));

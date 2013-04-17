@@ -1,5 +1,6 @@
 // file for package.json npm inclusion of the whole project
 define([
+	'./epitome-events',
 	'./epitome',
 	'./epitome-isequal',
 	'./epitome-storage',
@@ -10,8 +11,9 @@ define([
 	'./epitome-template',
 	'./epitome-view',
 	'./epitome-router'
-], function(Epitome, isEqual, Storage, Model, ModelSync, Collection, CollectionSync, Template, View, Router) {
+], function(Events, Epitome, isEqual, Storage, Model, ModelSync, Collection, CollectionSync, Template, View, Router){
 	// export it all under a single object
+	Epitome.Events = Events;
 	Epitome.isEqual = isEqual;
 	Epitome.Storage = Storage;
 	Epitome.Model = Model;

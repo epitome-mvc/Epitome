@@ -27,8 +27,8 @@ buster.testCase('Basic Epitome empty collection creation >', {
 	},
 
 	tearDown: function() {
-		this.collection.removeEvents('add');
-		this.collection.removeEvents('remove');
+		this.collection.off('add');
+		this.collection.off('remove');
 	},
 
 	'Expect a collection to be created >': function() {
@@ -37,7 +37,7 @@ buster.testCase('Basic Epitome empty collection creation >', {
 
 	'Expect adding models to collection to fire onAdd event >': function() {
 		var self = this;
-		this.collection.addEvent('add', function(model) {
+		this.collection.on('add', function(model) {
 			buster.assert.equals(model, self.model);
 		});
 
@@ -52,7 +52,7 @@ buster.testCase('Basic Epitome empty collection creation >', {
 
 	'Expect adding a model with the same cid twice to fire an add:error event >': function() {
 		var spy = this.spy();
-		this.collection.addEvent('add:error', spy);
+		this.collection.on('add:error', spy);
 		this.collection.addModel(this.model);
 		this.collection.addModel(this.model);
 		buster.assert.calledWith(spy, this.model);
@@ -66,7 +66,7 @@ buster.testCase('Basic Epitome empty collection creation >', {
 
 		this.model.set('id', 'hello');
 		this.collection.addModel(this.model);
-		this.collection.addEvent('add', spy);
+		this.collection.on('add', spy);
 		this.collection.addModel(fakeModel, true);
 		buster.assert.calledWith(spy, fakeModel);
 	},
@@ -85,14 +85,14 @@ buster.testCase('Basic Epitome empty collection creation >', {
 			id: 'hello'
 		}, spy = this.spy();
 
-		this.collection.addEvent('reset', spy);
+		this.collection.on('reset', spy);
 		this.collection.addModel(data);
 		buster.assert.called(spy);
 	},
 
 	'Expect removing a model to fire onReset >': function() {
 		var spy = this.spy();
-		this.collection.addEvent('reset', spy);
+		this.collection.on('reset', spy);
 		this.collection.removeModel(this.model);
 		buster.assert.called(spy);
 	},
@@ -100,7 +100,7 @@ buster.testCase('Basic Epitome empty collection creation >', {
 	'Expect removing models to collection to fire onRemove event >': function() {
 		var self = this;
 		this.collection.addModel(this.model);
-		this.collection.addEvent('remove', function(model) {
+		this.collection.on('remove', function(model) {
 			buster.assert.equals(model, self.model);
 		});
 		this.collection.removeModel(this.model);
@@ -113,7 +113,7 @@ buster.testCase('Basic Epitome empty collection creation >', {
 			});
 		this.collection.addModel(this.model);
 		this.collection.addModel(model2);
-		this.collection.addEvent('reset', function(models) {
+		this.collection.on('reset', function(models) {
 			buster.assert.equals(models.length, 2);
 		});
 		this.collection.removeModel([this.model, model2]);
@@ -179,8 +179,8 @@ buster.testCase('Basic Epitome collection with a model creation >', {
 	},
 
 	tearDown: function() {
-		this.collection.removeEvents('add');
-		this.collection.removeEvents('remove');
+		this.collection.off('add');
+		this.collection.off('remove');
 	},
 
 	'Expect models to be equal to number passed in constructor >': function() {
@@ -189,7 +189,7 @@ buster.testCase('Basic Epitome collection with a model creation >', {
 
 	'Expect onChange on a model to fire for collection >': function() {
 		var self = this;
-		this.collection.addEvent('change', function(model, props) {
+		this.collection.on('change', function(model, props) {
 			buster.assert.equals(model, self.model);
 		});
 		this.model.set('foo', 'bar');
@@ -198,10 +198,10 @@ buster.testCase('Basic Epitome collection with a model creation >', {
 	'Expect any Event on any model to fire for collection observer >': function() {
 		var self = this,
 			event = String.uniqueID();
-		this.collection.addEvent(event, function(model) {
+		this.collection.on(event, function(model) {
 			buster.assert.equals(model, self.model);
 		});
-		this.model.fireEvent(event);
+		this.model.trigger(event);
 	},
 
 	'Expect a model that has been destroyed to be removed from the collection >': function() {
@@ -217,7 +217,7 @@ buster.testCase('Basic Epitome collection with a model creation >', {
 	'A model should be able to exist in 2 collections and the event emitter should work when removed from either one >': function() {
 		var c2 = new this.Collection(this.models),
 			spy = this.spy();
-		this.collection.addEvent('change', spy);
+		this.collection.on('change', spy);
 		c2.removeModel(this.model);
 		this.model.set('foo', 'bar');
 		buster.assert.called(spy);
@@ -251,7 +251,7 @@ buster.testCase('Basic Epitome collection array methods >', {
 	},
 
 	tearDown: function() {
-		this.collection.removeEvents();
+		this.collection.off();
 	},
 
 	'Expect toJSON to return an array of all models\' dereferenced objects >': function() {
@@ -466,7 +466,7 @@ buster.testCase('Basic Epitome collection array methods >', {
 			name: 'C'
 		});
 
-		this.collection.addEvent('sort', function() {
+		this.collection.on('sort', function() {
 			var changed = this.toJSON().map(function(el) {
 				return el.name;
 			}).join(','); // should be "C,B,A"

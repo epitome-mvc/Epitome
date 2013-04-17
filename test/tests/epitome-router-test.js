@@ -17,7 +17,11 @@ buster.testCase('Epitome router >', {
 	},
 
 	tearDown: function() {
-		this.router.removeEvents();
+		this.router.off('ready');
+		this.router.off('undefined');
+		this.router.off('dynamic');
+		this.router.off('error');
+
 		this.router.routes = [];
 		window.location.href = '#!';
 	},
@@ -31,7 +35,7 @@ buster.testCase('Epitome router >', {
 			route: '#!dynamicRoute',
 			id: 'dynamic',
 			events: {
-				onDynamic: function() {
+				dynamic: function() {
 					buster.assert(true);
 					done();
 				}
@@ -43,7 +47,7 @@ buster.testCase('Epitome router >', {
 
 	'Expect router to fire onBefore when hash changes and passes route id > ': function(done) {
 
-		this.router.addEvent('before', function(routeId) {
+		this.router.on('before', function(routeId) {
 			buster.assert.equals(routeId, 'dynamic');
 			done();
 		});
@@ -61,7 +65,7 @@ buster.testCase('Epitome router >', {
 
 	'Expect router to fire onAfter when hash changes and passes route id > ': function(done) {
 
-		this.router.addEvent('after', function(routeId) {
+		this.router.on('after', function(routeId) {
 			buster.assert.equals(routeId, 'dynamic');
 			done();
 		});
@@ -70,7 +74,7 @@ buster.testCase('Epitome router >', {
 			route: '#!dynamicRoute',
 			id: 'dynamic',
 			events: {
-				onDynamic: Function.from()
+				dynamic: Function.from()
 			}
 		});
 
@@ -79,7 +83,7 @@ buster.testCase('Epitome router >', {
 
 	'Expect router to fire route:before pseudo when hash changes > ': function(done) {
 
-		this.router.addEvent('dynamic:before', function() {
+		this.router.on('dynamic:before', function() {
 			buster.assert(true);
 			done();
 		});
@@ -88,7 +92,7 @@ buster.testCase('Epitome router >', {
 			route: '#!dynamicRoute',
 			id: 'dynamic',
 			events: {
-				onDynamic: Function.from()
+				dynamic: Function.from()
 			}
 		});
 
@@ -97,7 +101,7 @@ buster.testCase('Epitome router >', {
 
 	'Expect router to fire route:after pseudo when hash changes > ': function(done) {
 
-		this.router.addEvent('dynamic:after', function() {
+		this.router.on('dynamic:after', function() {
 			buster.assert(true);
 			done();
 		});
@@ -106,7 +110,7 @@ buster.testCase('Epitome router >', {
 			route: '#!dynamicRoute',
 			id: 'dynamic',
 			events: {
-				onDynamic: Function.from()
+				dynamic: Function.from()
 			}
 		});
 
@@ -114,7 +118,7 @@ buster.testCase('Epitome router >', {
 	},
 
 	'Expect onUndefined to fire on an unknown route  > ': function(done) {
-		this.router.addEvent('onUndefined', function() {
+		this.router.on('undefined', function() {
 			buster.assert(true);
 			done();
 		});
@@ -123,7 +127,7 @@ buster.testCase('Epitome router >', {
 	},
 
 	'Expect onError to fire on a declared route w/o a handler  > ': function(done) {
-		this.router.addEvent('onError', function(message) {
+		this.router.on('error', function(message) {
 			buster.assert.isTrue(message.contains('dummy'));
 			done();
 		});

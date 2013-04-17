@@ -1,11 +1,11 @@
 /*jshint mootools:true */
-;(function(exports) {
+;(function(exports){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function() {
+	var wrap = function(){
 
-		var eq = function(a, b, stack) {
+		var eq = function(a, b, stack){
 			// this is a modified version of eq func from _.js
 
 			// Identical objects are equal. `0 === -0`, but they aren't identical.
@@ -24,7 +24,7 @@
 
 			if (typeA != typeB) return false;
 
-			switch (typeA) {
+			switch (typeA){
 				// Strings, numbers, dates, and booleans are compared by value.
 				case 'string':
 					// Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
@@ -53,7 +53,7 @@
 			// Assume equality for cyclic structures. The algorithm for detecting cyclic
 			// structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
 			var length = stack.length;
-			while (length--) {
+			while (length--){
 				// Linear search. Performance is inversely proportional to the number of
 				// unique nested structures.
 				if (stack[length] == a) return true;
@@ -63,13 +63,13 @@
 			stack.push(a);
 			var size = 0, result = true;
 			// Recursively compare objects and arrays.
-			if (typeA == 'array') {
+			if (typeA == 'array'){
 				// Compare array lengths to determine if a deep comparison is necessary.
 				size = a.length;
 				result = size == b.length;
-				if (result) {
+				if (result){
 					// Deep compare the contents, ignoring non-numeric properties.
-					while (size--) {
+					while (size--){
 						// Ensure commutative equality for sparse arrays.
 						if (!(result = size in a == size in b && eq(a[size], b[size], stack))) break;
 					}
@@ -78,8 +78,8 @@
 				// Objects with different constructors are not equivalent.
 				if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) return false;
 				// Deep compare objects.
-				for (var key in a) {
-					if (a.hasOwnProperty(key)) {
+				for (var key in a){
+					if (a.hasOwnProperty(key)){
 						// Count the expected number of properties.
 						size++;
 						// Deep compare each member.
@@ -87,8 +87,8 @@
 					}
 				}
 				// Ensure that both objects contain the same number of properties.
-				if (result) {
-					for (key in b) {
+				if (result){
+					for (key in b){
 						if (b.hasOwnProperty(key) && !(size--)) break;
 					}
 					result = !size;
@@ -103,7 +103,7 @@
 		return eq;
 	}; // end wrap
 
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === 'function' && define.amd){
 		// requires epitome object only.
 		define(['./epitome'], wrap);
 	}

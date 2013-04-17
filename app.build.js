@@ -1,9 +1,10 @@
 ({
 	baseUrl: './src/',
-	optimize: 'uglify2',
+	optimize: 'none',
 	out:'./Epitome-min.js',
 	name:'epitome',
 	include:[
+		'epitome-events',
 		'epitome',
 		'epitome-isequal',
 		'epitome-model',

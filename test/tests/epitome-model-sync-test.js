@@ -40,10 +40,10 @@ buster.testCase('Epitome model sync >', {
 	},
 
 	tearDown: function(){
-		this.model.removeEvents('change');
-		this.model.removeEvents('sync');
-		this.model.removeEvents('update');
-		this.model.removeEvents('create');
+		this.model.off('change');
+		this.model.off('sync');
+		this.model.off('update');
+		this.model.off('create');
 
 		delete this.model.isNewModel;
 		// this.model._attributes = {};
@@ -60,7 +60,7 @@ buster.testCase('Epitome model sync >', {
 
 	'Expect a fetch to return our model >': function(done){
 
-		this.model.addEvent('sync', function(response, method, data){
+		this.model.on('sync', function(response, method, data){
 			buster.refute.isNull(response);
 			done();
 		});
@@ -83,7 +83,7 @@ buster.testCase('Epitome model sync >', {
 		// bed for the ajax. simulate it and rely on isNew to help
 		this.model.isNewModel = true;
 
-		this.model.addEvent('create', function(){
+		this.model.on('create', function(){
 			buster.assert(true);
 			done();
 		});
@@ -93,7 +93,7 @@ buster.testCase('Epitome model sync >', {
 	'Expect a second save to `update` our model >': function(done){
 		var model = this.model;
 
-		model.addEvents({
+		model.on({
 			'update': function(){
 				buster.assert(true);
 				done();
@@ -109,7 +109,7 @@ buster.testCase('Epitome model sync >', {
 	'Expect a fetch to return our model id as per static response.json >': function(done){
 		var id = this.model.get('id');
 
-		this.model.addEvent('sync', function(response, method, data){
+		this.model.on('sync', function(response, method, data){
 			buster.assert.equals(response.id, id);
 			done();
 		});
@@ -119,7 +119,7 @@ buster.testCase('Epitome model sync >', {
 	'Expect a fetch update our model properties to as per static response.json and fire change events >': function(done){
 		var oldFoo = this.model.get('foo');
 
-		this.model.addEvent('change:foo', function(newValue){
+		this.model.on('change:foo', function(newValue){
 			buster.refute.equals(newValue, oldFoo);
 			done();
 		});
@@ -185,14 +185,14 @@ buster.testCase('Epitome model sync >', {
 		protoInstance.set('foo', 'changeme');
 
 		// add the spy which should not work.
-		protoInstance.addEvent('change:foo', spy);
+		protoInstance.on('change:foo', spy);
 
 		// this will get an object with id and foo properties. if it works, should NOT change foo as pre-processor removes it
 		protoInstance.fetch();
 	},
 
 	'Expect model.destroy() to fire the destroy method and delete the model >': function(done){
-		this.model.addEvent('destroy',function(){
+		this.model.on('destroy',function(){
 			buster.assert(true);
 			done();
 		}).destroy();
@@ -212,7 +212,7 @@ buster.testCase('Epitome model sync >', {
 			id: 1
 		});
 
-		this.model.addEvent('sync', function(){
+		this.model.on('sync', function(){
 			buster.assert(true);
 			done();
 		});

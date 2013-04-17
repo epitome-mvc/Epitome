@@ -12,10 +12,15 @@ config['Browser tests'] = {
 	],
 
 	sources: [
+		// events
+		'src/epitome-events.js',
+
 		// core
 		'src/epitome.js',
+
 		// utils
 		'src/epitome-isequal.js',
+
 		// model core
 		'src/epitome-model.js',
 

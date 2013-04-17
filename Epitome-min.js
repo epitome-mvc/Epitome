@@ -1,1 +1,1940 @@
-(function(t){var e=function(){Events.prototype.$subscribers={};var t=function(t){return t.replace(/^on([A-Z])/,function(t,e){return e.toLowerCase()})},e=function(e,n,i){return e=t(e),this.$events[e]=(this.$events[e]||[]).include(n),i&&(n.internal=!0),this}.overloadSetter(),n="*",i=new Class({Extends:Events,on:e,trigger:function(e,i,o){e=t(e);var r=this.$events[e]||[],s=e in this.$subscribers?this.$subscribers[e]:n in this.$subscribers?this.$subscribers[n]:[],u=this;return r||s?(i=Array.from(i),r.each(function(t){o?t.delay(o,u,i):t.apply(u,i)}),s.each(function(t){o&&t.fn.delay(o,t.context,i),t.fn.apply(t.context,i)}),this):this},listenTo:function(t,e,i){var o=[].slice.call(arguments);2===o.length&&(i=e,e=n),t.$subscribers[e]||(t.$subscribers[e]=[]),t.$subscribers[e].include({context:t,fn:i}),console.log(t.$subscribers)}}),o=new i;return o.Events=i,o};"function"==typeof define&&define.amd?define("epitome",e):t.Epitome=e(t)})(this),function(t){var e=function(){var t=function(e,n,i){if(i=i||[],e===n)return 0!==e||1/e==1/n;if(null==e||null==n)return e===n;var o=typeOf(e),r=typeOf(n);if(o!=r)return!1;switch(o){case"string":return e==n+"";case"number":return e!=+e?n!=+n:0==e?1/e==1/n:e==+n;case"date":case"boolean":return+e==+n;case"regexp":return e.source==n.source&&e.global==n.global&&e.multiline==n.multiline&&e.ignoreCase==n.ignoreCase}if("object"!=typeof e||"object"!=typeof n)return!1;for(var s=i.length;s--;)if(i[s]==e)return!0;i.push(e);var u=0,a=!0;if("array"==o){if(u=e.length,a=u==n.length)for(;u--&&(a=u in e==u in n&&t(e[u],n[u],i)););}else{if("constructor"in e!="constructor"in n||e.constructor!=n.constructor)return!1;for(var c in e)if(e.hasOwnProperty(c)&&(u++,!(a=n.hasOwnProperty(c)&&t(e[c],n[c],i))))break;if(a){for(c in n)if(n.hasOwnProperty(c)&&!u--)break;a=!u}}return i.pop(),a};return t};"function"==typeof define&&define.amd?define("epitome-isequal",["./epitome"],e):(t.Epitome||(t.Epitome={}),t.Epitome.isEqual=e(t.Epitome))}(this),function(t){var e=function(t){return new Class({Implements:[Options,Events],_attributes:{},properties:{id:{get:function(){var t=this._attributes.id||String.uniqueID();return this.cid||(this.cid=t),this._attributes.id}}},validators:{},options:{defaults:{}},collections:[],initialize:function(t,e){return e&&e.defaults&&(this.options.defaults=Object.merge(this.options.defaults,e.defaults)),t=t&&"object"===typeOf(t)?t:{},this.set(Object.merge(this.options.defaults,t)),this.setOptions(e),this.fireEvent("ready")},set:function(){this.propertiesChanged=[],this.validationFailed=[],this._set.apply(this,arguments),this.propertiesChanged.length&&this.fireEvent("change",this.get(this.propertiesChanged)),this.validationFailed.length&&this.fireEvent("error",[this.validationFailed])},_set:function(e,n){if(!e||n===void 0)return this;if(this.properties[e]&&this.properties[e].set)return this.properties[e].set.call(this,n);if(this._attributes[e]&&t(this._attributes[e],n))return this;var i=this.validate(e,n);if(this.validators[e]&&i!==!0){var o={};return o[e]={key:e,value:n,error:i},this.validationFailed.push(o),this.fireEvent("error:"+e,o[e]),this}return null===n?delete this._attributes[e]:this._attributes[e]=n,this.fireEvent("change:"+e,n),this.propertiesChanged.push(e),this}.overloadSetter(),get:function(t){return t&&this.properties[t]&&this.properties[t].get?this.properties[t].get.call(this):t&&this._attributes[t]!==void 0?this._attributes[t]:null}.overloadGetter(),unset:function(){var t=Array.prototype.slice.apply(arguments),e={},n=t.length;return n?(Array.each(Array.flatten(t),function(t){e[t]=null}),this.set(e),this):this},toJSON:function(){return Object.clone(this._attributes)},empty:function(){var t=Object.keys(this.toJSON()),e=this;this.fireEvent("change",[t]),Array.each(t,function(t){e.fireEvent("change:"+t,null)},this),this._attributes={},this.fireEvent("empty")},destroy:function(){this._attributes={},this.fireEvent("destroy")},validate:function(t,e){return t in this.validators?this.validators[t].call(this,e):!0}})};"function"==typeof define&&define.amd?define("epitome-model",["./epitome-isequal"],e):(t.Epitome||(t.Epitome={isEqual:{}}),t.Epitome.Model=e(t.Epitome.isEqual))}(this),function(t){var e=new Class({Extends:Request,options:{secure:!0},initialize:function(t){this.parent(t),Object.append(this.headers,{Accept:"application/json,text/plain;q=0.2,text/html;q=0.1","X-Request":"JSON"})},success:function(t){var e;try{e=this.response.json=JSON.decode(t,this.options.secure)}catch(n){return this.fireEvent("error",[t,n]),void 0}t&&null==e&&204!=this.status?this.onFailure():this.onSuccess(e,t)}}),n=function(t){var n="sync:",i={create:"POST",read:"GET",update:"PUT",delete_:"DELETE"};return new Class({Extends:t,properties:{urlRoot:{set:function(t){this.urlRoot=t,delete this._attributes.urlRoot},get:function(){var t=this.urlRoot||this.options.urlRoot||"no-urlRoot-set";return"/"!=t.charAt(t.length-1)&&(t+="/"),t}}},options:{request:e,emulateREST:!1,useJSON:!1},initialize:function(t,e){this.setOptions(e),this.setupSync(),this.parent(t,this.options)},sync:function(t,e){var n={};return t=t&&i[t]?i[t]:i.read,n.method=t,(t==i.create||t==i.update)&&(n.data=e||this.toJSON(),this.preProcessor&&(n.data=this.preProcessor(n.data))),this.options.useJSON&&["POST","PUT","DELETE"].contains(t)?(n.data=JSON.encode(n.data),n.urlEncoded=!1,this.request.setHeader("Content-type","application/json")):n.urlEncoded=!0,n.url=[this.get("urlRoot"),this.get("id")].join(""),"/"!==n.url.slice(-1)&&(n.url+="/"),this.request.setOptions(n),this.request[t](e),this},setupSync:function(){var t,e=this,o=0,r=function(){o++};return this.getRequestId=function(){return o+1},t={link:"chain",url:this.get("urlRoot"),emulation:this.options.emulateREST,onRequest:r,onCancel:function(){this.removeEvents(n+o)},onSuccess:function(t){t=e.postProcessor&&e.postProcessor(t),e.isNewModel=!1,e.fireEvent(n+o,[t]),e.fireEvent("sync",[t,this.options.method,this.options.data])},onFailure:function(){e.fireEvent(n+"error",[this.options.method,this.options.url,this.options.data]),e.fireEvent("requestFailure",[this.status,this.response.text])}},this.options.headers&&(t.headers=this.options.headers),this.request=new this.options.request(t),Object.each(i,function(t,n){e[n]=function(t){this.sync(n,t)}}),this},_throwAwaySyncEvent:function(t,e){t=t||n+this.getRequestId();var i=this,o={};return o[t]=function(t){t&&"object"==typeof t&&i.set(t),e&&e.call(i,t),i.removeEvents(o)},this.addEvents(o)}.protect(),postProcessor:function(t){return t},preProcessor:function(t){return t},fetch:function(){return this._throwAwaySyncEvent(n+this.getRequestId(),function(){this.isNewModel=!1,this.fireEvent("fetch")}),this.read(),this},save:function(t,e){var i=["update","create"][+this.isNew()];if(t){var o=typeOf(t),r="object"==o||"string"==o&&e!==void 0;r&&this._set.apply(this,arguments)}return this._throwAwaySyncEvent(n+this.getRequestId(),function(){this.fireEvent("save"),this.fireEvent(i)}),this[i](),this},destroy:function(){this._throwAwaySyncEvent(n+this.getRequestId(),function(){this._attributes={},this.fireEvent("destroy")}),this.delete_()},isNew:function(){return this.isNewModel===void 0&&(this.isNewModel=!this.get("id")),this.isNewModel}})};"function"==typeof define&&define.amd?define("epitome-model-sync",["./epitome-model"],n):(t.Epitome||(t.Epitome={Model:{}}),t.Epitome.Model.Sync=n(t.Epitome.Model))}(this),function(t){var e=function(){var e=function(){var e=!("object"!=typeof t.localStorage||!t.localStorage.getItem),n="localStorage",i="sessionStorage",o=function(n){var i,o="epitome-"+n,r={},s="model";if(e)try{r=JSON.decode(t[n].getItem(o))||r}catch(u){e=!1}if(!e)try{i=JSON.decode(t.name),i&&"object"==typeof i&&i[o]&&(r=i[o])}catch(u){f()}var a={store:function(t){t=t||this.toJSON(),h([s,this.get("id")].join(":"),t),this.fireEvent("store",t)},eliminate:function(){return l([s,this.get("id")].join(":")),this.fireEvent("eliminate")},retrieve:function(){var t=c([s,this.get("id")].join(":"))||null;return this.fireEvent("retrieve",t),t}},c=function(t){return r[t]||null},h=function(i,s){if(r=e?JSON.decode(t[n].getItem(o))||r:r,r[i]=s,e)try{t[n].setItem(o,JSON.encode(r))}catch(u){}else f();return this},l=function(i){if(delete r[i],e)try{t[n].setItem(o,JSON.encode(r))}catch(s){}else f()},f=function(){var e={},n=JSON.decode(t.name);e[o]=r,t.name=JSON.encode(Object.merge(e,n))};return function(t){return t&&(s=t),new Class(Object.clone(a))}};return{localStorage:o(n),sessionStorage:o(i)}}();return e};"function"==typeof define&&define.amd?define("epitome-storage",["./epitome"],e):(t.Epitome||(t.Epitome={}),t.Epitome.Storage=e(t))}(this),function(t){var e=function(e){var n=["forEach","each","invoke","filter","map","some","indexOf","contains","getRandom","getLast"];Function.extend({monitorModelEvents:function(t,e){var n=this;return e=e||this,t&&t.fireEvent&&!t.hasOwnProperty("fireEvent")?function(i,o,r){n.apply(e,arguments),t.getModelByCID(e.cid)&&t.fireEvent(i,Array.flatten([e,o]),r)}:this}});var i=new Class({Implements:[Options,Events],model:e,_models:[],initialize:function(t,e){return this.setOptions(e),t&&this.setUp(t),this.id=this.options.id||String.uniqueID(),this.fireEvent("ready")},setUp:function(t){return t=Array.from(t),Array.each(t,this.addModel.bind(this)),this.addEvent("destroy",this.removeModel.bind(this)),this},addModel:function(t,e){var n;return"object"!=typeOf(t)||instanceOf(t,this.model)||(t=new this.model(t)),t.cid=t.cid||t.get("id")||String.uniqueID(),n=this.getModelByCID(t.cid),n&&e!==!0?this.fireEvent("add:error",t):(n&&e===!0&&(this._models[this._models.indexOf(t)]=t),t.fireEvent=Function.monitorModelEvents.apply(t.fireEvent,[this,t]),this._models.push(t),t.collections.include(this),this.length=this._models.length,this.fireEvent("add",[t,t.cid]).fireEvent("reset",[t,t.cid]))},removeModel:function(t,e){var n=this;return t=Array.from(t).slice(),Array.each(t,function(t){t.collections.erase(n),t.collections.length||delete t.fireEvent,Array.erase(n._models,t),n.length=n._models.length,e||n.fireEvent("remove",[t,t.cid])}),this.fireEvent("reset",[t])},get:function(t){return this[t]},getModelByCID:function(t){var e=null;return this.some(function(n){return n.cid==t&&(e=n)}),e},getModelById:function(t){var e=null;return this.some(function(n){return n.get("id")==t&&(e=n)}),e},getModel:function(t){return this._models[t]},toJSON:function(){var t=function(t){return t.toJSON()};return Array.map(this._models,t)},empty:function(t){return this.removeModel(this._models,t),this.fireEvent("empty")},sort:function(t){if(!t)return this._models.sort(),this.fireEvent("sort");if("function"==typeof t)return this.model.sort(t),this.fireEvent("sort");var e="asc",n=t.split(","),i=function(t,e){return e>t?-1:t>e?1:0};return this._models.sort(function(t,o){var r=0;return Array.some(n,function(n){n=n.trim();var s=n.split(":"),u=s[0],a=s[1]?s[1]:e,c=t.get(u),h=o.get(u),l=i(c,h),f={asc:l,desc:-l};return f[a]===void 0&&(a=e),r=f[a],0!=r}),r}),this.fireEvent("sort")},reverse:function(){return Array.reverse(this._models),this.fireEvent("sort")},find:function(e){var n=t.Slick.parse(e),i=[],o=this,r={"=":function(t,e){return t==e},"!=":function(t,e){return t!=e},"^=":function(t,e){return 0===t.indexOf(e)},"*=":function(t,e){return-1!==t.indexOf(e)},"$=":function(t,e){return t.indexOf(e)==t.length-e.length},"*":function(t){return t!==void 0}},s=function(t){return t&&r[t]?r[t]:null},u=function(t){var e=t.key,n=t.value||null,i=t.tag||null,r=s(t.operator);o=o.filter(function(t){var o,s;return i&&e?(o=t.get(i),s=o?o[e]:null):s=i?t.get(i):t.get(e),null!==s&&null!==n&&null!==r?r(s,n):null!=s})};if(n.expressions.length){var a,c,h,l,f,d,p,v,m=n.expressions;t:for(c=0;l=m[c];c++){for(a=0;f=l[a];a++){if(h=f.attributes,d=f.id,d&&(p={key:"id",value:d,operator:"="},h||(h=[]),h.push(p)),v=f.tag,v&&"*"!=v&&(h||(h=[{key:null,value:"",operator:"*"}]),h=Array.map(h,function(t){return t.tag=v,t})),!h)continue t;Array.each(h,u)}i[c]=o,o=this}}return[].combine(Array.flatten(i))},findOne:function(t){var e=this.find(t);return e.length?e[0]:null}});return Array.each(n,function(t){i.implement(t,function(){return Array.prototype[t].apply(this._models,arguments)})}),i};"function"==typeof define&&define.amd?define("epitome-collection",["./epitome-model"],e):(t.Epitome||(t.Epitome={Model:{}}),t.Epitome.Collection=e(t.Epitome.Model))}(this),function(t){var e=function(t){var e="no-urlRoot-set",n="fetch:";return new Class({Extends:t,options:{urlRoot:e},initialize:function(t,e){this.setupSync(),this.parent(t,e)},setupSync:function(){var t=this,e=0,i=function(){e++};return this.getRequestId=function(){return e+1},this.request=new Request.JSON({link:"chain",url:this.options.urlRoot,emulation:this.options.emulateREST,onRequest:i,onCancel:function(){this.removeEvents(n+e)},onSuccess:function(i){i=t.postProcessor&&t.postProcessor(i),t.fireEvent(n+e,[[i]])},onFailure:function(){t.fireEvent(n+"error",[this.options.method,this.options.url,this.options.data])}}),this.request.setHeader("Accept","application/json,text/plain;q=0.2,text/html;q=0.1"),this},fetch:function(t,e){return e||(e={}),this._throwAwayEvent(function(e){t?(this.empty(),Array.each(e,this.addModel.bind(this))):this.processModels(e),this.fireEvent("fetch",[e])}),this.request.get(e),this},processModels:function(t){var e=this;Array.each(t,function(t){var n=t.id&&e.getModelById(t.id);n?n.set(t):e.addModel(t)})},_throwAwayEvent:function(t){var e=n+this.getRequestId(),i=this,o={};if(t&&"function"==typeof t)return o[e]=function(e){t.apply(i,e),i.removeEvents(o)},this.addEvents(o)}.protect(),postProcessor:function(t){return t}})};"function"==typeof define&&define.amd?define("epitome-collection-sync",["./epitome-collection"],e):(t.Epitome||(t.Epitome={Collection:{}}),t.Epitome.Collection.Sync=e(t.Epitome.Collection))}(this),function(t){(function(){var t={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","/":"&#x2F;"},e=RegExp("["+Object.keys(t).join("")+"]","g");String.implement({escape:function(){return(this+"").replace(e,function(e){return t[e]})}})})();var e=function(){return new Class({options:{evaluate:/<%([\s\S]+?)%>/g,normal:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g,noMatch:/.^/,escaper:/\\|'|\r|\n|\t|\u2028|\u2029/g},Implements:[Options],initialize:function(t){this.setOptions(t);var e=this.escapes={"\\":"\\","'":"'",r:"\r",n:"\n",t:"	",u2028:"\u2028",u2029:"\u2029"};return Object.each(e,function(t,e){this[t]=e},e),this.matcher=RegExp([(this.options.escape||this.options.noMatch).source,(this.options.normal||this.options.noMatch).source,(this.options.evaluate||this.options.noMatch).source].join("|")+"|$","g"),this},template:function(t,e,n){var i,o=n?Object.merge(this.options,n):this.options,r=this.escapes,s=o.escaper,u=0,a="__p+='";t.replace(this.matcher,function(e,n,i,o,c){return a+=t.slice(u,c).replace(s,function(t){return"\\"+r[t]}),n&&(a+="'+\n((__t=(obj['"+n+"']))==null?'':String.escape(__t))+\n'"),i&&(a+="'+\n((__t=(obj['"+i+"']))==null?'':__t)+\n'"),o&&(a+="';\n"+o+"\n__p+='"),u=c+e.length,e}),a+="';\n",o.variable||(a="obj=obj||{};with(obj){\n"+a+"}\n"),a="var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};\n"+a+"return __p;\n";try{i=Function(o.variable||"obj",a)}catch(c){throw c.source=a,c}if(e)return i(e);var h=function(t){return i.call(this,t)};return h.source="function("+(o.variable||"obj")+"){\n"+a+"}",h}})};"function"==typeof define&&define.amd?define("epitome-template",["./epitome"],e):(t.Epitome||(t.Epitome={}),t.Epitome.Template=e(t.Epitome))}(this),function(t){var e=function(t,e,n){return new Class({Implements:[Options,Events],element:null,collection:null,model:null,options:{template:"",events:{}},initialize:function(t){return t&&t.collection&&(this.setCollection(t.collection),delete t.collection),t&&t.model&&(this.setModel(t.model),delete t.model),this.setOptions(t),this.options.element&&(this.setElement(this.options.element,this.options.events),delete this.options.element),this.fireEvent("ready")},setElement:function(t,e){return this.element&&this.detachEvents()&&this.destroy(),this.element=document.id(t),e&&this.attachEvents(e),this},setCollection:function(t){var e=this,i=function(t){return function(){e.fireEvent(t+":collection",arguments)}};return instanceOf(t,n)&&(this.collection=t,this.collection.addEvents({change:i("change"),fetch:i("fetch"),add:i("add"),remove:i("remove"),sort:i("sort"),reset:i("reset"),error:i("error")})),this},setModel:function(t){var n=this,i=function(t){return function(){n.fireEvent(t+":model",arguments)}};return instanceOf(t,e)&&(this.model=t,this.model.addEvents({change:i("change"),destroy:i("destroy"),empty:i("empty"),error:i("error")})),this},attachEvents:function(t){var e=this;return Object.each(t,function(t,n){e.element.addEvent(n,function(){e.fireEvent(t,arguments)})}),this.element.store("attachedEvents",t),this},detachEvents:function(){var t=this.element.retrieve("attachedEvents");return t&&this.element.removeEvents(t).eliminate("attachedEvents"),this},template:function(e,n){n=n||this.options.template;var i=this.Template||(this.Template=new t);return i.template(n,e)},render:function(){return this.fireEvent("render")},empty:function(t){return t?this.element.empty():this.element.set("html",""),this.fireEvent("empty")},dispose:function(){return this.element.dispose(),this.fireEvent("dispose")},destroy:function(){return this.element.destroy(),this.fireEvent("destroy")}})};"function"==typeof define&&define.amd?define("epitome-view",["./epitome-template","./epitome-model","./epitome-collection"],e):(t.Epitome||(t.Epitome={Template:{},Model:{},Collection:{}}),t.Epitome.View=e(t.Epitome.Template,t.Epitome.Model,t.Epitome.Collection))}(this),function(t){var e=function(){var t,e="hashchange",n="on"+e in window,i=[window,document],o=function(t){for(var e,n={},i=/([^&=]+)=([^&]*)/g;e=i.exec(t);)n[decodeURIComponent(e[1])]=decodeURIComponent(e[2]);return n};return Element.Events.hashchange={onAdd:function(){var o=location.hash,r=function(){o!=location.hash&&(o=location.hash,i.invoke("fireEvent",e,0==o.indexOf("#")?o.substr(1):o))};n&&(window.onhashchange=r)||(t=r.periodical(100))},onRemove:function(){n&&(window.onhashchange=null)||clearInterval(t)}},new Class({Implements:[Options,Events],options:{triggerOnLoad:!0},routes:{},boundEvents:{},initialize:function(t){var n=this;this.setOptions(t),this.options.routes&&(this.routes=this.options.routes),window.addEvent(e,function(){var t,e=location.hash,i=e.split("?")[0],r=e.split("?")[1]||"",s=!0;for(t in n.routes){var u=[],a=n.normalize(t,u,!0,!1),c=a.exec(i),h=!1;if(c){s=!1,n.req=c[0];var l=c.slice(1),f={};Array.each(l,function(t,e){u[e]!==void 0&&(f[u[e].name]=t)}),n.route=t,n.param=f||{},n.query=r&&o(r),h=n.routes[t],n.fireEvent("before",h),h&&n.$events[h]?(n.fireEvent(h+":before"),n.fireEvent(h,Object.values(n.param))):n.fireEvent("error",["Route",h,"is undefined"].join(" ")),n.fireEvent("after",h),h&&n.fireEvent(h+":after");break}}s&&n.fireEvent("undefined")}),this.fireEvent("ready"),this.options.triggerOnLoad&&window.fireEvent(e)},navigate:function(t,n){location.hash==t&&n?window.fireEvent(e):location.hash=t},normalize:function(t,e,n,i){return t instanceof RegExp?t:(t=t.concat(i?"":"/?").replace(/\/\(/g,"(?:/").replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g,function(t,n,i,o,r,s){return e.push({name:o,optional:!!s}),n=n||"",[s?"":n,"(?:",s?n:"",(i||"")+(r||i&&"([^/.]+?)"||"([^/]+?)")+")",s||""].join("")}).replace(/([\/.])/g,"\\$1").replace(/\*/g,"(.*)"),RegExp("^"+t+"$",n?"":"i"))},addRoute:function(t){return t&&t.route&&t.id&&t.events?t.id.length?this.routes[t.route]?this.fireEvent("error",'Route "{route}" or id "{id}" already exists, aborting'.substitute(t)):(this.routes[t.route]=t.id,this.addEvents(this.boundEvents[t.route]=t.events),this.fireEvent("route:add",t)):this.fireEvent("error","Route id cannot be empty, aborting"):this.fireEvent("error","Please include route, id and events in the argument object when adding a route")},removeRoute:function(t){return t&&this.routes[t]&&this.boundEvents[t]?(this.removeEvents(this.boundEvents[t]),delete this.routes[t],delete this.boundEvents[t],this.fireEvent("route:remove",t)):this.fireEvent("error","Could not find route or route is not removable")}})};"function"==typeof define&&define.amd?define("epitome-router",["./epitome"],e):(t.Epitome||(t.Epitome={}),t.Epitome.Router=e(t.Epitome))}(this);
+
+/*jshint mootools:true, strict:true */
+;(function(exports) {
+	
+
+	// wrapper function for requirejs or normal object
+	var removeOn = function(string){
+			return string.replace(/^on([A-Z])/, function(full, first){
+				return first.toLowerCase();
+			});
+		},
+
+		addEvent = function(type, fn){
+			type = removeOn(type);
+
+			this.$events[type] = (this.$events[type] || []).include(fn);
+			return this;
+		}.overloadSetter(),
+
+		removeEvent = function(type, fn){
+			// does not remove remote subscribers. careful, can cause memory issues if you don't clean up
+			type = removeOn(type);
+			var events = this.$events[type];
+			if (events){
+				if (fn){
+					var index = events.indexOf(fn);
+					if (index != -1) events.splice(index, 1);
+				}
+				else {
+					delete this.$events[type];
+				}
+			}
+			return this;
+		}.overloadSetter(),
+
+		all = '*',
+
+		undefined = 'undefined',
+
+		func = 'function',
+
+		evnt = 'event',
+
+		EpitomeEvents = new Class({
+			// custom event implementation
+
+			$events: {},
+
+			$subscribers: {},
+
+			on: addEvent,
+
+			off: removeEvent,
+
+			trigger: function(type, args){
+				type = removeOn(type);
+				var events = this.$events[type] || [],
+					subs = (type in this.$subscribers) ? this.$subscribers[type] : (all in this.$subscribers) ? this.$subscribers[all] : [],
+					self = this;
+
+				if (!events && !subs) return this;
+				args = Array.from(args);
+
+				events.each(function(fn){
+					// local events
+					fn.apply(self, args);
+				});
+
+				subs.each(function(sub){
+					// if event was added towards a specific callback, fire that
+					if (sub.fn){
+						sub.fn.apply(sub.context, args);
+					}
+					else {
+						// runs on subscriber, shifting arguments to pass on instance with a fake event object.
+
+						// this use is not recommended as it can cause event storms, use with caution and
+						// argument shift, arg1 = context. result of .listenTo(obj) with no other args or with type but no callback.
+						sub.subscriber.trigger(type, Array.flatten([self, args]));
+					}
+				});
+
+				return this;
+			},
+
+			listenTo: function(obj, type, fn){
+				// obj: instance to subscribe to
+				// type: particular event type or all events, defaults to '*'
+				// last argument is the function to call, can shift to 2nd argument.
+
+				// not using type and callbacks can subscribe locally but use with caution.
+				var t = typeof type,
+					event = {
+						context: obj,
+						subscriber: this
+					};
+
+				if (t === func){
+					fn = type;
+					type = all;
+				}
+				else if (t === undefined){
+					type = all;
+				}
+
+				fn && (event.fn = fn);
+				obj.$subscribers[type] = (obj.$subscribers[type] || []).include(event);
+
+				return this;
+			},
+
+			stopListening: function(obj, type, fn){
+				// obj: instance to stop listening to
+				// type: particular event to unsubscribe from, or all events by default. '*' for wildcard events only
+				// fn: particular callback fn to unsubscribe from
+				var len;
+				Object.each(obj.$subscribers, function(value, key){
+					len = value.length;
+					if (typeof type !== undefined){
+						if (key === type) while(len--)
+							(((fn && fn === value[len].fn) || !fn) && value[len].context === obj) && value.splice(len, 1);
+					}
+					else {
+						// no type, unsubscribe from all for that context object
+						while(len--) value[len].context === obj && value.splice(len, 1);
+					}
+				});
+
+				return this;
+			},
+
+			setOptions: function(){
+				//refactored setOptions to use .on and not addEvent. auto-mixed in.
+				var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments)),
+					option;
+				for (option in options){
+					if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+					this.on(option, options[option]);
+					delete options[option];
+				}
+				return this;
+			}
+		});
+
+	// wrap up
+	if (typeof define === 'function' && define.amd){
+		// returns an empty module
+		define('epitome-events',[],function(){
+			return EpitomeEvents;
+		});
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {});
+		exports.Epitome.Events = EpitomeEvents;
+	}
+}(this));
+
+/*jshint mootools:true */
+;(function(exports){
+	
+
+	var wrap = function(Events){
+		var e = new Events();
+		e.Events = Events;
+		return e;
+	};
+
+	// by default, requiring Epitome returns an Epitome.Events instance as a mediator
+	if (typeof define === 'function' && define.amd){
+		// returns an empty module
+		define('epitome',['./epitome-events'], wrap);
+	}
+	else {
+		exports.Epitome = wrap(exports.Epitome.Events);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports){
+	
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(){
+
+		var eq = function(a, b, stack){
+			// this is a modified version of eq func from _.js
+
+			// Identical objects are equal. `0 === -0`, but they aren't identical.
+			// See the Harmony `egal` proposal: http://wiki.ecmascript.org/doku.php?id=harmony:egal.
+			stack = stack || [];
+
+			if (a === b) return a !== 0 || 1 / a == 1 / b;
+
+			// A strict comparison is necessary because `null == undefined`.
+			if (a == null || b == null) return a === b;
+
+			// use MooTools types instead of toString.call(a),
+			// this fixes FF returning [xpconnect wrapped native prototype] for all w/ MooTools
+			var typeA = typeOf(a),
+				typeB = typeOf(b);
+
+			if (typeA != typeB) return false;
+
+			switch (typeA){
+				// Strings, numbers, dates, and booleans are compared by value.
+				case 'string':
+					// Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
+					// equivalent to `new String("5")`.
+					return a == String(b);
+				case 'number':
+					// `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
+					// other numeric values.
+					return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
+				case 'date':
+				case 'boolean':
+					// Coerce dates and booleans to numeric primitive values. Dates are compared by their
+					// millisecond representations. Note that invalid dates with millisecond representations
+					// of `NaN` are not equivalent.
+					return +a == +b;
+				// RegExps are compared by their source patterns and flags.
+				case 'regexp':
+					return a.source == b.source &&
+						a.global == b.global &&
+						a.multiline == b.multiline &&
+						a.ignoreCase == b.ignoreCase;
+			}
+
+			if (typeof a !== 'object' || typeof b !== 'object') return false;
+
+			// Assume equality for cyclic structures. The algorithm for detecting cyclic
+			// structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
+			var length = stack.length;
+			while (length--){
+				// Linear search. Performance is inversely proportional to the number of
+				// unique nested structures.
+				if (stack[length] == a) return true;
+			}
+
+			// Add the first object to the stack of traversed objects.
+			stack.push(a);
+			var size = 0, result = true;
+			// Recursively compare objects and arrays.
+			if (typeA == 'array'){
+				// Compare array lengths to determine if a deep comparison is necessary.
+				size = a.length;
+				result = size == b.length;
+				if (result){
+					// Deep compare the contents, ignoring non-numeric properties.
+					while (size--){
+						// Ensure commutative equality for sparse arrays.
+						if (!(result = size in a == size in b && eq(a[size], b[size], stack))) break;
+					}
+				}
+			} else {
+				// Objects with different constructors are not equivalent.
+				if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) return false;
+				// Deep compare objects.
+				for (var key in a){
+					if (a.hasOwnProperty(key)){
+						// Count the expected number of properties.
+						size++;
+						// Deep compare each member.
+						if (!(result = b.hasOwnProperty(key) && eq(a[key], b[key], stack))) break;
+					}
+				}
+				// Ensure that both objects contain the same number of properties.
+				if (result){
+					for (key in b){
+						if (b.hasOwnProperty(key) && !(size--)) break;
+					}
+					result = !size;
+				}
+			}
+
+			// Remove the first object from the stack of traversed objects.
+			stack.pop();
+			return result;
+		};
+
+		return eq;
+	}; // end wrap
+
+	if (typeof define === 'function' && define.amd){
+		// requires epitome object only.
+		define('epitome-isequal',['./epitome'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {});
+		exports.Epitome.isEqual = wrap(exports.Epitome);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports) {
+	
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(isEqual, Events) {
+
+		return new Class({
+
+			Implements: [Events],
+
+			_attributes: {},
+
+			// custom accessors.
+			properties: {
+				id: {
+					get: function() {
+						// need a cid to identify model.
+						var id = this._attributes.id || String.uniqueID();
+						// always need a collection id.
+						this.cid || (this.cid = id);
+
+						return this._attributes.id;
+					}
+				}
+			},
+
+			// validators per property, should return true or error message
+			validators: {},
+
+			// initial `private` object
+			options: {
+				defaults: {}
+			},
+
+			collections: [],
+
+			initialize: function(obj, options) {
+				// constructor for Model class.
+
+				// are there any defaults passed? better to have them on the proto.
+				options && options.defaults && (this.options.defaults = Object.merge(this.options.defaults, options.defaults));
+
+				// initial obj should pass on to the setter.
+				obj = obj && typeOf(obj) === 'object' ? obj : {};
+				this.set(Object.merge(this.options.defaults, obj));
+
+				// merge options overload, will now add the events.
+				this.setOptions(options);
+
+				return this.trigger('ready');
+			},
+
+			set: function() {
+				// call the real getter. we proxy this because we want
+				// a single event after all properties are updated and the ability to work with
+				// either a single key, value pair or an object
+				this.propertiesChanged = [];
+				this.validationFailed = [];
+				
+				this._set.apply(this, arguments);
+				// if any properties did change, fire a change event with the array.
+				this.propertiesChanged.length && this.trigger('change', this.get(this.propertiesChanged));
+				this.validationFailed.length && this.trigger('error', [this.validationFailed]);
+			},
+
+			// private, real setter functions, not on prototype, see note above
+			_set: function(key, value) {
+				// needs to be bound the the instance.
+				if (!key || typeof value === 'undefined') return this;
+
+				// custom setter - see bit further down
+				if (this.properties[key] && this.properties[key]['set'])
+					return this.properties[key]['set'].call(this, value);
+
+				// no change? this is crude and works for primitives.
+				if (this._attributes[key] && isEqual(this._attributes[key], value))
+					return this;
+
+				// basic validator support
+				var validator = this.validate(key, value);
+				if (this.validators[key] && validator !== true) {
+					var obj = {};
+					obj[key] = {
+						key: key,
+						value: value,
+						error: validator
+					};
+					this.validationFailed.push(obj);
+					this.trigger('error:' + key, obj[key]);
+					return this;
+				}
+
+				if (value === null) {
+					delete this._attributes[key]; // delete = null.
+				}
+				else {
+					this._attributes[key] = value;
+				}
+
+				// fire an event.
+				this.trigger('change:' + key, value);
+
+				// store changed keys...
+				this.propertiesChanged.push(key);
+
+				return this;
+			}.overloadSetter(),   // mootools abstracts overloading to allow object iteration
+
+			get: function(key) {
+				// overload getter, 2 paths...
+
+				// custom accessors take precedence and have no reliance on item being in attributes
+				if (key && this.properties[key] && this.properties[key]['get']) {
+					return this.properties[key]['get'].call(this);
+				}
+
+				// else, return from attributes or return null when undefined.
+				return (key && typeof this._attributes[key] !== 'undefined') ? this._attributes[key] : null;
+			}.overloadGetter(),
+
+			unset: function() {
+				// can remove keys from model, passed on as multiple string arguments or an array of string keys
+				var keys = Array.prototype.slice.apply(arguments),
+					obj = {},
+					len = keys.length;
+
+				if (!len)
+					return this;
+
+				Array.each(Array.flatten(keys), function(key) {
+					obj[key] = null;
+				});
+
+				this.set(obj);
+
+				return this;
+			},
+
+			toJSON: function() {
+				return Object.clone(this._attributes);
+			},
+
+			empty: function() {
+				// empty the model and fire change event
+				var keys = Object.keys(this.toJSON()),
+					self = this;
+
+				// let the instance know.
+				this.trigger('change', [keys]);
+
+				// fire change for all keys in the model.
+				Array.each(keys, function(key) {
+					self.trigger('change:' + key, null);
+				}, this);
+
+				this._attributes = {};
+				this.trigger('empty');
+			},
+
+			destroy: function() {
+				// destroy the model, send delete to server
+				this._attributes = {};
+				this.trigger('destroy');
+			},
+
+			validate: function(key, value) {
+				// run validation, return true (validated) if no validator found
+				return (key in this.validators) ? this.validators[key].call(this, value) : true;
+			}
+		});
+	}; // end wrap
+
+	if (typeof define === 'function' && define.amd) {
+		// requires epitome object only.
+		define('epitome-model',['./epitome-isequal','./epitome-events'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {isEqual:{},Events:{}});
+		exports.Epitome.Model = wrap(exports.Epitome.isEqual, exports.Epitome.Events);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports){
+	
+
+	// re-implement Request.JSON correctly
+	var EpitomeRequest = new Class({
+		Extends: Request,
+		options: {
+			secure: true
+		},
+		initialize: function(options){
+			this.parent(options);
+			Object.append(this.headers, {
+				// even though we want json, we will accept more CT so we can fire failure on mismatch.
+				'Accept': 'application/json,text/plain;q=0.2,text/html;q=0.1',
+				'X-Request': 'JSON'
+			});
+		},
+		success: function(text){
+			// fix for no content breaking JSON parser.
+			var json;
+			try {
+				json = this.response.json = JSON.decode(text, this.options.secure);
+			} catch (error) {
+				this.fireEvent('error', [text, error]);
+				return;
+			}
+			if (text && (json == null && this.status != 204)) this.onFailure();
+			else this.onSuccess(json, text);
+		}
+	});
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(Model){
+
+		var syncPseudo = 'sync:';
+
+		// define CRUD mapping.
+		var methodMap = {
+			'create': 'POST',
+			'read': 'GET',
+			'update': 'PUT',
+			// unsafe to call a method delete in IE7/8
+			'delete_': 'DELETE'
+		};
+
+		// decorate the original object by adding a new property Sync
+		return new Class({
+
+			Extends: Model,
+
+			properties: {
+				urlRoot: {
+					// normal convention - not in the model!
+					set: function(value){
+						this.urlRoot = value;
+						delete this._attributes['urlRoot'];
+					},
+					get: function(){
+						// make sure we return a sensible url.
+						var base = this.urlRoot || this.options.urlRoot || 'no-urlRoot-set';
+						base.charAt(base.length - 1) != '/' && (base += '/');
+						return base;
+					}
+				}
+			},
+
+			options: {
+				// can override Request constructor with a compatible MooTools Request
+				request: EpitomeRequest,
+
+				// by default, HTTP emulation is enabled for mootools request class.
+				// assume native REST backend
+				emulateREST: false,
+
+				// if you prefer content-type to be application/json for POST / PUT, set to true
+				useJSON: false
+
+				// pass on custom request headers
+				// , headers: {}
+			},
+
+			initialize: function(obj, options){
+				// needs to happen first before events are added,
+				// in case we have custom accessors in the model object.
+				this.setOptions(options);
+				this.setupSync();
+
+				this.parent(obj, this.options);
+			},
+
+			sync: function(method, model){
+				// internal low level api that works with the model request instance.
+				var options = {};
+
+				// determine what to call or do a read by default.
+				method = method && methodMap[method] ? methodMap[method] : methodMap['read'];
+				options.method = method;
+
+				// if it's a method via POST, append passed object or use exported model
+				if (method == methodMap.create || method == methodMap.update){
+					options.data = model || this.toJSON();
+
+					// pre-processor of data support
+					this.preProcessor && (options.data = this.preProcessor(options.data));
+				}
+
+				// for real REST interfaces, produce native JSON post
+				if (this.options.useJSON && ['POST', 'PUT', 'DELETE'].contains(method)){
+					// serialise model to a JSON string
+					options.data = JSON.encode(options.data);
+					// disable urlEncoded to escape mootools Request trap for content type form-urlencoded
+					options.urlEncoded = false;
+
+					// declare custom content type
+					this.request.setHeader('Content-type', 'application/json');
+				}
+				else {
+					// normal get/post application/x-www-form-urlencoded
+					options.urlEncoded = true;
+				}
+
+				// make sure we have the right URL. if model has an id, append it
+				options.url = [this.get('urlRoot'), this.get('id')].join('');
+
+				// append a trailing / if none found (no id yet)
+				options.url.slice(-1) !== '/' && (options.url += '/');
+
+				// pass it all to the request
+				this.request.setOptions(options);
+
+				// call the request class' corresponding method (mootools does that).
+				this.request[method](model);
+
+				return this;
+			},
+
+			setupSync: function(){
+				var self = this,
+					rid = 0,
+					incrementRequestId = function(){
+						// request ids are unique and private. private to up them.
+						rid++;
+					},
+					obj;
+
+				// public methods - next likely is current rid + 1
+				this.getRequestId = function(){
+					return rid + 1;
+				};
+
+				obj = {
+					// one request at a time
+					link: 'chain',
+					url: this.get('urlRoot'),
+					emulation: this.options.emulateREST,
+					onRequest: incrementRequestId,
+					onCancel: function(){
+						this.removeEvents(syncPseudo + rid);
+					},
+					onSuccess: function(responseObj){
+						responseObj = self.postProcessor && self.postProcessor(responseObj);
+						// only becomes an existing model after a successful sync
+						self.isNewModel = false;
+
+						self.trigger(syncPseudo + rid, [responseObj]);
+						self.trigger('sync', [responseObj, this.options.method, this.options.data]);
+					},
+					onFailure: function(){
+						self.trigger(syncPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+						self.trigger('requestFailure', [this.status, this.response.text]);
+					}
+				};
+
+				if (this.options.headers){
+					obj.headers = this.options.headers;
+				}
+
+				this.request = new this.options.request(obj);
+
+				// export crud methods to model.
+				Object.each(methodMap, function(requestMethod, protoMethod){
+					self[protoMethod] = function(model){
+						this.sync(protoMethod, model);
+					};
+				});
+
+				return this;
+			},
+
+			_throwAwaySyncEvent: function(eventName, callback){
+				// a pseudo :once event for each sync that sets the model to response and can do more callbacks.
+
+				// normally, methods that implement this will be the only ones to auto sync the model to server version.
+				eventName = eventName || syncPseudo + this.getRequestId();
+
+				var self = this,
+					throwAway = {};
+
+				throwAway[eventName] = function(responseObj){
+					// if we have a response object
+					if (responseObj && typeof responseObj == 'object'){
+						self.set(responseObj);
+					}
+
+					// tell somebody anyway, object or not.
+					callback && callback.call(self, responseObj);
+
+					// remove this one-off event.
+					self.off(throwAway);
+				};
+
+				return this.on(throwAway);
+			}.protect(),
+
+			postProcessor: function(resp){
+				// post-processor for json response being passed to the model.
+				return resp;
+			},
+
+			preProcessor: function(data){
+				// pre-processor for json object before they are sent to server
+				return data;
+			},
+
+			fetch: function(){
+				// perform a .read and then set returned object key/value pairs to model.
+				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
+					this.isNewModel = false;
+					this.trigger('fetch');
+				});
+				this.read();
+
+				return this;
+			},
+
+			save: function(key, value){
+				// saves model or accepts a key/value pair/object, sets to model and then saves.
+				var method = ['update', 'create'][+this.isNew()];
+
+				if (key){
+					// if key is an object, go to overloadSetter.
+					var ktype = typeOf(key),
+						canSet = ktype == 'object' || (ktype == 'string' && typeof value != 'undefined');
+
+					canSet && this._set.apply(this, arguments);
+				}
+
+				// we want to set this.
+				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
+					this.trigger('save');
+					this.trigger(method);
+				});
+
+
+				// create first time we sync, update after.
+				this[method]();
+
+				return this;
+			},
+
+			destroy: function(){
+				// destroy the model, send delete to server
+				this._throwAwaySyncEvent(syncPseudo + this.getRequestId(), function(){
+					this._attributes = {};
+					this.trigger('destroy');
+				});
+
+				this.delete_();
+			},
+
+			isNew: function(){
+				if (typeof this.isNewModel === 'undefined'){
+					this.isNewModel = !this.get('id');
+				}
+
+				return this.isNewModel;
+			}
+		});
+	}; // end wrap
+
+	if (typeof define === 'function' && define.amd){
+		// requires epitome object only.
+		define('epitome-model-sync',['./epitome-model'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {Model: {}});
+		exports.Epitome.Model.Sync = wrap(exports.Epitome.Model);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports){
+	
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(Epitome){
+
+		var storage = (function(){
+			// returns 2 classes for use with localStorage and sessionStorage as mixins
+
+			// feature detect if storage is available
+			var hasNativeStorage = !!(typeof exports.localStorage == 'object' && exports.localStorage.getItem),
+
+			// default storage method
+				localStorage = 'localStorage',
+
+			// alternative storage
+				sessionStorage = 'sessionStorage',
+
+				setStorage = function(storageMethod){
+					// mini constructor that returns an object with the method as context
+					var s,
+						privateKey = 'epitome-' + storageMethod,
+					// this actual object that holds state of storage data - per method.
+						storage = {},
+					// by default, prefix storage keys with model:
+						storagePrefix = 'model';
+
+					// try native
+					if (hasNativeStorage){
+						try {
+							storage = JSON.decode(exports[storageMethod].getItem(privateKey)) || storage;
+						}
+						catch (e) {
+							// session expired / multiple tabs error (security), downgrade.
+							hasNativeStorage = false;
+						}
+					}
+
+					if (!hasNativeStorage){
+						// try to use a serialized object in window.name instead
+						try {
+							s = JSON.decode(exports.name);
+							if (s && typeof s == 'object' && s[privateKey])
+								storage = s[privateKey];
+						}
+						catch (e) {
+							// window.name was something else. pass on our current object.
+							serializeWindowName();
+						}
+					}
+
+
+					// exported methods to classes, mootools element storage style
+					var Methods = {
+							store: function(model){
+								// saves model or argument into storage
+								model = model || this.toJSON();
+								setItem([storagePrefix, this.get('id')].join(':'), model);
+								this.trigger('store', model);
+							},
+
+							eliminate: function(){
+								// deletes model from storage but does not delete the model
+								removeItem([storagePrefix, this.get('id')].join(':'));
+								return this.trigger('eliminate');
+							},
+
+							retrieve: function(){
+								// return model from storage. don't set to Model!
+								var model = getItem([storagePrefix, this.get('id')].join(':')) || null;
+
+								this.trigger('retrieve', model);
+
+								return model;
+							}
+						},
+
+					// internal methods to proxy working with storage and fallbacks
+						getItem = function(item){
+							// return from storage in memory
+							return storage[item] || null;
+						},
+
+						setItem = function(item, value){
+							// add a key to storage hash
+							storage = hasNativeStorage ? JSON.decode(exports[storageMethod].getItem(privateKey)) || storage : storage;
+							storage[item] = value;
+
+							if (hasNativeStorage){
+								try {
+									exports[storageMethod].setItem(privateKey, JSON.encode(storage));
+								}
+								catch (e) {
+									// session expired / tabs error (security)
+								}
+							}
+							else {
+								serializeWindowName();
+							}
+
+							return this;
+						},
+
+						removeItem = function(item){
+							// remove a key from the storage hash
+							delete storage[item];
+
+							if (hasNativeStorage){
+								try {
+									exports[storageMethod].setItem(privateKey, JSON.encode(storage));
+								}
+								catch (e) {
+									// session expired / tabs error (security)
+								}
+							}
+							else {
+								// remove from window.name also.
+								serializeWindowName();
+							}
+						},
+
+						serializeWindowName = function(){
+							// this is the fallback that merges storage into window.name
+							var obj = {},
+								s = JSON.decode(exports.name);
+
+							obj[privateKey] = storage;
+							exports.name = JSON.encode(Object.merge(obj, s));
+						};
+
+					return function(storageName){
+						storageName && (storagePrefix = storageName);
+						return new Class(Object.clone(Methods));
+					};
+
+				};
+
+
+			// actual object returns 2 distinct classes we can use.
+			return {
+				localStorage: setStorage(localStorage),
+				sessionStorage: setStorage(sessionStorage)
+			};
+		})();
+
+		return storage;
+	}; // end wrap
+
+	if (typeof define === 'function' && define.amd){
+		// requires epitome object only.
+		define('epitome-storage',['./epitome'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {});
+		exports.Epitome.Storage = wrap(exports);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports) {
+	
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(Model, Events) {
+
+		var	methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
+
+		// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
+		var collection = new Class({
+
+			Implements: [Events],
+
+			// base model is just Epitome.Model
+			model: Model,
+
+			_models: [],
+
+			initialize: function(models, options) {
+				this.setOptions(options);
+				models && this.setUp(models);
+				// collections should have an id for storage
+				this.id = this.options.id || String.uniqueID();
+
+				return this.trigger('ready');
+			},
+
+			setUp: function(models) {
+				models = Array.from(models);
+				Array.each(models, this.addModel.bind(this));
+
+				// if a model is destroyed, remove from the collection
+				this.on('destroy', this.removeModel.bind(this));
+
+				return this;
+			},
+
+			addModel: function(model, replace) {
+				// add a new model to collection
+				var exists;
+
+				// if it's just an object, make it a model first
+				if (typeOf(model) == 'object' && !instanceOf(model, this.model)) {
+					model = new this.model(model);
+				}
+
+				// assign a cid.
+				model.cid = model.cid || model.get('id') || String.uniqueID();
+
+				// already in the collection?
+				exists = this.getModelByCID(model.cid);
+
+				// if not asked to replace, bail out.
+				if (exists && replace !== true)
+					return this.trigger('add:error', model);
+
+				// replace an existing model when requested
+				exists && replace === true && (this._models[this._models.indexOf(model)] = model);
+
+				// subscribe to all model events and bubble them locally.
+				this.listenTo(model);
+
+				// add to models array.
+				this._models.push(model);
+
+				model.collections.include(this);
+
+				this.length = this._models.length;
+
+				// let somebody know.
+				return this.trigger('add', [model, model.cid]).trigger('reset', [model, model.cid]);
+			},
+
+			modelEvent: function(){
+				
+			},
+
+			removeModel: function(models, quiet) {
+				// supports a single model or an array of models
+				var	self = this;
+
+				models = Array.from(models).slice(); // need to dereference or loop will fail
+
+				Array.each(models, function(model) {
+					model.collections.erase(self);
+					// restore `fireEvent` to one from prototype, aka, `Event.prototype.fireEvent`
+					// only if there are no collections left that are interested in this model's events
+					model.collections.length || delete model.fireEvent;
+
+					// remove from collection of managed models
+					Array.erase(self._models, model);
+
+					self.length = self._models.length;
+
+					// let somebody know we lost some.
+					quiet || self.trigger('remove', [model, model.cid]);
+				});
+
+				return this.trigger('reset', [models]);
+			},
+
+			get: function(what) {
+				// compat for storage
+				return this[what];
+			},
+
+			getModelByCID: function(cid) {
+				// return a model based upon a cid search
+				var last = null;
+
+				this.some(function(el) {
+					return el.cid == cid && (last = el);
+				});
+
+				return last;
+			},
+
+			getModelById: function(id) {
+				// return a model based upon an id search
+				var last = null;
+
+				this.some(function(el) {
+					return el.get('id') == id && (last = el);
+				});
+
+				return last;
+			},
+
+			getModel: function(index) {
+				// return a model based upon the index in the array
+				return this._models[index];
+			},
+
+			toJSON: function() {
+				// get the toJSON of all models.
+				var getJSON = function(model) {
+					return model.toJSON();
+				};
+				return Array.map(this._models, getJSON);
+			},
+
+			empty: function(quiet) {
+				this.removeModel(this._models, quiet);
+				return this.trigger('empty');
+			},
+
+			sort: function(how) {
+				// no arg. natural sort
+				if (!how) {
+					this._models.sort();
+					return this.trigger('sort');
+				}
+
+				// callback function
+				if (typeof how === 'function') {
+					this.model.sort(how);
+					return this.trigger('sort');
+				}
+
+				// string keys, supports `:asc` (default) and `:desc` order
+				var type = 'asc',
+				// multiple conds are split by ,
+					conds = how.split(','),
+					c = function(a, b) {
+						if (a < b)
+							return -1;
+						if (a > b)
+							return 1;
+						return 0;
+					};
+
+
+				this._models.sort(function(a, b) {
+					var ret = 0;
+					Array.some(conds, function(cond) {
+						// run for as long as there is no clear distinction
+						cond = cond.trim();
+
+						var	pseudos = cond.split(':'),
+							key = pseudos[0],
+							sortType = (pseudos[1]) ? pseudos[1] : type,
+							ak = a.get(key),
+							bk = b.get(key),
+							cm = c(ak, bk),
+							map = {
+								asc: cm,
+								desc: -(cm)
+							};
+
+						// unknown types are ascending
+						if (typeof map[sortType] == 'undefined') {
+							sortType = type;
+						}
+
+						// assign ret value
+						ret = map[sortType];
+
+						// if we have a winner, break .some loop
+						return ret != 0;
+					});
+
+					// return last good comp
+					return ret;
+				});
+
+				return this.trigger('sort');
+			},
+
+			reverse: function() {
+				// reversing is just sorting in reverse.
+				Array.reverse(this._models);
+
+				return this.trigger('sort');
+			},
+
+			find: function(expression) {
+				// experimental model search engine, powered by MooTools Slick.parse
+				var parsed = exports.Slick.parse(expression),
+					exported = [],
+					found = this,
+					map = {
+						'=': function(a, b) {
+							return a == b;
+						},
+						'!=': function(a, b) {
+							return a != b;
+						},
+						'^=': function(a, b) {
+							return a.indexOf(b) === 0;
+						},
+						'*=': function(a, b) {
+							return a.indexOf(b) !== -1;
+						},
+						'$=': function(a, b) {
+							return a.indexOf(b) == a.length - b.length;
+						},
+						'*': function(a){
+							return typeof a !== 'undefined';
+						}
+					},
+					fixOperator = function(operator) {
+						return (!operator || !map[operator]) ? null : map[operator];
+					},
+					finder = function(attributes) {
+						var attr = attributes.key,
+							value = attributes.value || null,
+							tag = attributes.tag || null,
+							operator = fixOperator(attributes.operator);
+
+						found = found.filter(function(el) {
+							var t, a;
+							if (tag && attr) {
+								t = el.get(tag);
+								a = t ? t[attr] : null;
+							}
+							else if (tag) {
+								a = el.get(tag);
+							}
+							else {
+								a = el.get(attr);
+							}
+
+							if (a !== null && value !== null && operator !== null)
+								return operator(a, value);
+
+							return a != null;
+						});
+
+					};
+
+				if (parsed.expressions.length) {
+					var j, i;
+					var attributes;
+					var currentExpression, currentBit, expressions = parsed.expressions, id, t, tag;
+
+					search: for (i = 0; (currentExpression = expressions[i]); i++) {
+						for (j = 0; (currentBit = currentExpression[j]); j++){
+							attributes = currentBit.attributes;
+							// support by id
+							id = currentBit.id;
+							if (id) {
+								t = {
+									key: 'id',
+									value: id,
+									operator: '='
+								};
+								attributes || (attributes = []);
+								attributes.push(t);
+							}
+							// by tag
+							tag = currentBit.tag;
+							if (tag && tag != '*') {
+								attributes || (attributes = [{
+									key: null,
+									value: '',
+									operator: '*'
+								}]);
+
+								attributes = Array.map(attributes, function(a){
+									a.tag = tag;
+									return a;
+								});
+							}
+
+							if (!attributes) continue search;
+
+							Array.each(attributes, finder);
+						}
+						exported[i] = found;
+						found = this;
+					}
+
+				}
+
+				return [].combine(Array.flatten(exported));
+			},
+
+			findOne: function(expression) {
+				var results = this.find(expression);
+				return results.length ? results[0] : null;
+			}
+
+		});
+
+		Array.each(methodMap, function(method) {
+			collection.implement(method, function() {
+				return Array.prototype[method].apply(this._models, arguments);
+			});
+		});
+
+		return collection;
+	}; // end wrap
+
+	if (typeof define === 'function' && define.amd) {
+		// requires epitome model and all its deps
+		define('epitome-collection',['./epitome-model', './epitome-events'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {Model:{},Events:{}});
+		exports.Epitome.Collection = wrap(exports.Epitome.Model, exports.Epitome.Events);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports){
+	
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(Collection){
+
+		var noUrl = 'no-urlRoot-set',
+			eventPseudo = 'fetch:';
+
+		return new Class({
+			// allows for fetching collections of model from the server
+
+			Extends: Collection,
+
+			options: {
+				urlRoot: noUrl
+			},
+
+			initialize: function(models, options){
+				this.setupSync();
+				this.parent(models, options);
+			},
+
+			setupSync: function(){
+				// single request object as in models. independent of models.
+				var self = this,
+					rid = 0,
+					incrementRequestId = function(){
+						// request ids are unique and private. private to up them.
+						rid++;
+					};
+
+				// public methods - next likely is current rid + 1
+				this.getRequestId = function(){
+					return rid + 1;
+				};
+
+				this.request = new Request.JSON({
+					// one request at a time
+					link: 'chain',
+					url: this.options.urlRoot,
+					emulation: this.options.emulateREST,
+					onRequest: incrementRequestId,
+					onCancel: function(){
+						this.removeEvents(eventPseudo + rid);
+					},
+					onSuccess: function(responseObj){
+						responseObj = self.postProcessor && self.postProcessor(responseObj);
+						self.trigger(eventPseudo + rid, [
+							[responseObj]
+						]);
+					},
+					onFailure: function(){
+						self.trigger(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+					}
+				});
+
+				this.request.setHeader('Accept', 'application/json,text/plain;q=0.2,text/html;q=0.1');
+				return this;
+			},
+
+			fetch: function(refresh, queryParams){
+				// get a list of models. `@refresh (boolean)` will empty collection first, queryParams passed as get args
+				queryParams || (queryParams = {});
+
+				// set the onSuccess event for this fetch call
+				this._throwAwayEvent(function(models){
+					if (refresh){
+						this.empty();
+						Array.each(models, this.addModel.bind(this));
+					}
+					else {
+						this.processModels(models);
+					}
+
+					// finaly fire the event to instance
+					this.trigger('fetch', [models])
+				});
+
+				this.request.get(queryParams);
+
+				// dangerous. async stuff coming.
+				return this;
+			},
+
+			processModels: function(models){
+				// deals with newly arrived objects which can either update existing models or be added as new models
+				// `@models (array or objects)`, not actual model instances
+				var self = this;
+
+				Array.each(models, function(model){
+					var exists = model.id && self.getModelById(model.id);
+
+					if (exists){
+						exists.set(model);
+					}
+					else {
+						self.addModel(model);
+					}
+				});
+			},
+
+			_throwAwayEvent: function(callback){
+				// this is a one-off event that will ensure a fetch event fires only once per `.fetch`
+				var eventName = eventPseudo + this.getRequestId(),
+					self = this,
+					throwAway = {};
+
+				if (!callback || typeof callback !== 'function')
+					return;
+
+				throwAway[eventName] = function(responseObj){
+					callback.apply(self, responseObj);
+
+					// remove this one-off event.
+					self.off(throwAway);
+				};
+
+				return this.on(throwAway);
+			}.protect(),
+
+			postProcessor: function(jsonResponse){
+				// apply a post-processor to response
+				return jsonResponse;
+			}
+
+		});
+	}; // end wrap
+
+	if (typeof define === 'function' && define.amd){
+		// requires epitome model and all its deps
+		define('epitome-collection-sync',['./epitome-collection'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {Collection: {}});
+		exports.Epitome.Collection.Sync = wrap(exports.Epitome.Collection);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports){
+	
+
+	(function(){
+		// Add to string proto 
+		var escapes = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#x27;',
+			'/': '&#x2F;'
+		}, escaper = new RegExp('[' + Object.keys(escapes).join('') + ']', 'g');
+
+		String.implement({
+			escape: function(){
+				// Escapes a string for insertion into HTML, 
+				// replacing &, <, >, ", ', and / characters. 
+				return String(this).replace(escaper, function(match){
+					return escapes[match];
+				});
+			}
+		});
+	}());
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(){
+
+		return new Class({
+			// a templating class based upon the _.js template method and john resig's work
+			// but fixed so that it doesn't suck. namely, references in templates not found in
+			// the data object do not cause exceptions.
+			options: {
+				// default block logic syntax is <% if (data.prop) { %>
+				evaluate: /<%([\s\S]+?)%>/g,
+				// literal out is <%=property%>
+				normal: /<%=([\s\S]+?)%>/g,
+				// safe scripts and tags, <%-property%>
+				escape: /<%-([\s\S]+?)%>/g,
+
+				// these are internals you can change if you like
+				noMatch: /.^/,
+				escaper: /\\|'|\r|\n|\t|\u2028|\u2029/g
+			},
+
+			Implements: Options,
+
+			initialize: function(options){
+				this.setOptions(options);
+
+				var escapes = this.escapes = {
+					'\\': '\\',
+					"'": "'",
+					'r': '\r',
+					'n': '\n',
+					't': '\t',
+					'u2028': '\u2028',
+					'u2029': '\u2029'
+				};
+
+				Object.each(escapes, function(value, key){
+					this[value] = key;
+				}, escapes);
+
+				this.matcher = new RegExp([
+					(this.options.escape || this.options.noMatch).source,
+					(this.options.normal || this.options.noMatch).source,
+					(this.options.evaluate || this.options.noMatch).source
+				].join('|') + '|$', 'g');
+
+				return this;
+			},
+
+			template: function(text, data, options){
+				// the actual method that compiles a template with some data.
+				var o = options ? Object.merge(this.options, options) : this.options,
+					render,
+					escapes = this.escapes,
+					escaper = o.escaper,
+					index = 0,
+					source = "__p+='";
+
+				text.replace(this.matcher, function(match, escape, interpolate, evaluate, offset){
+					source += text.slice(index, offset)
+						.replace(escaper, function(match){
+							return '\\' + escapes[match];
+						});
+
+					if (escape){
+						source += "'+\n((__t=(obj['" + escape + "']))==null?'':String.escape(__t))+\n'";
+					}
+					if (interpolate){
+						source += "'+\n((__t=(obj['" + interpolate + "']))==null?'':__t)+\n'";
+					}
+					if (evaluate){
+						source += "';\n" + evaluate + "\n__p+='";
+					}
+					index = offset + match.length;
+					return match;
+				});
+				source += "';\n";
+
+				// If a variable is not specified, place data values in local scope.
+				if (!o.variable) source = 'obj=obj||{};with(obj){\n' + source + '}\n';
+
+				source = "var __t,__p='',__j=Array.prototype.join," +
+					"print=function(){__p+=__j.call(arguments,'');};\n" +
+					source + "return __p;\n";
+
+				try {
+					render = new Function(o.variable || 'obj', source);
+				} catch (e) {
+					e.source = source;
+					throw e;
+				}
+
+				if (data) return render(data);
+				var template = function(data){
+					return render.call(this, data);
+				};
+
+				// Provide the compiled function source as a convenience for precompilation.
+				template.source = 'function(' + (o.variable || 'obj') + '){\n' + source + '}';
+				return template;
+			}
+		});
+	}; // end wrap
+
+
+	if (typeof define === 'function' && define.amd){
+		// requires epitome object only.
+		define('epitome-template',['./epitome'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {});
+		exports.Epitome.Template = wrap(exports.Epitome);
+	}
+}(this));
+
+
+/*jshint mootools:true */
+;(function(exports){
+	//   // breaks tests due to mootools reliance on args.callee and fireEvent
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(Template, Model, Collection, Events){
+
+		return new Class({
+
+			Implements: [Events],
+
+			// a string or element to render to and bind events on
+			element: null,
+
+			// optional, a collection may be bound to the view
+			collection: null,
+
+			// optional, a model may be bound to the view
+			model: null,
+
+			// preset stuff like template and the event map
+			options: {
+				template: "",
+				// the event map should be like `elementEvent`: `instanceEvent`
+				// for example: '{click:relay(a.task-remove)': 'removeTask'}
+				// will fire instance's onRemoveTask handler when a.task-remove is pressed within the element.
+				events: {}
+			},
+
+			initialize: function(options){
+				// constructor like function.
+
+				// deal with collection first to avoid reference errors with object.clone / merge for setOptions
+				if (options && options.collection){
+					this.setCollection(options.collection);
+					delete options.collection;
+				}
+
+				// deal with model as well
+				if (options && options.model){
+					this.setModel(options.model);
+					delete options.model;
+				}
+
+				// now we can hopefully setOptions safely.
+				this.setOptions(options);
+
+				// define the element.
+				if (this.options.element){
+					this.setElement(this.options.element, this.options.events);
+					delete this.options.element;
+				}
+
+				// let the instance know
+				return this.trigger('ready');
+			},
+
+			setElement: function(el, events){
+				// set the element and clean-up old one
+				this.element && this.detachEvents() && this.destroy();
+				this.element = document.id(el);
+				events && this.attachEvents(events);
+
+				return this;
+			},
+
+			setCollection: function(collection){
+				// a collection should be a real collection.
+				var self = this,
+					eventProxy = function(type){
+						return function(){
+							self.trigger(type + ':collection', arguments);
+						}
+					};
+
+				if (instanceOf(collection, Collection)){
+					this.collection = collection;
+					// listen in for changes.
+					this.collection.on({
+						'change': eventProxy('change'),
+						'fetch': eventProxy('fetch'),
+						'add': eventProxy('add'),
+						'remove': eventProxy('remove'),
+						'sort': eventProxy('sort'),
+						'reset': eventProxy('reset'),
+						'error': eventProxy('error')
+					});
+				}
+
+				return this;
+			},
+
+			setModel: function(model){
+				// a model should be an Epitome model
+				var self = this,
+					eventProxy = function(type){
+						return function(){
+							self.trigger(type + ':model', arguments);
+						}
+					};
+
+				if (instanceOf(model, Model)){
+					this.model = model;
+					// listen in for changes.
+					this.model.on({
+						'change': eventProxy('change'),
+						'destroy': eventProxy('destroy'),
+						'empty': eventProxy('empty'),
+						'error': eventProxy('error')
+					});
+				}
+
+				return this;
+			},
+
+			attachEvents: function(events){
+				// add events to main element.
+				var self = this;
+				Object.each(events, function(method, type){
+					self.element.addEvent(type, function(e){
+						self.trigger(method, arguments);
+					});
+				});
+
+				this.element.store('attachedEvents', events);
+
+				return this;
+			},
+
+			detachEvents: function(){
+				// remove attached events from an element
+				var events = this.element.retrieve('attachedEvents');
+				events && this.element.removeEvents(events).eliminate('attachedEvents');
+
+				return this;
+			},
+
+			template: function(data, template){
+				// refactor this to work with any other template engine in your constructor
+				template = template || this.options.template;
+
+				// instantiate a template engine when needed
+				var compiler = this.Template || (this.Template = new Template());
+
+				return compiler.template(template, data);
+			},
+
+			render: function(){
+				// refactor this in your constructor object. for example:
+				// this.element.set('html', this.template(this.options.data));
+				// this.parent(); // fires the render event.
+				return this.trigger('render');
+			},
+
+			empty: function(soft){
+				// with soft flag it does not destroy child elements but detaches from dom
+				if (soft){
+					this.element.empty();
+				}
+				else {
+					this.element.set('html', '');
+				}
+
+				return this.trigger('empty');
+			},
+
+			dispose: function(){
+				// detach the element from the dom.
+				this.element.dispose();
+
+				return this.trigger('dispose');
+			},
+
+			destroy: function(){
+				// remove element from dom and memory.
+				this.element.destroy();
+
+				return this.trigger('destroy');
+			}
+
+		});
+	}; // end wrap
+
+
+	if (typeof define === 'function' && define.amd){
+		// requires epitome-template and at least eptiome-model and eptiome-collection for implementation
+		define('epitome-view',['./epitome-template', './epitome-model', './epitome-collection', './epitome-events'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {Template: {}, Model: {}, Collection: {}, Events: {}});
+		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection, exports.Epitome.Events);
+	}
+}(this));
+/*jshint mootools:true */
+;(function(exports){
+	
+
+	// wrapper function for requirejs or normal object
+	var wrap = function(Events){
+
+		var hc = 'hashchange',
+			hcSupported = ('on' + hc) in window,
+			eventHosts = [window, document],
+			timer,
+			getQueryString = function(queryString){
+				var result = {},
+					re = /([^&=]+)=([^&]*)/g,
+					m;
+
+				while (m = re.exec(queryString)){
+					result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+				}
+
+				return result;
+			};
+
+		Element.Events.hashchange = {
+			// Cross browser support for onHashChange event - http://github.com/greggoryhz/MooTools-onHashChange-Event/
+			onAdd: function(){
+				var hash = location.hash,
+					check = function(){
+						if (hash == location.hash)
+							return;
+
+						hash = location.hash;
+						eventHosts.invoke('fireEvent', hc, hash.indexOf('#') == 0 ? hash.substr(1) : hash);
+					};
+
+				(hcSupported && (window.onhashchange = check)) || (timer = check.periodical(100));
+			},
+			onRemove: function(){
+				(hcSupported && (window.onhashchange = null)) || clearInterval(timer);
+			}
+		};
+
+
+		// Router, has its own repo https://github.com/DimitarChristoff/Router
+		return new Class({
+
+			Implements: [Events],
+
+			options: {
+				triggerOnLoad: true // check route on load
+			},
+
+			routes: {
+				// '#!path/:query/:id?': 'eventname',
+			},
+
+			boundEvents: {},
+
+			initialize: function(options){
+				var self = this;
+
+				this.setOptions(options);
+				this.options.routes && (this.routes = this.options.routes);
+
+				window.addEvent(hc, function(e){
+					var hash = location.hash,
+						path = hash.split('?')[0],
+						query = hash.split('?')[1] || '',
+						notfound = true,
+						route;
+
+					for (route in self.routes){
+						var keys = [],
+							regex = self.normalize(route, keys, true, false),
+							found = regex.exec(path),
+							routeEvent = false;
+
+						if (found){
+							notfound = false;
+							self.req = found[0];
+
+							var args = found.slice(1),
+								param = {};
+
+							Array.each(args, function(a, i){
+								typeof keys[i] !== 'undefined' && (param[keys[i].name] = a);
+							});
+
+							self.route = route;
+							self.param = param || {};
+							self.query = query && getQueryString(query);
+
+							// find referenced events
+							routeEvent = self.routes[route];
+
+							// generic before route, pass route id, if avail
+							self.trigger('before', routeEvent);
+
+							// if there is an identifier and an event added
+							if (routeEvent && self.$events[routeEvent]){
+								// route event was defined, fire specific before pseudo
+								self.trigger(routeEvent + ':before');
+								// call the route event handler itself, pass params as arguments
+								self.trigger(routeEvent, Object.values(self.param));
+							}
+							else {
+								// requested route was expected but not found or event is missing
+								self.trigger('error', ['Route', routeEvent, 'is undefined'].join(' '));
+							}
+
+							// fire a generic after event
+							self.trigger('after', routeEvent);
+
+							// if route is defined, also fire a specific after pseudo
+							routeEvent && self.trigger(routeEvent + ':after');
+							break;
+						}
+					}
+
+					notfound && self.trigger('undefined');
+
+				});
+
+				this.trigger('ready');
+				this.options.triggerOnLoad && window.fireEvent(hc);
+			},
+
+			navigate: function(route, trigger){
+				if (location.hash == route && trigger){
+					window.fireEvent(hc);
+				}
+				else {
+					location.hash = route;
+				}
+			},
+
+			normalize: function(path, keys, sensitive, strict){
+				// normalize by https://github.com/visionmedia/express
+				if (path instanceof RegExp) return path;
+
+				path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g,function(_, slash, format, key, capture, optional){
+
+					keys.push({
+						name: key,
+						optional: !!optional
+					});
+
+					slash = slash || '';
+
+					return [
+						(optional ? '' : slash),
+						'(?:',
+						(optional ? slash : ''),
+						(format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')',
+						(optional || '')
+					].join('');
+				}).replace(/([\/.])/g, '\\$1').replace(/\*/g, '(.*)');
+
+				return new RegExp('^' + path + '$', sensitive ? '' : 'i');
+			},
+
+			addRoute: function(obj){
+				// adds a new route, expects keys @route (string), @id (string), @events (object)
+				if (!obj || !obj.route || !obj.id || !obj.events)
+					return this.trigger('error', 'Please include route, id and events in the argument object when adding a route');
+
+				if (!obj.id.length)
+					return this.trigger('error', 'Route id cannot be empty, aborting');
+
+				if (this.routes[obj.route])
+					return this.trigger('error', 'Route "{route}" or id "{id}" already exists, aborting'.substitute(obj));
+
+
+				this.routes[obj.route] = obj.id;
+				this.on(this.boundEvents[obj.route] = obj.events);
+
+				return this.trigger('route:add', obj);
+			},
+
+			removeRoute: function(route){
+				if (!route || !this.routes[route] || !this.boundEvents[route])
+					return this.trigger('error', 'Could not find route or route is not removable');
+
+				this.off(this.boundEvents[route]);
+
+				delete this.routes[route];
+				delete this.boundEvents[route];
+
+				return this.trigger('route:remove', route);
+			}
+
+		});
+	}; // end wrap
+
+
+	if (typeof define === 'function' && define.amd){
+		// requires epitome object only.
+		define('epitome-router',['./epitome-events'], wrap);
+	}
+	else {
+		exports.Epitome || (exports.Epitome = {Events:{}});
+		exports.Epitome.Router = wrap(exports.Epitome.Events);
+	}
+}(this));

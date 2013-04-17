@@ -1,11 +1,11 @@
 /*jshint mootools:true */
-;(function(exports) {
+;(function(exports){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Collection) {
+	var wrap = function(Collection){
 
-		var	noUrl = 'no-urlRoot-set',
+		var noUrl = 'no-urlRoot-set',
 			eventPseudo = 'fetch:';
 
 		return new Class({
@@ -17,22 +17,22 @@
 				urlRoot: noUrl
 			},
 
-			initialize: function(models, options) {
+			initialize: function(models, options){
 				this.setupSync();
 				this.parent(models, options);
 			},
 
-			setupSync: function() {
+			setupSync: function(){
 				// single request object as in models. independent of models.
 				var self = this,
 					rid = 0,
-					incrementRequestId = function() {
+					incrementRequestId = function(){
 						// request ids are unique and private. private to up them.
 						rid++;
 					};
 
 				// public methods - next likely is current rid + 1
-				this.getRequestId = function() {
+				this.getRequestId = function(){
 					return rid + 1;
 				};
 
@@ -42,15 +42,17 @@
 					url: this.options.urlRoot,
 					emulation: this.options.emulateREST,
 					onRequest: incrementRequestId,
-					onCancel: function() {
+					onCancel: function(){
 						this.removeEvents(eventPseudo + rid);
 					},
-					onSuccess: function(responseObj) {
+					onSuccess: function(responseObj){
 						responseObj = self.postProcessor && self.postProcessor(responseObj);
-						self.fireEvent(eventPseudo + rid, [[responseObj]]);
+						self.trigger(eventPseudo + rid, [
+							[responseObj]
+						]);
 					},
-					onFailure: function() {
-						self.fireEvent(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
+					onFailure: function(){
+						self.trigger(eventPseudo + 'error', [this.options.method, this.options.url, this.options.data]);
 					}
 				});
 
@@ -58,13 +60,13 @@
 				return this;
 			},
 
-			fetch: function(refresh, queryParams) {
+			fetch: function(refresh, queryParams){
 				// get a list of models. `@refresh (boolean)` will empty collection first, queryParams passed as get args
 				queryParams || (queryParams = {});
 
 				// set the onSuccess event for this fetch call
-				this._throwAwayEvent(function(models) {
-					if (refresh) {
+				this._throwAwayEvent(function(models){
+					if (refresh){
 						this.empty();
 						Array.each(models, this.addModel.bind(this));
 					}
@@ -73,7 +75,7 @@
 					}
 
 					// finaly fire the event to instance
-					this.fireEvent('fetch', [models])
+					this.trigger('fetch', [models])
 				});
 
 				this.request.get(queryParams);
@@ -82,15 +84,15 @@
 				return this;
 			},
 
-			processModels: function(models) {
+			processModels: function(models){
 				// deals with newly arrived objects which can either update existing models or be added as new models
 				// `@models (array or objects)`, not actual model instances
 				var self = this;
 
-				Array.each(models, function(model) {
+				Array.each(models, function(model){
 					var exists = model.id && self.getModelById(model.id);
 
-					if (exists) {
+					if (exists){
 						exists.set(model);
 					}
 					else {
@@ -99,7 +101,7 @@
 				});
 			},
 
-			_throwAwayEvent: function(callback) {
+			_throwAwayEvent: function(callback){
 				// this is a one-off event that will ensure a fetch event fires only once per `.fetch`
 				var eventName = eventPseudo + this.getRequestId(),
 					self = this,
@@ -108,14 +110,14 @@
 				if (!callback || typeof callback !== 'function')
 					return;
 
-				throwAway[eventName] = function(responseObj) {
+				throwAway[eventName] = function(responseObj){
 					callback.apply(self, responseObj);
 
 					// remove this one-off event.
-					self.removeEvents(throwAway);
+					self.off(throwAway);
 				};
 
-				return this.addEvents(throwAway);
+				return this.on(throwAway);
 			}.protect(),
 
 			postProcessor: function(jsonResponse){
@@ -126,12 +128,12 @@
 		});
 	}; // end wrap
 
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === 'function' && define.amd){
 		// requires epitome model and all its deps
 		define(['./epitome-collection'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Collection:{}});
+		exports.Epitome || (exports.Epitome = {Collection: {}});
 		exports.Epitome.Collection.Sync = wrap(exports.Epitome.Collection);
 	}
 }(this));
