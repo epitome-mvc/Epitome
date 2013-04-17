@@ -1556,6 +1556,7 @@ Uglifying file: /projects/Epitome/Epitome-min.js
 
 /projects/Epitome/Epitome-min.js
 ----------------
+/projects/Epitome/src/epitome-events.js
 /projects/Epitome/src/epitome.js
 /projects/Epitome/src/epitome-isequal.js
 /projects/Epitome/src/epitome-model.js
@@ -1575,7 +1576,7 @@ npm install -g requirejs
 
 Alternatively, grab r.js and put it inside the project, then do `node r.js -o app.build.js`
 
-An npm package is also available:
+An npm package is also available but is out of date:
 
 ```sh
 npm install epitome
