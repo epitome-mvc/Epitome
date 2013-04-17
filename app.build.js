@@ -1,6 +1,6 @@
 ({
 	baseUrl: './src/',
-	optimize: 'none',
+	optimize: 'uglify2',
 	out:'./Epitome-min.js',
 	name:'epitome',
 	include:[
