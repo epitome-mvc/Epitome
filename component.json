@@ -1,0 +1,14 @@
+{
+  "name": "Epitome",
+  "version": "0.3.0",
+  "main": "Epitome-min.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies: {
+     "mootools": "1.4.5"
+  },
+  "homepage": "http://dimitarchristoff.github.io/Epitome/"
+}
