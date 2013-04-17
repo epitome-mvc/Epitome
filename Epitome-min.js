@@ -13,7 +13,13 @@
 		addEvent = function(type, fn){
 			type = removeOn(type);
 
-			this.$events[type] = (this.$events[type] || []).include(fn);
+			var types = type.split(/\s+/),
+				self = this;
+
+			types.each(function(type){
+				self.$events[type] = (self.$events[type] || []).include(fn);
+			});
+
 			return this;
 		}.overloadSetter(),
 
