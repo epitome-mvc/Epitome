@@ -17,6 +17,7 @@ var http = require('http'),
 		out: './Epitome-min.js',
 		name: 'epitome',
 		include: [
+			'epitome-events',
 			'epitome',
 			'epitome-isequal',
 			'epitome-model',
