@@ -29,7 +29,7 @@
 			if (events){
 				if (fn){
 					var index = events.indexOf(fn);
-					if (index != -1) events.splice(index, 1);
+					if (index != -1) delete events[index]; // sparses array, keeping index
 				}
 				else {
 					delete this.$events[type];
