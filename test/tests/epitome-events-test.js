@@ -102,8 +102,8 @@ buster.testCase('Basic Epitome Events test >', {
 
 		foo.off(saved);
 
-		buster.assert.equals(foo.$events['test'].length, 0);
-		buster.assert.equals(foo.$events['test2'].length, 0);
+		buster.assert.equals(foo.$events['test'].filter(String).length, 0);
+		buster.assert.equals(foo.$events['test2'].filter(String).length, 0);
 	},
 
 	'Expect .listenTo to sub to foreign events and pass other instance > ': function(){
