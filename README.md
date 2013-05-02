@@ -23,7 +23,7 @@ Current version: **0.3.0**
 
 A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```HTML
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/epitome/0.2.0/Epitome-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js"></script>
 ```
 
 ## Changelog
