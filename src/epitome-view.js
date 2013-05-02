@@ -1,4 +1,4 @@
-/*jshint mootools:true */
+/*jshint strict:false */
 ;(function(exports){
 	// 'use strict';  // breaks tests due to mootools reliance on args.callee and fireEvent
 
@@ -20,7 +20,7 @@
 
 			// preset stuff like template and the event map
 			options: {
-				template: "",
+				template: '',
 				// the event map should be like `elementEvent`: `instanceEvent`
 				// for example: '{click:relay(a.task-remove)': 'removeTask'}
 				// will fire instance's onRemoveTask handler when a.task-remove is pressed within the element.
@@ -70,7 +70,7 @@
 					eventProxy = function(type){
 						return function(){
 							self.trigger(type + ':collection', arguments);
-						}
+						};
 					};
 
 				if (instanceOf(collection, Collection)){
@@ -96,7 +96,7 @@
 					eventProxy = function(type){
 						return function(){
 							self.trigger(type + ':model', arguments);
-						}
+						};
 					};
 
 				if (instanceOf(model, Model)){
@@ -117,7 +117,7 @@
 				// add events to main element.
 				var self = this;
 				Object.each(events, function(method, type){
-					self.element.addEvent(type, function(e){
+					self.element.addEvent(type, function(){
 						self.trigger(method, arguments);
 					});
 				});

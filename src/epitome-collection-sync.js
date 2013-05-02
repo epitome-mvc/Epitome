@@ -1,4 +1,3 @@
-/*jshint mootools:true */
 ;(function(exports){
 	'use strict';
 
@@ -75,7 +74,7 @@
 					}
 
 					// finaly fire the event to instance
-					this.trigger('fetch', [models])
+					this.trigger('fetch', [models]);
 				});
 
 				this.request.get(queryParams);

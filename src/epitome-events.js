@@ -1,4 +1,3 @@
-/*jshint mootools:true, strict:true */
 ;(function(exports) {
 	'use strict';
 
@@ -29,7 +28,7 @@
 			if (events){
 				if (fn){
 					var index = events.indexOf(fn);
-					if (index != -1) delete events[index]; // sparses array, keeping index
+					if (index !== -1) delete events[index]; // sparses array, keeping index
 				}
 				else {
 					delete this.$events[type];
@@ -40,11 +39,7 @@
 
 		all = '*',
 
-		undefined = 'undefined',
-
 		func = 'function',
-
-		evnt = 'event',
 
 		EpitomeEvents = new Class({
 			// custom event implementation
@@ -104,7 +99,7 @@
 					fn = type;
 					type = all;
 				}
-				else if (t === undefined){
+				else if (t === 'undefined'){
 					type = all;
 				}
 
@@ -121,7 +116,7 @@
 				var len;
 				Object.each(obj.$subscribers, function(value, key){
 					len = value.length;
-					if (typeof type !== undefined){
+					if (typeof type !== 'undefined'){
 						if (key === type) while(len--)
 							(((fn && fn === value[len].fn) || !fn) && value[len].context === obj) && value.splice(len, 1);
 					}
@@ -139,7 +134,7 @@
 				var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments)),
 					option;
 				for (option in options){
-					if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+					if (typeOf(options[option]) !== func || !(/^on[A-Z]/).test(option)) continue;
 					this.on(option, options[option]);
 					delete options[option];
 				}

@@ -1,0 +1,31 @@
+{
+	"node": false,
+	"browser": true,
+	"mootools": true,
+	"es5": true,
+	"esnext": false,
+	"evil": false,
+	"bitwise": false,
+	"curly": false,
+	"eqeqeq": true,
+	"eqnull": true,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"noarg": true,
+	"undef": true,
+	"unused": true,
+	"strict": true,
+	"sub": true,
+	"trailing": true,
+	"smarttabs": false,
+	"boss": true,
+	"expr": true,
+	"globalstrict": true,
+	"quotmark": "single",
+	"globals": {
+		"require": false,
+		"define": false,
+		"module": false
+	}
+}

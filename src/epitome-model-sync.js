@@ -1,4 +1,3 @@
-/*jshint mootools:true */
 ;(function(exports){
 	'use strict';
 
@@ -18,6 +17,7 @@
 		},
 		success: function(text){
 			// fix for no content breaking JSON parser.
+			/*jshint eqeqeq:false*/
 			var json;
 			try {
 				json = this.response.json = JSON.decode(text, this.options.secure);
@@ -27,6 +27,7 @@
 			}
 			if (text && (json == null && this.status != 204)) this.onFailure();
 			else this.onSuccess(json, text);
+			/*jshint eqeqeq:true*/
 		}
 	});
 
@@ -59,7 +60,7 @@
 					get: function(){
 						// make sure we return a sensible url.
 						var base = this.urlRoot || this.options.urlRoot || 'no-urlRoot-set';
-						base.charAt(base.length - 1) != '/' && (base += '/');
+						base.charAt(base.length - 1) !== '/' && (base += '/');
 						return base;
 					}
 				}
@@ -98,7 +99,7 @@
 				options.method = method;
 
 				// if it's a method via POST, append passed object or use exported model
-				if (method == methodMap.create || method == methodMap.update){
+				if (method === methodMap.create || method === methodMap.update){
 					options.data = model || this.toJSON();
 
 					// pre-processor of data support
@@ -154,7 +155,7 @@
 					link: 'chain',
 					url: this.get('urlRoot'),
 					emulation: this.options.emulateREST,
-					onRequest: incrementRequestId,
+						onRequest: incrementRequestId,
 					onCancel: function(){
 						this.removeEvents(syncPseudo + rid);
 					},
@@ -199,7 +200,7 @@
 
 				throwAway[eventName] = function(responseObj){
 					// if we have a response object
-					if (responseObj && typeof responseObj == 'object'){
+					if (responseObj && typeof responseObj === 'object'){
 						self.set(responseObj);
 					}
 
@@ -241,7 +242,7 @@
 				if (key){
 					// if key is an object, go to overloadSetter.
 					var ktype = typeOf(key),
-						canSet = ktype == 'object' || (ktype == 'string' && typeof value != 'undefined');
+						canSet = ktype === 'object' || (ktype === 'string' && typeof value !== 'undefined');
 
 					canSet && this._set.apply(this, arguments);
 				}

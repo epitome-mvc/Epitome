@@ -1,15 +1,14 @@
-/*jshint mootools:true */
 ;(function(exports){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Epitome){
+	var wrap = function(){
 
 		var storage = (function(){
 			// returns 2 classes for use with localStorage and sessionStorage as mixins
 
 			// feature detect if storage is available
-			var hasNativeStorage = !!(typeof exports.localStorage == 'object' && exports.localStorage.getItem),
+			var hasNativeStorage = !!(typeof exports.localStorage === 'object' && exports.localStorage.getItem),
 
 			// default storage method
 				localStorage = 'localStorage',
@@ -41,7 +40,7 @@
 						// try to use a serialized object in window.name instead
 						try {
 							s = JSON.decode(exports.name);
-							if (s && typeof s == 'object' && s[privateKey])
+							if (s && typeof s === 'object' && s[privateKey])
 								storage = s[privateKey];
 						}
 						catch (e) {

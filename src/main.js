@@ -12,6 +12,7 @@ define([
 	'./epitome-view',
 	'./epitome-router'
 ], function(Events, Epitome, isEqual, Storage, Model, ModelSync, Collection, CollectionSync, Template, View, Router){
+	'use strict';
 	// export it all under a single object
 	Epitome.Events = Events;
 	Epitome.isEqual = isEqual;

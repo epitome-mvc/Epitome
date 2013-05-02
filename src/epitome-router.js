@@ -1,4 +1,3 @@
-/*jshint mootools:true */
 ;(function(exports){
 	'use strict';
 
@@ -26,11 +25,11 @@
 			onAdd: function(){
 				var hash = location.hash,
 					check = function(){
-						if (hash == location.hash)
+						if (hash === location.hash)
 							return;
 
 						hash = location.hash;
-						eventHosts.invoke('fireEvent', hc, hash.indexOf('#') == 0 ? hash.substr(1) : hash);
+						eventHosts.invoke('fireEvent', hc, hash.indexOf('#') === 0 ? hash.substr(1) : hash);
 					};
 
 				(hcSupported && (window.onhashchange = check)) || (timer = check.periodical(100));
@@ -62,7 +61,8 @@
 				this.setOptions(options);
 				this.options.routes && (this.routes = this.options.routes);
 
-				window.addEvent(hc, function(e){
+				window.addEvent(hc, function(){
+					/*jshint loopfunc:true */
 					var hash = location.hash,
 						path = hash.split('?')[0],
 						query = hash.split('?')[1] || '',
@@ -118,7 +118,7 @@
 					}
 
 					notfound && self.trigger('undefined');
-
+					/*jshint loopfunc:false */
 				});
 
 				this.trigger('ready');
@@ -126,7 +126,7 @@
 			},
 
 			navigate: function(route, trigger){
-				if (location.hash == route && trigger){
+				if (location.hash === route && trigger){
 					window.fireEvent(hc);
 				}
 				else {

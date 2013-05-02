@@ -1,9 +1,8 @@
-/*jshint mootools:true */
-;(function(exports) {
+;(function(exports){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(isEqual, Events) {
+	var wrap = function(isEqual, Events){
 
 		return new Class({
 
@@ -14,7 +13,7 @@
 			// custom accessors.
 			properties: {
 				id: {
-					get: function() {
+					get: function(){
 						// need a cid to identify model.
 						var id = this._attributes.id || String.uniqueID();
 						// always need a collection id.
@@ -35,7 +34,7 @@
 
 			collections: [],
 
-			initialize: function(obj, options) {
+			initialize: function(obj, options){
 				// constructor for Model class.
 
 				// are there any defaults passed? better to have them on the proto.
@@ -51,13 +50,13 @@
 				return this.trigger('ready');
 			},
 
-			set: function() {
+			set: function(){
 				// call the real getter. we proxy this because we want
 				// a single event after all properties are updated and the ability to work with
 				// either a single key, value pair or an object
 				this.propertiesChanged = [];
 				this.validationFailed = [];
-				
+
 				this._set.apply(this, arguments);
 				// if any properties did change, fire a change event with the array.
 				this.propertiesChanged.length && this.trigger('change', this.get(this.propertiesChanged));
@@ -65,7 +64,7 @@
 			},
 
 			// private, real setter functions, not on prototype, see note above
-			_set: function(key, value) {
+			_set: function(key, value){
 				// needs to be bound the the instance.
 				if (!key || typeof value === 'undefined') return this;
 
@@ -79,7 +78,7 @@
 
 				// basic validator support
 				var validator = this.validate(key, value);
-				if (this.validators[key] && validator !== true) {
+				if (this.validators[key] && validator !== true){
 					var obj = {};
 					obj[key] = {
 						key: key,
@@ -91,7 +90,7 @@
 					return this;
 				}
 
-				if (value === null) {
+				if (value === null){
 					delete this._attributes[key]; // delete = null.
 				}
 				else {
@@ -107,11 +106,11 @@
 				return this;
 			}.overloadSetter(),   // mootools abstracts overloading to allow object iteration
 
-			get: function(key) {
+			get: function(key){
 				// overload getter, 2 paths...
 
 				// custom accessors take precedence and have no reliance on item being in attributes
-				if (key && this.properties[key] && this.properties[key]['get']) {
+				if (key && this.properties[key] && this.properties[key]['get']){
 					return this.properties[key]['get'].call(this);
 				}
 
@@ -119,7 +118,7 @@
 				return (key && typeof this._attributes[key] !== 'undefined') ? this._attributes[key] : null;
 			}.overloadGetter(),
 
-			unset: function() {
+			unset: function(){
 				// can remove keys from model, passed on as multiple string arguments or an array of string keys
 				var keys = Array.prototype.slice.apply(arguments),
 					obj = {},
@@ -128,7 +127,7 @@
 				if (!len)
 					return this;
 
-				Array.each(Array.flatten(keys), function(key) {
+				Array.each(Array.flatten(keys), function(key){
 					obj[key] = null;
 				});
 
@@ -137,11 +136,11 @@
 				return this;
 			},
 
-			toJSON: function() {
+			toJSON: function(){
 				return Object.clone(this._attributes);
 			},
 
-			empty: function() {
+			empty: function(){
 				// empty the model and fire change event
 				var keys = Object.keys(this.toJSON()),
 					self = this;
@@ -150,7 +149,7 @@
 				this.trigger('change', [keys]);
 
 				// fire change for all keys in the model.
-				Array.each(keys, function(key) {
+				Array.each(keys, function(key){
 					self.trigger('change:' + key, null);
 				}, this);
 
@@ -158,25 +157,25 @@
 				this.trigger('empty');
 			},
 
-			destroy: function() {
+			destroy: function(){
 				// destroy the model, send delete to server
 				this._attributes = {};
 				this.trigger('destroy');
 			},
 
-			validate: function(key, value) {
+			validate: function(key, value){
 				// run validation, return true (validated) if no validator found
 				return (key in this.validators) ? this.validators[key].call(this, value) : true;
 			}
 		});
 	}; // end wrap
 
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === 'function' && define.amd){
 		// requires epitome object only.
-		define(['./epitome-isequal','./epitome-events'], wrap);
+		define(['./epitome-isequal', './epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {isEqual:{},Events:{}});
+		exports.Epitome || (exports.Epitome = {isEqual: {}, Events: {}});
 		exports.Epitome.Model = wrap(exports.Epitome.isEqual, exports.Epitome.Events);
 	}
 }(this));

@@ -1,4 +1,4 @@
-/*jshint mootools:true */
+/*jshint quotmark:false, evil:true */
 ;(function(exports){
 	'use strict';
 
@@ -110,9 +110,9 @@
 
 				try {
 					render = new Function(o.variable || 'obj', source);
-				} catch (e) {
-					e.source = source;
-					throw e;
+				} catch (o_O) {
+					o_O.source = source;
+					throw o_O;
 				}
 
 				if (data) return render(data);
@@ -137,4 +137,3 @@
 		exports.Epitome.Template = wrap(exports.Epitome);
 	}
 }(this));
-

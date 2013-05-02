@@ -1,5 +1,6 @@
 /*jshint mootools:true */
-;(function(exports){
+;
+(function(exports){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
