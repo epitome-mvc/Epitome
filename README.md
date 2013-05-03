@@ -16,7 +16,7 @@ If you feel strongly about semantics of the patterns used, you should look at [D
 
 Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-Current version: **0.3.0**
+Current version: **0.3.1**
 
 <a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a>
@@ -27,8 +27,10 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
+- 0.3.1
+ - Added `.jshintrc` and changed all files to pass linting settings
 - 0.3.0
- - Breaking API change, all events are now via `.on` / `.off` / `.trigger` 
+ - Breaking API change, all events are now via `.on` / `.off` / `.trigger`
  - Added `.listenTo(obj, event, cb)` and `.stopListening(obj, event, cb)` methods for easy pubsub and event bubbling
 - 0.2.2
  - fixed a validators error firing errors without there being any.
