@@ -21,7 +21,7 @@
 	"smarttabs": false,
 	"boss": true,
 	"expr": true,
-	"globalstrict": true,
+	"globalstrict": false,
 	"quotmark": "single",
 	"globals": {
 		"require": false,
