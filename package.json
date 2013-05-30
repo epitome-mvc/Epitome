@@ -1,7 +1,7 @@
 {
   "name": "epitome",
   "description": "Epitome, an MVP framework built on top of MooTools",
-  "homepage": "http://dimitarchristoff.github.com/Epitome",
+  "homepage": "http://epitome-mvc.github.com/Epitome",
   "version": "0.3.1",
   "author": "Dimitar Christoff <christoff@gmail.com> (https://twitter.com/D_mitar)",
   "keywords": [
@@ -18,10 +18,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DimitarChristoff/Epitome"
+    "url": "https://github.com/epitome-mvc/Epitome"
   },
   "bugs": {
-    "url": "https://github.com/DimitarChristoff/Epitome/issues"
+    "url": "https://github.com/epitome-mvc/Epitome/issues"
   },
   "main": "./src/epitome-cjs.js",
   "license": "MIT (http://mootools.net/license.txt)",
