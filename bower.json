@@ -9,6 +9,5 @@
   ],
   "dependencies": {
     "mootools": "1.4.5"
-  },
-  "homepage": "http://dimitarchristoff.github.io/Epitome/"
+  }
 }
