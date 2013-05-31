@@ -1,6 +1,5 @@
 node_modules/*
 .idea/
 npm-debug.log
-dist/docs/
 dist/hash/*.js*
 dist/out/*.js
