@@ -22,9 +22,10 @@ module.exports = function(grunt){
 					twitter: 'D_mitar',
 					analytics: 'UA-1199722-3',
 					pageTemplate: 'dist/tpl/page.hbs',
-					github: 'https://epitome-mvc.github.com/Epitome',
+					github: 'https://github.com/epitome-mvc/Epitome',
 					travis: 'http://travis-ci.org/epitome-mvc/Epitome',
-					logo: 'https://github.com/epitome-mvc/Epitome/raw/master/example/epitome-logo.png',
+					images: 'dist/images',
+					logo: 'images/epitome-logo-small.png',
 					disqus: 'epitome-mvc'
 				},
 				files: {

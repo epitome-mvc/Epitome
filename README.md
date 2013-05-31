@@ -180,7 +180,7 @@ _Events: `ready`_
 </p>
 </div>
 
-The `model` - if passed, sets the internal data hash to a new derefrenced object. Special accessor properties, as defined in the `Epitome.Model.prototype.properties`, will run first and be applicable. See [properties](#epitome-model/model-properties) for more info.
+The `model` - if passed, sets the internal data hash to a new derefrenced object. Special accessor properties, as defined in the `Epitome.Model.prototype.properties`, will run first and be applicable. See [properties](#epitomemodel/model-properties) for more info.
 
 The `options` object is a standard MooTools class options override and is being merged with the `Epitome.Model.prototype.options` when a new model is created. It typically contains various event handlers in the form of:
 
@@ -404,7 +404,7 @@ The `error` event is observed by collections and views and fires on all view and
 
 ## Epitome.Model.Sync
 
-This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal [Model](#epitome-model), unless outlined below:
+This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal [Model](#epitomemodel), unless outlined below:
 
 ### constructor (initialize)
 ---
@@ -674,7 +674,7 @@ _Events: `remove`, `reset`, `empty`_
 </p>
 </div>
 
-Applies `this.removeModel` to all Models of the collection. Fires `empty` when done - though before that, a `remove` and `reset` will fire, see [removeModel](#epitome-collection/removemodel)
+Applies `this.removeModel` to all Models of the collection. Fires `empty` when done - though before that, a `remove` and `reset` will fire, see [removeModel](#epitomecollection/removemodel)
 
 ### sort
 ---
@@ -830,7 +830,7 @@ Each Collection prototype has that property that references a Model prototype co
 
 ## Epitome.Collection.Sync
 
-The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitome-collection). It extends the default Collection prototype and adds a Request instance that can retrieve an Array of Model data from a server and add / update the Collection after.
+The Sync Class is just a layer on top of the normal [Epitome.Collection](#epitomecollection). It extends the default Collection prototype and adds a Request instance that can retrieve an Array of Model data from a server and add / update the Collection after.
 
 ### constructor (initialize)
 ---
@@ -862,7 +862,7 @@ _Events: `fetch`_
 </p>
 </div>
 
-When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by `id`. If they exist already, a `set()` is called that will merge new data into the Model instance and fire `change` events as appropriate. If the optional `refresh` argument is set to true, the current collection will be emptied first via [empty](#epitome-collection/empty).
+When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by `id`. If they exist already, a `set()` is called that will merge new data into the Model instance and fire `change` events as appropriate. If the optional `refresh` argument is set to true, the current collection will be emptied first via [empty](#epitomecollection/empty).
 
 Returns the instance 'now' but because it is async, applying anything to the collection before the `fetch` event has fired may have unexpected results.
 
@@ -988,7 +988,7 @@ _Events: `render`_
 </p>
 </div>
 
-It is essential that this method is defined in your View prototype Object definition. It does not assume to do anything by default, you need to define how the output takes place and how your data is being used. For convenience, it has access to either `this.model` or `this.collection` as the source of data that can be be passed to the [template](#epitome-view/template) method. It is expected that at the bottom of your definition, `this.parent()` is called in order for the `render` event to fire.
+It is essential that this method is defined in your View prototype Object definition. It does not assume to do anything by default, you need to define how the output takes place and how your data is being used. For convenience, it has access to either `this.model` or `this.collection` as the source of data that can be be passed to the [template](#epitomeview/template) method. It is expected that at the bottom of your definition, `this.parent()` is called in order for the `render` event to fire.
 
 ### setElement
 ---
@@ -1112,7 +1112,7 @@ _Events: `dispose`_
 </p>
 </div>
 
-Removes and destroys `this.element` from the DOM and from memory. You need to use [setElement](#epitome-view/setelement) to add a new one if you want to re-render.
+Removes and destroys `this.element` from the DOM and from memory. You need to use [setElement](#epitomeview/setelement) to add a new one if you want to re-render.
 
 ## Epitome.Storage
 
