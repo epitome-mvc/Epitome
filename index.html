@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Epitome - MVC/MVP Framework for MooTools</title>
+	<link href="css/doctor.css" type="text/css" rel="stylesheet">
+	
+		<!-- Google Analytics -->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-1199722-3']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	
+</head>
+<body>
+
+<a id="github-ribbon" href="https://github.com/epitome-mvc/Epitome"><img alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<div id="nav">
+	<div class="separator"></div>
+	<a title="Epitome - MVC/MVP Framework for MooTools" class="brand" href="#" style="background-image:url(images/epitome-logo-small.png)"></a>
+	<div class="separator"></div>
+	
+		<div class="twitter extra">
+
+			<iframe allowtransparency="true" frameborder="0" scrolling="no" style="width: 162px; height: 20px;" src="https://platform.twitter.com/widgets/follow_button.html?screen_name=D_mitar&amp;show_count=false"></iframe>
+		</div>
+		<div class="separator"></div>
+	
+	<ul id="sections"><li class="l2"><a href="#changelog">Changelog</a></li><li class="l2"><a href="#epitomeevents">Epitome.Events</a><ul><li class="l3"><a href="#epitomeevents/on">on</a></li><li class="l3"><a href="#epitomeevents/off">off</a></li><li class="l3"><a href="#epitomeevents/trigger">trigger</a></li><li class="l3"><a href="#epitomeevents/listento">listenTo</a></li><li class="l3"><a href="#epitomeevents/stoplistening">stopListening</a></li></ul></li><li class="l2"><a href="#epitomemodel">Epitome.Model</a><ul><li class="l3"><a href="#epitomemodel/constructor-initialize">constructor (initialize)</a></li><li class="l3"><a href="#epitomemodel/set">set</a></li><li class="l3"><a href="#epitomemodel/get">get</a></li><li class="l3"><a href="#epitomemodel/tojson">toJSON</a></li><li class="l3"><a href="#epitomemodel/unset">unset</a></li><li class="l3"><a href="#epitomemodel/empty">empty</a></li><li class="l3"><a href="#epitomemodel/destroy">destroy</a></li><li class="l3"><a href="#epitomemodel/model-properties">Model properties*</a></li><li class="l3"><a href="#epitomemodel/model-validators">Model validators*</a></li></ul></li><li class="l2"><a href="#epitomemodelsync">Epitome.Model.Sync</a><ul><li class="l3"><a href="#epitomemodelsync/constructor-initialize">constructor (initialize)</a></li><li class="l3"><a href="#epitomemodelsync/sync">sync</a></li><li class="l3"><a href="#epitomemodelsync/postprocessor">postProcessor</a></li><li class="l3"><a href="#epitomemodelsync/save">save</a></li><li class="l3"><a href="#epitomemodelsync/preprocessor">preProcessor</a></li><li class="l3"><a href="#epitomemodelsync/fetch">fetch</a></li></ul></li><li class="l2"><a href="#epitomecollection">Epitome.Collection</a><ul><li class="l3"><a href="#epitomecollection/constructor-initialize">constructor (initialize)</a></li><li class="l3"><a href="#epitomecollection/addmodel">addModel</a></li><li class="l3"><a href="#epitomecollection/removemodel">removeModel</a></li><li class="l3"><a href="#epitomecollection/getmodel">getModel</a></li><li class="l3"><a href="#epitomecollection/getmodelbycid">getModelByCID</a></li><li class="l3"><a href="#epitomecollection/getmodelbyid">getModelById</a></li><li class="l3"><a href="#epitomecollection/tojson">toJSON</a></li><li class="l3"><a href="#epitomecollection/empty">empty</a></li><li class="l3"><a href="#epitomecollection/sort">sort</a></li><li class="l3"><a href="#epitomecollection/reverse">reverse</a></li><li class="l3"><a href="#epitomecollection/find">find</a></li><li class="l3"><a href="#epitomecollection/findone">findOne</a></li><li class="l3"><a href="#epitomecollection/array-helpers">Array helpers</a></li><li class="l3"><a href="#epitomecollection/collection-properties">Collection properties*</a></li></ul></li><li class="l2"><a href="#epitomecollectionsync">Epitome.Collection.Sync</a><ul><li class="l3"><a href="#epitomecollectionsync/constructor-initialize">constructor (initialize)</a></li><li class="l3"><a href="#epitomecollectionsync/fetch">fetch</a></li><li class="l3"><a href="#epitomecollectionsync/postprocessor">postProcessor</a></li></ul></li><li class="l2"><a href="#epitomeview">Epitome.View</a><ul><li class="l3"><a href="#epitomeview/constructor-initialize">constructor (initialize)</a></li><li class="l3"><a href="#epitomeview/render">render</a></li><li class="l3"><a href="#epitomeview/setelement">setElement</a></li><li class="l3"><a href="#epitomeview/template">template</a></li><li class="l3"><a href="#epitomeview/empty">empty</a></li><li class="l3"><a href="#epitomeview/dispose">dispose</a></li><li class="l3"><a href="#epitomeview/destroy">destroy</a></li></ul></li><li class="l2"><a href="#epitomestorage">Epitome.Storage</a><ul><li class="l3"><a href="#epitomestorage/store">store</a></li><li class="l3"><a href="#epitomestorage/retrieve">retrieve</a></li><li class="l3"><a href="#epitomestorage/eliminate">eliminate</a></li></ul></li><li class="l2"><a href="#epitometemplate">Epitome.Template</a></li><li class="l2"><a href="#eptiomerouter">Eptiome.Router</a><ul><li class="l3"><a href="#eptiomerouter/constructor-initialize">constructor (initialize)</a></li><li class="l3"><a href="#eptiomerouter/addroute">addRoute</a></li><li class="l3"><a href="#eptiomerouter/removeroute">removeRoute</a></li></ul></li><li class="l2"><a href="#examples">Examples</a><ul><li class="l3"><a href="#examples/sync-and-storage">Sync and Storage</a></li><li class="l3"><a href="#examples/prototyping-views">Prototyping Views</a></li><li class="l3"><a href="#examples/todomvc-reference">TodoMVC reference</a></li></ul></li><li class="l2"><a href="#download-building">Download + Building</a><ul><li class="l3"><a href="#download-building/amd-builder">AMD Builder</a></li></ul></li><li class="l2"><a href="#testing">Testing</a></li><li class="l2"><a href="#development-and-contribution">Development and contribution</a></li><li class="l2"><a href="#credits-and-licensing">Credits and licensing</a></li><li class="l2"><a href="#comments">Comments</a></li></ul>
+	<div class="separator"></div>
+	
+		<div class="extra" id="github">
+			<a href="https://github.com/epitome-mvc/Epitome">Source on Github</a>
+		</div>
+		<div class="extra" id="github-issues">
+			<a href="https://github.com/epitome-mvc/Epitome/issues">Issues</a>
+		</div>
+	
+	
+		<div class="separator"></div>
+		<div class="extra" id="github">
+			<a href="http://travis-ci.org/epitome-mvc/Epitome" class="travis">
+				<img src="http://travis-ci.org/epitome-mvc/Epitome.png?branch=master"></a>
+		</div>
+
+	
+	<div class="extra generated">
+		Generated by <a href="https://github.com/DimitarChristoff/doctor" target="_blank" title="generate documentation from markdown">Doctor, MD</a>
+	</div>
+</div>
+<div id="content" class="container">
+	<p><img src="https://github.com/DimitarChristoff/Epitome/raw/master/example/epitome-logo.png" alt="Epitome"></p>
+<blockquote>
+<p><em>Epitome: a typical example of a characteristic or class; embodiment; personification; model</em></p>
+</blockquote>
+<p>Epitome is a new extensible and modular open-source MVC* framework, built out of MooTools Classes and Events. See <a href="#credits-and-licensing">credits and licensing</a></p>
+<p><a href="http://travis-ci.org/DimitarChristoff/Epitome"><img src="https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master" alt="Build Status"></a></p>
+<p><strong>BUT, IS IT REALLY MVC?</strong></p>
+<blockquote>
+<p>&lt;jiggliemon&gt; MVD, Model View Don&#39;task</p>
+</blockquote>
+<p>Strictly speaking, <code>Epitome.View</code> is closer to a <em>presenter</em> in a MVP implementation than a classic MVC one, with thin controller logic around the views. However, because <code>Epitome.View</code> is also very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.</p>
+<p>If you feel strongly about semantics of the patterns used, you should look at <a href="http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/">Digesting JavaScript MVC – Pattern Abuse Or Evolution?</a> by Addy Osmani, a talk he gave at London Ajax recently.</p>
+<p>Epitome&#39;s API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.</p>
+<p>Current version: <strong>0.3.1</strong></p>
+<p><a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
+<a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a></p>
+<p>A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:</p>
+<pre class="prettyprint linenums"><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<h2 id="changelog">Changelog</h2>
+<ul>
+<li>0.3.1<ul>
+<li>Added <code>.jshintrc</code> and changed all files to pass linting settings</li>
+</ul>
+</li>
+<li>0.3.0<ul>
+<li>Breaking API change, all events are now via <code>.on</code> / <code>.off</code> / <code>.trigger</code></li>
+<li>Added <code>.listenTo(obj, event, cb)</code> and <code>.stopListening(obj, event, cb)</code> methods for easy pubsub and event bubbling</li>
+</ul>
+</li>
+<li>0.2.2<ul>
+<li>fixed a validators error firing errors without there being any.</li>
+</ul>
+</li>
+<li>0.2.1<ul>
+<li>the default Epitome Object now returns an instance of Events so you can mediate like <code>Epitome.trigger(&#39;awesome&#39;)</code>
+between components. </li>
+</ul>
+</li>
+<li>0.2.0<ul>
+<li>big shift in he way Sync works with servers. Previously, Model and Collection were only accepting <code>application/json</code> as
+content type to be returned. Failing to receive that caused the browser not to fire any readystatechange events, which in
+turn caused all change/save/sync/error events not to bubble. As of this version, Epitome will also accept <code>text/plain</code> and
+<code>text/html</code> as fallbacks. There is still an expectation to convert the responseText to an Object, so failure to do so will
+fire <code>error</code> events instead.</li>
+<li>Model.Sync now accept an optional argument <code>request</code>, which accepts a Class constructor for the MooTools Request with
+your own definition of what success/failure is and conversion to JSON.</li>
+</ul>
+</li>
+<li>0.1.10<ul>
+<li>fixed bug where fetch/save/create/update events were firing before model.isNew was being changed</li>
+</ul>
+</li>
+<li>0.1.9<ul>
+<li>added <code>headers</code> to Model.Sync options that gets passed to the Request</li>
+</ul>
+</li>
+<li>0.1.8<ul>
+<li>added <code>queryParams</code> support to Collection.Sync::fetch, allows for pagination etc.</li>
+</ul>
+</li>
+<li>0.1.7<ul>
+<li>updated templating engine to a later version based on the one in _.js</li>
+<li>added support for <code>&lt;%-var%&gt;</code> syntax to allow escaping of entities</li>
+<li>Internally, extending the MooTools String proto and adding <code>escape</code> for dealing with entities in strings.</li>
+<li>Updated tests</li>
+</ul>
+</li>
+<li>0.1.6<ul>
+<li>build.js server changes</li>
+<li>moved to uglify2 for minification</li>
+<li>updated Epitome-min.js to reflect</li>
+<li>prevented stacking up for function deocration for Model instances&#39; <code>.fireEvent</code></li>
+<li>merged example tweak PR</li>
+</ul>
+</li>
+<li>0.1.5<ul>
+<li>small tweaks to AMD/browser wrappers, no breaking changes</li>
+</ul>
+</li>
+<li>0.1.4<ul>
+<li>breaking API change. deprecated: <code>model.sync.parse</code>, replaced with <code>preProcessor</code> and <code>postProcessor</code></li>
+</ul>
+</li>
+</ul>
+<p>All individual components of Epitome work as normal javscript files to be used in a browser as well as through <code>require.js</code> modules. See <a href="#download-building">Downloading + Building</a></p>
+<h2 id="epitomeevents">Epitome.Events</h2>
+<p>A lightweight replacement for the default MooTools Events class that adds shorthand for ease of use.</p>
+<h3 id="epitomeevents/on">on</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments mixed: <code>(String) name, (Function) callback</code> or <code>(Object) name:callback</code> pairs</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>Attaches an event or an event object on any Epitome instance (Model, Collection, View). You can also add multiple events
+that will trigger the same callback function. Examples:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">// single
+this.on(&#39;change&#39;, this.modelChange.bind(this));
+
+// multiple
+this.model.on(&#39;fetch change&#39;, this.render.bind(this));</code></pre>
+<h3 id="epitomeevents/off">off</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments mixed: <code>(String) name</code>, optional <code>(Function) callback</code> or <code>(Object) name:callback</code> pairs</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>Removes a specific event callback (if supplied) or all events sharing the same name (wildcard) when not.</p>
+<h3 id="epitomeevents/trigger">trigger</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments mixed: <code>(String) name</code>, optional <code>(Array) arguments</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>Fires an event on the current instance, passing any arguments passed (as Array or mixed).</p>
+<h3 id="epitomeevents/listento">listenTo</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments mixed: <code>(Object) instance</code>, optional <code>(String) name</code>, optional <code>(Function) callback</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>Subscribes to another instance&#39;s events. Can be broad or specific in how it attaches a listener. If no event name is
+supplied, it will subscribe to ANY event fired by the other object instance. If no function callback is supplied, it will
+bubble the event onto the host object instance but shift the callback arguments by 1, placing the other object instance
+as the first argument. Use with caution as it can cause <code>event storms</code> if not much specificity has been set.</p>
+<h3 id="epitomeevents/stoplistening">stopListening</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments mixed: <code>(Object) instance</code>, optional <code>(String) name</code>, optional <code>(Function) callback</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>Un-subscribes your instance from another instance&#39;s Events. If no arguments supplied other than the other instance, it
+will remove all subscriptions. You can optionally narrow it down by adding an event name or a name and a function in
+particular you&#39;d like to un-subscribe from.</p>
+<h2 id="epitomemodel">Epitome.Model</h2>
+<p>The Epitome.Model implementation at its core is a MooTools class with custom data accessors that fires events. As a MooTools Class, you can extend models or implement objects or other classes into your definitions. By default, the it comes with Epitome.Events and Options setters already (similar to the MooTools Class.Extras ones).</p>
+<p>The Model can fire the following events:</p>
+<ul>
+<li><code>ready</code> - when instantiated</li>
+<li><code>change</code> - when any properties have changed</li>
+<li><code>change:key</code> - when a particular property <code>key</code> has changed</li>
+<li><code>empty</code> - when a model has been emptied of all properties</li>
+<li><code>destroy</code> - when a model has been <code>destroyed</code> and all data removed.</li>
+</ul>
+<p>The following methods are official API on all Model Classes:</p>
+<h3 id="epitomemodel/constructor-initialize">constructor (initialize)</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) model</code>, <code>(Object) options</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>ready</code></em>
+</p>
+</div>
+
+<p>The <code>model</code> - if passed, sets the internal data hash to a new derefrenced object. Special accessor properties, as defined in the <code>Epitome.Model.prototype.properties</code>, will run first and be applicable. See <a href="#epitomemodel/model-properties">properties</a> for more info.</p>
+<p>The <code>options</code> object is a standard MooTools class options override and is being merged with the <code>Epitome.Model.prototype.options</code> when a new model is created. It typically contains various event handlers in the form of:</p>
+<pre class="prettyprint linenums"><code class="lang-ace">var model = new Epitome.Model({}, {
+   defaults: {
+       userTitle: &#39;admin&#39;
+   }
+});
+
+model.set(&#39;name&#39;, &#39;Bob&#39;);
+console.log(model.toJSON());</code></pre>
+<p>Supported: <code>(Object) options.defaults</code> - allows initial values of the model to be set if they are not being passed to the model constructor.</p>
+<p>Of note, the Constructor fires an event called <code>ready</code> when done and setting the initial model does not fire a <code>change</code> event.</p>
+<h3 id="epitomemodel/set">set</h3>
+<hr>
+<div class="alert" markdown="1">
+<p>
+<em>Expects arguments: mixed: <code>(String) key</code>, <code>(Mixed) value</code> - pair - or: <code>(Object) obj</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events:</em>
+
+<ul>
+ <li> <code>change: function(changedProperties) {}</code></li>
+ <li> <code>change:key: function(valueForKey) {}</code></li>
+ <li> <code>error: function(objectFailedValidation) {}</code></li>
+</ul>
+</p>
+</div>
+
+<p>Allows changing of any individual model key or a set of key/value pairs, encapsulated in an object. Will fire a single <code>change</code> event with all the changed properties as well as a specific <code>change:key</code> event that passes just the value of the key as argument.</p>
+<p>For typing of value, you can store anything at all (Primitives, Objects, Functions). Keep in mind that, when it comes to serialising the Model and sending it to the server, only Primitive types or ones with a sensible <code>toString()</code> implementation will make sense.</p>
+<h3 id="epitomemodel/get">get</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments mixed: <code>(String) key</code> or <code>(Array) keys</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>Returns known values within the model for either a single key or an array of keys. For an array of keys, it will return an object with <code>key</code> : <code>value</code> mapping.</p>
+<h3 id="epitomemodel/tojson">toJSON</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+</div>
+
+<p>Returns a de-referenced Object, containing all the known model keys and values.</p>
+<h3 id="epitomemodel/unset">unset</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: mixed: <code>(String) key</code> or <code>(Array) keys</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>Removes keys from model, either a single one or an array of multiple keys. Does not fire a change event.</p>
+<h3 id="epitomemodel/empty">empty</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>empty</code></em>
+</p>
+</div>
+
+<p>Empties the model of all data and fires a single change event with all keys as well as individual <code>change:key</code> events.</p>
+<h3 id="epitomemodel/destroy">destroy</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>destroy</code></em>
+</p>
+</div>
+
+<p>Empties the model. No change event. Event is observed by Collections the model is a member of, where it triggers a <code>removeModel()</code></p>
+<h3 id="epitomemodel/model-properties">Model properties*</h3>
+<p>There are several additional properties each model instance will have.</p>
+<h4>_attributes: {}</h4>
+<hr>
+<p>The attributes object is <strong>public</strong> (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by <code>model.toJSON()</code>. Avoid changing this directly as it won&#39;t fire any change events at all.</p>
+<h4>collections: []</h4>
+<hr>
+<p>An array that contains references to all instances of Epitome.Collection that the model is currently a member of. Useful for iteration as well as utilised by collections that want to know if Event observers are required.</p>
+<h4>options: {}</h4>
+<hr>
+<p>A MooTools default options set, which can be on the prototype of the Model constructor.</p>
+<h4>options.defaults: {}</h4>
+<hr>
+<p>An object with default Model Attributes to use when instantiating. Merged with Model object when creating.</p>
+<h4>changedProperties: []</h4>
+<hr>
+<p>An array of all property keys that reflect the last <code>change</code> event. Available on all instances.</p>
+<h4>properties: {}</h4>
+<hr>
+<p>A collection of custom accessors that override default <code>model.get</code> and <code>model.set</code> methods. For example:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">properties: {
+    foo: {
+        get: function() {
+            // scope is model
+            return this.foo();
+        },
+        set: function(value) {
+            // don&#39;t send this to the attributes, store in the instance directly.
+            // won&#39;t fire a traditional onChange
+            this.foo = value;
+        }
+    }
+}</code></pre>
+<p>In the example above, any calls to <code>model.set(&#39;foo&#39;, value)</code> and <code>model.get(&#39;foo&#39;)</code> are handled by custom functions. This is a pattern that allows you to use getters and setters for properties that are handled differently than normal ones. It can also be used as pre-processors for data. Make sure that you either set them on the instance directly or that you import the default ones for id in a custom prototype version as they are not merged like options.</p>
+<p>Keep in mind that if you want to use custom setters as transformers, you need to work with the low-level api and mock the default event system for compatibility. Although this gives you great control, it&#39;s not exactly API-friendly and can cause circular references if you are not being careful. For instance, decorating a property <code>price</code> with a currency sign:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">properties: {
+    price: {
+        set: function(value) {
+            // do NOT do this, it will create an infinite loop as it&#39;s calling self.
+            return this.set(&#39;price&#39;, &#39;$&#39; + value);
+        }
+    }
+}</code></pre>
+<p>Instead, you need to work with the <code>_attributes</code> object and mock the events:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">properties: {
+    price: {
+        set: function(value) {
+            // get current value and prep new value.
+            var currentValue = this.get(&#39;price&#39;),
+                newValue = &#39;$&#39; + value;
+
+            // store it in the attributes object
+            this._attributes[&#39;price&#39;] = newValue;
+
+            // see if we need to raise change events
+            if (!Epitome.isEqual(currentValue, newValue)) {
+                // individual event
+                this.trigger(&#39;change:price&#39;, newValue);
+                // if a part of a set({obj}), general change as well.
+                this.propertiesChanged.push(&#39;price&#39;);
+            }
+        }
+    }
+}</code></pre>
+<p>This gives you great versatility but it does require some understanding of the inner workings of Model. The important thing to remember is that the <code>set</code> method is a proxy and relies on the <strong>private</strong> setter <code>_set</code>, using the MooTools <a href="http://stackoverflow.com/a/4013500/126998">overloadSetter</a>. The same thing applies to <code>get</code>, which is overloaded through <code>overloadGetter</code>.</p>
+<h3 id="epitomemodel/model-validators">Model validators*</h3>
+<p>You can also include basic validators into your model. Validators are an object on the Model prototype that maps any expected key to a function that will return <code>true</code> if the validation passes or a <code>string</code> error message or <code>false</code> on failure.</p>
+<p>Here is an example:</p>
+<pre class="prettyprint linenums"><code class="lang-ace">var validUser = new Class({
+    Extends: Epitome.Model,
+    validators: {
+        email: function(value) {
+            return (/(.+)@(.+){2,}\.(.+){2,}/).test(value) ? true : &#39;This looks like an invalid email address&#39;;
+        }
+    }
+});
+
+var userInstance = new validUser({}, {
+    onError: function(allErrors) {
+        console.log(&#39;The following fields were rejected&#39;, allErrors);
+    },
+    &#39;onError:email&#39;: function(errorObj) {
+        // can have a custom message, action or whatever.
+        console.log(&#39;Email rejected&#39;, errorObj.error);
+    }
+});
+
+userInstance.set(&#39;email&#39;, &#39;this will fail!&#39;);</code></pre>
+<p>The <code>error</code> event is observed by collections and views and fires on all view and collection instances.</p>
+<h2 id="epitomemodelsync">Epitome.Model.Sync</h2>
+<p>This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal <a href="#epitomemodel">Model</a>, unless outlined below:</p>
+<h3 id="epitomemodelsync/constructor-initialize">constructor (initialize)</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) model</code>, <code>(Object) options</code></em>
+</p>
+</div>
+
+<p>A model <code>id</code> with your model as well as setup a <code>urlRoot</code> either as a property of the model or as an options property is required for your model to be synced. The constructor function first calls the Epitome.Model constructor and then sets up the XHR instance and methods.</p>
+<div class="alert">
+<code>options.useJSON</code> (boolean) is an all-important way to control how your Model talks to your server backend. If your server is a native REST implementation, when this value is <code>true</code>, Epitome Sync will set the content-type to application/json and send a strigified JSON of your model on every POST or PUT operation.
+ </div>
+
+<p>An additional option has been added <code>options.emulateREST: true || false</code>, which is being passed to the Request instance. If your server has no CRUD mapping, emulation can be enabled so everything will go through POST/GET requests with <code>_method</code> containing the original intent.</p>
+<p><code>options.headers</code> (object) is an extra argument that gets passed to the Request instance, allowing you to set whatever you want for CSRF or CORS on your Model.Sync calls.</p>
+<p><code>options.request</code> (Class) is a constructor to instantiate into <code>this.request</code> on the model instance. It needs to support all the APIs and functionality of MooTools&#39; Request.JSON.</p>
+<h3 id="epitomemodelsync/sync">sync</h3>
+<hr>
+<div class="alert">
+<p>
+Expects optional arguments: <code>(String) method</code>, <code>(Object) model</code><em>
+</em></p>
+<p>
+_Events: <code>sync: function(responseObj, method, options) {}</code>
+</p>
+</div>
+
+<p>Sync acts as a proxy/interface to the XHR instance in the model <code>this.request</code> A method can be one of the following:</p>
+<blockquote>
+<p>get, post, create, read, delete, update</p>
+</blockquote>
+<p>If no method is supplied, a <code>read</code> is performed.</p>
+<p>The second argument <code>model</code> is optional and should be a simple object. If it is not supplied, the default <code>model.toJSON()</code> is used instead.</p>
+<p>As a whole, you should NOT use the sync directly but elect to use the API methods for each specific request task.</p>
+<p><strong>WARNING:</strong> Epitome is a REST framework. Please make sure you are returning a valid JSON string or 204 (no content) after all requests -
+otherwise, the save events may not fire. Additionally, try to ensure <code>application/json</code> content type of your response, although
+<code>text/html</code> and <code>text/plain</code> will also be accepted, as long as the responseText can be parsed into an Object.</p>
+<h3 id="epitomemodelsync/postprocessor">postProcessor</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) response</code></em>
+</p>
+<p>
+<em>Expected return: <code>(Object) response</code></em>
+</p>
+</div>
+
+<p>A method that you can extend in your definition of Models for doing any post-processing of data <code>returned</code> by sync from the server. For example:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">postProcessor: function(response) {
+    // data comes back with decoration. split them first.
+    this.meta = response.meta;
+    return response.data;
+}</code></pre>
+<h3 id="epitomemodelsync/save">save</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects optional arguments: <code>(String) key</code>, <code>(String) value</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>save</code>, <code>sync</code>, possibly <code>create</code>, <code>update</code></em>
+</p>
+</div>
+
+<p>The save should send the contents of the model to the server for storage. If it is a model that has not been saved before or fetched from the server, it will do so via <code>create()</code>, else, it will use <code>update()</code> instead.</p>
+<p>If the optional <code>key</code> =&gt; <code>value</code> pair is passed, it will set them on the model and then save the updated model.</p>
+<h3 id="epitomemodelsync/preprocessor">preProcessor</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) response</code></em>
+</p>
+<p>
+<em>Expected return: <code>(Object) response</code></em>
+</p>
+</div>
+
+<p>A method that you can add to your definition of Models for doing any pre-processing of data before using <code>CREATE</code> or <code>UPDATE</code> (so, <code>save</code>) via sync to the server. For example:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">preProcessor: function(data) {
+    // remove local property &#39;meta&#39; which the server does not like.
+    delete data.meta;
+    return data;
+}</code></pre>
+<h3 id="epitomemodelsync/fetch">fetch</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>fetch</code>, <code>sync</code>, <code>read</code></em>
+</p>
+</div>
+
+<p>It will request the server to return the model object for the current id via a <code>.read()</code>. It will also change the status of the model (<code>model.isNewModel</code>) to false, meaning <code>.save()</code> will never use <code>.create()</code>. The fetch event will fire once the response object has been returned. The response object is then merged with the current model via a <code>.set</code>, it won&#39;t empty your data. To do so, you need to issue a <code>.empty()</code> first.</p>
+<h2 id="epitomecollection">Epitome.Collection</h2>
+<p>Epitome collections are in essence, an Array-like Class that can contain multiple Models. It has a basic model prototype and adding and removing of models works either based upon passing a simple data has or an actual Model instance. When a model is in a collection, it observes all of the model events and fires them on the collection instance. It also allows for filtering, mapping, sorting and many other more convenience methods.</p>
+<h3 id="epitomecollection/constructor-initialize">constructor (initialize)</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Array) models / objects</code> (or a single model /object), <code>(Object) options</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>ready</code></em>
+</p>
+</div>
+
+<p>The constructor method will accept a large variety of arguments. You can pass on either an Array of Models or an Array of Objects or a single Model or a single Object. You can also pass an empty Array and populate it later. Typical Collection prototype definition looks something like this:</p>
+<pre class="prettyprint linenums"><code class="lang-ace">var usersCollection = new Class({
+    Extends: Epitome.Collection
+    model: userModel // or Epitome.Model by default
+});
+
+var users = new usersCollection([{
+    id: &#39;bob&#39;
+}], {
+    onChange: function(model, props) {
+        console.log(&#39;model change&#39;, model, props);
+    },
+    onReady: function() {
+        console.log(&#39;the collection is ready&#39;);
+    }
+});</code></pre>
+<p>For reference purposes, each Model that enters a collection needs to have a <code>cid</code> - collection id. If the Model has an <code>id</code>, that is preferred. Otherwise, a <code>cid</code> will be generated. If the Model gets an <code>id</code> later on, the <code>cid</code> will not be changed.</p>
+<div class="alert alert-info">
+<p>
+<em>Please note that Collections <strong>observe</strong> and bubble <strong>all</strong> model events. For instance, if a Model fires <code>change</code>, the Collection instance will fire <code>onChange</code>, passing the model as <code>arguments[0]</code> and then keeping the rest of the arguments in their original order. For the purposes of implementing this, a decorated local copy of each Model&#39;s <code>.fireEvent</code> method is created instead of the one from Class.Event prototype. Once a Model stops being a member of collections, the original <code>fireEvent</code> is restored by deleting the local method on the Model instance.</em>
+</p>
+</div>
+
+<h3 id="epitomecollection/addmodel">addModel</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Mixed) model</code> , <code>(Boolean) replace</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>add: function(model, cid) {}</code></em>
+</p>
+</div>
+
+<p>Adding a Model to a Collection must always happen through this method. It either appends the Model instance to the internal <code>_models</code> Array or it creates a new Model and then appends it. It also starts observing the Model&#39;s events and emitting them to the Collection instance with an additional argument passed <code>Model</code>. So, if you add a Model stored in <code>bob</code> and then do <code>bob.trigger(&#39;hai&#39;, &#39;there&#39;)</code>, the collection will also fire an event like this: <code>this.trigger(&#39;hai&#39;, [bob, &#39;there&#39;]); Adding a Model also increases the</code>Collection.length` property.</p>
+<p>The monitoring of the events (Observer) is done through creating a local function override / decoration of the Model&#39;s <code>fireEvent</code> method, normally inherited from the MooTools Events Class. If a model stops being a part of a collection, the override is destroyed and the default <code>fireEvent</code>.</p>
+<h3 id="epitomecollection/removemodel">removeModel</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Mixed) model(s)</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>remove: function(model, cid) {}</code>, <code>reset</code></em>
+</p>
+</div>
+
+<p>This method allows you to remove a single model or an array of models from the collection in the same call. For each removed model, a <code>remove</code> Event will fire. When removing of all Models is done, the collection will also fire a <code>reset</code> event, allowing you to re-render your views if you like.</p>
+<p>In addition to removing the Model from the Collection, it removes the reference to the Collection in the Model&#39;s <code>collections</code> Array. If that model stops being a member of any collection, the observed <code>fireEvent</code> method is removed from the Model instance, resulting in the method from the Events Class prototype taking over.</p>
+<p>Decreases the <code>Collection.length</code> property.</p>
+<h3 id="epitomecollection/getmodel">getModel</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Number) id</code></em>
+</p>
+<p>
+<em>Returns: <code>modelInstance</code> or <code>null</code></em>
+</p>
+</div>
+
+<p>Returns a model based upon the Array index in the Collection.</p>
+<h3 id="epitomecollection/getmodelbycid">getModelByCID</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(String) cid</code></em>
+</p>
+<p>
+<em>Returns: <code>modelInstance</code> or <code>null</code></em>
+</p>
+</div>
+
+<p>Performs a search in the collection by <code>cid</code> (Collection id). Returns found Model instance or <code>null</code> if no match is found.</p>
+<h3 id="epitomecollection/getmodelbyid">getModelById</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(String) id</code></em>
+</p>
+<p>
+<em>Returns: <code>modelInstance</code> or <code>null</code></em>
+</p>
+</div>
+
+<p>Performs a search in the collection by the Model&#39;s <code>id</code> via the standard <code>getter</code>. Returns found Model instance or <code>null</code> if no match is found.</p>
+<h3 id="epitomecollection/tojson">toJSON</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>modelsData</code></em>
+</p>
+</div>
+
+<p>Returns an array of the applied <code>toJSON</code> method on all Models in the collection.</p>
+<h3 id="epitomecollection/empty">empty</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>remove</code>, <code>reset</code>, <code>empty</code></em>
+</p>
+</div>
+
+<p>Applies <code>this.removeModel</code> to all Models of the collection. Fires <code>empty</code> when done - though before that, a <code>remove</code> and <code>reset</code> will fire, see <a href="#epitomecollection/removemodel">removeModel</a></p>
+<h3 id="epitomecollection/sort">sort</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: (Mixed) how</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>sort</code></em>
+</p>
+</div>
+
+<p>Sorting is quite flexible. It works a lot like <code>Array.prototype.sort</code>. By default, you can sort based upon strings that represent keys in the Models. You can also stack up secondary, trinary etc sort keys in case the first one is equal. For example:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">users.sort(&#39;name&#39;);
+// descending order pseduo
+users.sort(&#39;name:desc&#39;);
+// by type and then birthdate in reverse order (oldest first)
+users.sort(&#39;type,birthdate:desc&#39;);</code></pre>
+<p>Sorting also allows you to pass a function you define yourself as per the <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort">Array.prototype.sort</a> interface. When done, it will fire a <code>sort</code> event.</p>
+<h3 id="epitomecollection/reverse">reverse</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>sort</code></em>
+</p>
+</div>
+
+<p>Reverses sort the order of Models in the collection. Fires a <code>sort</code> event, not <code>reverse</code></p>
+<h3 id="epitomecollection/find">find</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: (String) expression</em>
+</p>
+<p>
+<em>Returns: <code>(Array) MatchingModelObjects</code></em>
+</p>
+</div>
+
+<p>This is an experimental API and is subject to change without notice. <code>Collection.find</code> is currently powered by the MooTools <code>Slick.parse</code> engine. This means you can
+ search through your Collection for Models by attributes and <code>#ids</code> like you would search in a CSS selector.</p>
+<p>For example:</p>
+<pre class="prettyprint linenums"><code class="lang-ace">var collection = new Epitome.Collection([{
+    name: &#39;Bob&#39;,
+    id: 2
+}, {
+    name: &#39;Angry Bob&#39;,
+    id: 3
+}]);
+
+collection.find(&#39;[name]&#39;); // where name is defined.
+collection.find(&#39;[name=Bob]&#39;); // where name is exactly Bob.
+collection.find(&#39;[name*=Bob]&#39;); // where name contains Bob.
+collection.find(&#39;[name$=Bob]&#39;); // where name ends on Bob.
+collection.find(&#39;[name^=Bob]&#39;); // where name starts with Bob.
+collection.find(&#39;[name=Bob],[name^=Angry]&#39;); // name Bob OR starting with Angry.
+collection.find(&#39;[name=Bob][id]&#39;); // name Bob AND to have an id
+collection.find(&#39;#2[name=Bob],#3&#39;); // (name Bob AND id==2) OR id==3
+collection.find(&#39;[name=Bob][id=2]&#39;); // name Bob AND id==2</code></pre>
+<p>Supported operators are <code>=</code> (equals), <code>!=</code> (not equal), <code>*=</code> (contains), <code>$=</code> (ends on), <code>^=</code> (starts with). Currently, you cannot reverse a condition by adding <code>!</code> or <code>not:</code> - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use <code>filter</code> instead.</p>
+<p>A new &#39;feature&#39; has been added that alows you to quickly select deeper object properties by treating any parent keys as tags. For instance:</p>
+<pre class="prettyprint linenums"><code>var collection = new Epitome.Collection([{
+    name: &#39;Bob&#39;,
+    permissions: {
+        edit: true
+    }
+}, {
+    name: &#39;Angry Bob&#39;,
+    permissions: {
+        edit: false
+    }
+}]);
+
+
+collection.find(&#39;permissions[edit]&#39;); // all where there is an edit property
+collection.find(&#39;permissions[edit=true]&#39;); // all where there edit is true</code></pre>
+<p>However, this is more of a syntactic sugar than convention. It won&#39;t allow you to do complex CSS-like selections as you cannot combine &#39;tag&#39; with properties. This means you cannot do <code>permissions[edit][name=Bob]</code> as the context changes to the permissions property. This kind of structure is possibly an anti-pattern anyway, try to keep your models flat.</p>
+<h3 id="epitomecollection/findone">findOne</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: (String) expression</em>
+</p>
+<p>
+<em>Returns: <code>(Model) First matching Model instance or null</code></em>
+</p>
+</div>
+
+<p>Useful for getting a single Model via the <code>.find</code>, this method will return the first matched Model or null if none found.</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">var bob = collection.findOne(&#39;[name=bob]&#39;);
+// if found, set
+bob &amp;&amp; bob.set(&#39;name&#39;,&#39;Robert&#39;);</code></pre>
+<h3 id="epitomecollection/array-helpers">Array helpers</h3>
+<p>The following Array methods are also available directly on the Collection instances:</p>
+<ul>
+<li>forEach</li>
+<li>each</li>
+<li>invoke</li>
+<li>filter</li>
+<li>map</li>
+<li>some</li>
+<li>indexOf</li>
+<li>contains</li>
+<li>getRandom</li>
+<li>getLast</li>
+</ul>
+<p>For more information, see <a href="http://mootools.net/docs/core/Types/Array">Mootools Array Type</a></p>
+<h3 id="epitomecollection/collection-properties">Collection properties*</h3>
+<h4>_models</h4>
+<hr>
+<p>Each Collection instance has an Array property called <code>_models</code> that contains all referenced Model instances. Even though it is not a real private property, it is recommended you do not alter it from outside of the API.</p>
+<h4>length</h4>
+<hr>
+<p>Tries to always reference the length of <code>_models</code>.</p>
+<h4>model</h4>
+<hr>
+<p>Each Collection prototype has that property that references a Model prototype constructor. When data is being received in raw format (so, simple Objects), Models are being created by instantiating the stored constructor object in <code>this.model</code>.</p>
+<h2 id="epitomecollectionsync">Epitome.Collection.Sync</h2>
+<p>The Sync Class is just a layer on top of the normal <a href="#epitomecollection">Epitome.Collection</a>. It extends the default Collection prototype and adds a Request instance that can retrieve an Array of Model data from a server and add / update the Collection after.</p>
+<h3 id="epitomecollectionsync/constructor-initialize">constructor (initialize)</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Array) models / objects</code> (or a single model /object), <code>(Object) options</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>ready</code></em>
+</p>
+</div>
+
+<p>In terms of differences with the original prototype, the <code>options</code>, needs just one extra key: <code>urlRoot</code>, which should contain the absolute or relative URL to the end-point that can return the Model data.</p>
+<h3 id="epitomecollectionsync/fetch">fetch</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects optional arguments: <code>(Boolean) refresh</code>, <code>(Object) queryParams</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>fetch</code></em>
+</p>
+</div>
+
+<p>When called, it will asynchronously try to go and fetch Model data. When data arrives, Models are reconciled with the Models in the collection already by <code>id</code>. If they exist already, a <code>set()</code> is called that will merge new data into the Model instance and fire <code>change</code> events as appropriate. If the optional <code>refresh</code> argument is set to true, the current collection will be emptied first via <a href="#epitomecollection/empty">empty</a>.</p>
+<p>Returns the instance &#39;now&#39; but because it is async, applying anything to the collection before the <code>fetch</code> event has fired may have unexpected results.</p>
+<p>The <code>queryParams</code> object, which is also optional, allows you to pass on any <code>GET</code> arguments to the <code>baseUrl</code>. If your default endpoint looks like this:</p>
+<p><code>/comments/2/</code> and you call <code>collection.fetch(false, {page: 2})</code>, it will actually get <code>/comments/2/?page=2</code>.</p>
+<h3 id="epitomecollectionsync/postprocessor">postProcessor</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Mixed) response</code></em>
+</p>
+<p>
+<em>Expected return: <code>(Array) response</code></em>
+</p>
+</div>
+
+<p>A method that you can extend in your definition of Epitome.Collection.Sync for doing any pre-processing of data returned by sync from the server. For example:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">postProcessor: function(response) {
+    // data comes back with decoration. split them first.
+    // { meta: { something: &#39;here&#39; }, models: [] }
+    this.meta = response.meta;
+    return response.models;
+}</code></pre>
+<h2 id="epitomeview">Epitome.View</h2>
+<p>The view is a pretty loose binding around a HTMLElement, it does not try to do much by default. It essentially binds the element to either a Model or a Collection, listening and propagating events that they fire in order to be able to react to them. The expectation is that a <code>render</code> method will be defined that uses the data to output it in the browser. The render can be called based upon change or reset events as needed.</p>
+<h3 id="epitomeview/constructor-initialize">constructor (initialize)</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) options</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>ready</code></em>
+</p>
+</div>
+
+<p>A single argument in the shape of an <code>options</code> Object is passed to the constructor of the View. It is expected to have special &#39;mutator&#39;-like properties and key properties that it stores for future use.</p>
+<p>A simple example would look like this:</p>
+<pre class="prettyprint linenums"><code class="lang-ace">// define the View prototype
+var testView = new Class({
+
+    Extends: Epitome.View,
+
+    render: function() {
+        // have a render.
+        this.empty();
+        this.element.set(&#39;html&#39;, this.template(this.model.toJSON()));
+        this.parent();
+        return this;
+    },
+
+    doEmpty: function() {
+        this.model.empty();
+        this.render();
+    }
+});
+
+
+var testInstance = new testView({
+
+    model: new Epitome.Model({name: &#39;View fun&#39;}),
+
+    element: &#39;main&#39;,
+
+    template: &#39;I am a template and I am called &lt;a href=&quot;#&quot; class=&quot;task-remove&quot;&gt;&lt;%=name%&gt;&lt;/a&gt;&lt;br/&gt;&lt;button class=&quot;change-one&quot;&gt;empty it&lt;/button&gt;&#39;,
+
+    // event binding
+    events: {
+        &#39;click:relay(a.task-remove)&#39;: &#39;emptyModel&#39;, // emit this event to instance
+        &#39;click:relay(button.change-one)&#39;: &#39;changeModel&#39;
+    },
+
+    onReady: function() {
+        this.render();
+    },
+
+    &#39;onChange:model&#39;: function(){
+        this.model.set(&#39;name&#39;, new Date().getTime());
+        this.render();
+    },
+
+    onEmptyModel: function(event, element) {
+        event &amp;&amp; event.stop &amp;&amp; event.stop();
+        console.log(element); // a.task-remove
+        this.doEmpty();
+    }
+});</code></pre>
+<p>The key <code>options</code> are:</p>
+<ul>
+<li><code>element</code> - a String id or an element to bind events to and reference</li>
+<li><code>model</code> - optional Model instance structure to bind to. Exchangeable with <code>collection</code></li>
+<li><code>collection</code> - optional Collection instance to bind to. Exchangeable with <code>model</code></li>
+<li><code>template</code> - a String of raw HTML that defines the raw template to use in output.</li>
+<li><code>events</code> - an Object with MooTools style event bindings to apply to the <code>element</code>, delegated or not. values are implied event handlers on the instance</li>
+<li><code>onEventHandlers</code> - code that reacts to various events that the instance fires.</li>
+</ul>
+<h3 id="epitomeview/render">render</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: unknown</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>render</code></em>
+</p>
+</div>
+
+<p>It is essential that this method is defined in your View prototype Object definition. It does not assume to do anything by default, you need to define how the output takes place and how your data is being used. For convenience, it has access to either <code>this.model</code> or <code>this.collection</code> as the source of data that can be be passed to the <a href="#epitomeview/template">template</a> method. It is expected that at the bottom of your definition, <code>this.parent()</code> is called in order for the <code>render</code> event to fire.</p>
+<h3 id="epitomeview/setelement">setElement</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Mixed) element</code>, optional <code>(Object) events</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+</div>
+
+<p>A public method that allows you to change or set an element that powers a view. If called the first time, it will get the Element (through <code>document.id()</code>) and save the reference in <code>this.element</code>. If an events object is passed, it will bind the events. If called a second time, it will unbind all events on the old element, change the element reference and rebind new events, if supplied.</p>
+<h3 id="epitomeview/template">template</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) data</code>, optional <code>(String) template</code></em>
+</p>
+<p>
+<em>Returns: compiled template or function.</em>
+</p>
+</div>
+
+<p>A simple sandbox function where you can either use the Epitome.Template templating engine or call an external engine like Mustache, Handlebars, Hogan etc. The second argument is optional and if not supplied, it will revert to <code>this.options.template</code> instead.</p>
+<p>An example override to make it work with Mustache would be:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">var myView = new Class({
+    Extends: Epitome.View,
+    template: function(data, template) {
+        template = template || this.options.template;
+        return Mustache.render(template, data);
+    },
+    render: function() {
+        this.element.set(&#39;html&#39;, this.template({name:&#39;there&#39;}, &#39;Hello {{name}}&#39;));
+    }
+});</code></pre>
+<p>You can change the View prototype to always have Mustache in your views. For example, via AMD/RequireJS, you could do a
+small module that deals with the prototyping of the default View constructor. Say, <code>epitome-view-mustache.js</code></p>
+<pre class="prettyprint linenums"><code class="lang-javascript">
+define([&#39;epitome/epitome-view&#39;], function(View){
+    // prototype it for everyone to use mustache in every view.
+
+    View.implement({
+        template: function(data, template) {
+            // refactor this to work with any other template engine in your constructor
+            template = template || this.options.template;
+
+            return Mustache.render(template, data);
+        }
+    });
+
+});</code></pre>
+<p>In your Require config (loose example):</p>
+<pre class="prettyprint linenums"><code>require.config({
+    paths: {
+        epitome: &#39;/js/vendor/epitome&#39;
+    },
+    deps: [
+        // always load
+        &#39;epitome/epitome-view-mustache&#39;
+    ]
+});
+
+require([&#39;epitome/epitome-view&#39;], function(View){
+    // View is now with the mustache template.
+});</code></pre>
+<h3 id="epitomeview/empty">empty</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Boolean) soft</code></em>
+</p>
+<p>
+<em>Returns: compiled template or function.</em>
+</p>
+<p>
+<em>Events: <code>empty</code></em>
+</p>
+</div>
+
+<p>By default, it will empty the element through making innerHTML an empty string, calling GC on all child nodes. If the <code>soft</code> argument is true, will apply <code>this.element.empty()</code>, which is a MooTools Element method that removes all child nodes without destroying them.</p>
+<h3 id="epitomeview/dispose">dispose</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: compiled template or function.</em>
+</p>
+<p>
+<em>Events: <code>dispose</code></em>
+</p>
+</div>
+
+<p>Will detach <code>this.element</code> from the DOM. It can be injected again later on.</p>
+<h3 id="epitomeview/destroy">destroy</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: compiled template or function.</em>
+</p>
+<p>
+<em>Events: <code>dispose</code></em>
+</p>
+</div>
+
+<p>Removes and destroys <code>this.element</code> from the DOM and from memory. You need to use <a href="#epitomeview/setelement">setElement</a> to add a new one if you want to re-render.</p>
+<h2 id="epitomestorage">Epitome.Storage</h2>
+<p>The storage Class is meant to be used as a mix-in. It works with any instances of Epitome.Model (including Epitome.Model.Sync) as well as Epitome.Collection.</p>
+<p>To add storage functionality to your model, you declare use in the prototype via the <code>Implements</code> mutator:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">var user = new Class({
+    Extends: Epitome.Model,
+    Implements: Epitome.Storage.localStorage(&#39;model&#39;)
+});</code></pre>
+<p>The code above will call the storage factory and enable <code>localStorage</code> within your model with a storage namespace key <code>model</code>. In the actual storage massive, data will appear under an <code>epitome-model</code> key.</p>
+<p>The following methods are added to your Class (identical to Element.Storage from MooTools):</p>
+<h3 id="epitomestorage/store">store</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects optional arguments: <code>(Object) model</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>store: function(model) {}</code></em>
+</p>
+</div>
+
+<p>When called without any arguments, store will just save the current model or collection into storage. The models and collections are stored under a sub-key of the value returned <code>.get(&#39;id&#39;)</code>, so it is important to have an id in both if you want to achieve persistence.</p>
+<p><strong>If no id is provided, an id is generated for models and collections, which means a page reload will cause a different id to be generated and no data will be retrieved</strong></p>
+<p>You can also pass a custom object as argument to write instead of the current model or collection.</p>
+<h3 id="epitomestorage/retrieve">retrieve</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>(Object) model</code> or <code>(Array) collection</code></em>
+</p>
+<p>
+<em>Events: <code>retrieve: function(model) {}</code></em>
+</p>
+</div>
+
+<p>When you retrieve a model or a collection, it will simply return what the browser has as data (based upon the model or colleciton id as key). It will <strong>NOT</strong> apply a <code>model.set(data)</code> for you, you need to do this yourself.</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">var bob = new user({
+    id: &#39;bob&#39;
+});
+
+// populate model from storage, if available.
+bob.set(bob.retrieve());</code></pre>
+<p>Automatically populate:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">var bob = new user({
+    id: &#39;bob&#39;
+}, {
+    onRetrieve: function(data) {
+        this.set(data);
+    }
+}).retrieve();</code></pre>
+<h3 id="epitomestorage/eliminate">eliminate</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: none</em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>eliminate</code></em>
+</p>
+</div>
+
+<p>Calling eliminate on a model or a collection will destroy the stored data the browser has for that model or collection.</p>
+<h2 id="epitometemplate">Epitome.Template</h2>
+<p>The Template module is a dumbed down implementation of the <code>underscore.js</code> _.template(), which in turn was based on work by John Resig. The main differences are the following:</p>
+<ul>
+<li>referencing object keys in the template that have no matching data causes no javascript exception</li>
+<li>blocks can be used like so: <code>&lt;% if (foo) { %&gt;is foo&lt;% } else { %&gt;is not foo&lt;% } %&gt;</code></li>
+<li>conditional output can also work through <code>print</code> like this: </li>
+</ul>
+<pre class="prettyprint linenums"><code class="lang-javascript">&lt;%-address_1%&gt; &lt;% if(address_2){ print(&#39;, &#39;, address_2) } %&gt;</code></pre>
+<p>You can modify the syntax for the tags by altering the regex in the constructor:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">options: {
+    // evaluated logic syntax: &lt;% if (data.prop) { %&gt;
+    evaluate: /&lt;%([\s\S]+?)%&gt;/g,
+    // literal output: &lt;%=property%&gt;
+    normal: /&lt;%=([\s\S]+?)%&gt;/g,
+    // DOM safe scripts and tags: &lt;%-property%&gt;
+    escape: /&lt;%-([\s\S]+?)%&gt;/g
+}</code></pre>
+<p>For more info, read the underscore.js documentation. We still recommend using Mustache or Handlebars instead.</p>
+<h2 id="eptiomerouter">Eptiome.Router</h2>
+<p>The Router Class is a hashbang controller, useful for single page applications. A direct import of <a href="https://github.com/DimitarChristoff/Router"><a href="https://github.com/DimitarChristoff/Router">https://github.com/DimitarChristoff/Router</a></a>.</p>
+<h3 id="eptiomerouter/constructor-initialize">constructor (initialize)</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) options</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>ready</code>, <code>before</code>, <code>after</code>, mixed, <code>undefined</code>, <code>error</code>, <code>route:add</code>, <code>route:remove</code></em>
+</p>
+</div>
+
+<p>As this is quite involved and can act as a Controller for your app, here&#39;s a practical example that defines a few routes and event handlers within the Epitome.Router Class instantiation:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">App.router = new Epitome.Router({
+    // routes definition will proxy the events
+    routes: {
+        &#39;&#39;                        : &#39;index&#39;,
+        &#39;#!help&#39;                : &#39;help&#39;,
+        &#39;#!test1/:query/:id?&#39;    : &#39;test1&#39;,
+        &#39;#!test2/:query/*&#39;        : &#39;test2&#39;,
+        &#39;#!error&#39;               : &#39;dummyerror&#39;
+    },
+
+    // router init
+    onReady: function(){
+        console.log(&#39;init&#39;);
+    },
+
+    // before route method, fires before the event handler once a match has been found
+    onBefore: function(routeId){
+        console.log(&#39;before&#39;, routeId)
+    },
+
+    // specific pseudos for :before
+    &#39;onIndex:before&#39;: function() {
+        console.log(&#39;we are about to go to the index route&#39;);
+    },
+
+    // specific pseudos for after
+    &#39;onIndex:after&#39;: function() {
+        console.log(&#39;navigated already to index route, update breadcrumb?&#39;);
+    },
+
+    // after route method has fired, post-route event.
+    onAfter: function(route){
+        console.info(&#39;after&#39;, route)
+    },
+
+    // routes events callbacks are functions that call parts of your app
+
+    // index
+    onIndex: function() {
+        console.log(&#39;index&#39;)
+    },
+
+    onHelp: function() {
+        console.log(&#39;help&#39;);
+        console.log(this.route, this.req, this.param, this.query)
+    },
+
+    onTest1: function(query, id) {
+        console.info(&#39;test1&#39;, query, id);
+        console.log(this.route, this.req, this.param, this.query)
+    },
+
+    onTest2: function(query) {
+        console.info(&#39;test2&#39;, query);
+        console.log(this.route, this.req, this.param, this.query)
+    },
+
+    // no route event was found, though route was defined
+    onError: function(error){
+        console.error(error);
+        // recover by going default route
+        this.navigate(&#39;&#39;);
+    },
+
+    onUndefined: function() {
+        console.log(&#39;this is an undefined route&#39;);
+    },
+
+    &#39;onRoute:remove&#39;: function(route) {
+        alert(route + &#39; was removed by popular demand&#39;);
+    },
+
+    &#39;onRoute:add&#39;: function(constructorObject) {
+        console.log(constructorObject.id + &#39; was added as a new route&#39;);
+    }
+});</code></pre>
+<h3 id="eptiomerouter/addroute">addRoute</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(Object) route</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>route:add</code></em>
+</p><p>
+</p></div>
+
+<p>Example adding of route to your instance after instantiation:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">App.router.addRoute({
+    route: &#39;#!dynamicRoute&#39;,
+    id: &#39;dynamic&#39;,
+    events: {
+        onDynamic: function() {
+            alert(&#39;you found the blowfish&#39;);
+            if (confirm(&#39;remove this route?&#39;))
+                this.removeRoute(&#39;#!dynamicRoute&#39;);
+        }
+    }
+});</code></pre>
+<h3 id="eptiomerouter/removeroute">removeRoute</h3>
+<hr>
+<div class="alert">
+<p>
+<em>Expects arguments: <code>(String) route</code></em>
+</p>
+<p>
+<em>Returns: <code>this</code></em>
+</p>
+<p>
+<em>Events: <code>route:remove</code></em>
+</p>
+</div>
+
+<p>Removes a route by the route identifier string.</p>
+<p>For more examples of Router, have a look inside the <a href="https://github.com/DimitarChristoff/Epitome-todo/blob/master/epitome/js/app.js#L42-70">todomvc</a> demo.</p>
+<h2 id="examples">Examples</h2>
+<p>Epitome is modular via AMD but all the files will also work in a browser in plain script tags. When using Require.JS, you can pull in only sub-modules that you need and Epitome will resolve any dependencies automatically:</p>
+<pre class="prettyprint linenums"><code>require.config({
+    baseUrl: &#39;src&#39;
+});
+
+require([&#39;epitome-model-sync&#39;], function(ModelSync) {
+    // pulls in isEqual and Model automatically.
+    var tweet = new Class({
+        Extends: ModelSync
+    });
+});</code></pre>
+<p>If you&#39;d like the whole project (all modules), you can require <code>main.js</code> (also exported via NPM):</p>
+<pre class="prettyprint linenums"><code>require([&#39;main&#39;], function(Epitome) {
+    // Epitome is an object with all the submodules.
+    var tweet = new Class({
+        Extends: Epitome.Model.Sync,
+        Implements: Epitome.Storage.sessionStorage()
+    });
+});</code></pre>
+<p>an example skeleton of an Epitome-powered AMD app for RequireJS is available <a href="https://github.com/DimitarChristoff/epitome-skeleton-amd">here</a></p>
+<p>When using it in a browser or after the Epitome Object contains all your modules, quick model creation with prototyping and <code>localStorage</code> can look something like this:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">// create a new user class prototype, basing it on Epitome.Model.Sync and implement storage
+var User = new Class({
+    Extends: Epitome.Model.Sync,
+    Implements: Epitome.Storage.sessionStorage(),
+    options: {
+        defaults: {
+            urlRoot: &#39;/user&#39;
+        }
+    }
+});
+
+// make a new model with id &#39;1&#39; and a property &#39;name&#39;
+var userModel = new User({
+    id: &#39;1&#39;,
+    name: &#39;Bobby&#39;
+}, {
+    // default model values to instance only.
+    defaults: {
+        surname: &#39;Robertson&#39;
+    },
+    // add some events
+    onChange: function(key, value) {
+        console.log(&#39;you changed &#39; + key + &#39; to &#39; + value);
+    },
+    onSave: function() {
+        // also save to localStorage
+        this.store();
+    },
+    &quot;onChange:name&quot;: function(value) {
+        console.log(&#39;you changed your name to &#39; + value);
+    }
+}); // attr: name: &#39;Bobby&#39;, id: 1, surname: &#39;Robertson&#39;, userModel.urlRoot = &#39;/user/&#39;
+
+// change some values.
+userModel.set({
+    surname: &#39;Roberts&#39;,
+    name: &#39;Bob&#39;
+});
+
+
+// get from storage if available, else - from server
+var data = userModel.retrieve();
+if (data) {
+    userModel.set(data);
+}
+else {
+    userModel.read();
+}
+
+// go wild!
+userModel.save();</code></pre>
+<h3 id="examples/sync-and-storage">Sync and Storage</h3>
+<p>Here&#39;s an example pattern that allows you to use Storage and Sync on a model to reconcile data on the client and on the server. In a scenario where a model is being updated on the client with an implicit Save button that does the Sync but a <code>onChange</code> event that saves any changes in <code>localStorage</code> in the meanwhile, this is how you&#39;d reconcile the differences:</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">var Model = new Class({
+   // extends always before implements
+    Extends: Epitome.Model.Sync,
+    // use storage
+    Implements: Epitome.Storage.localStorage(&#39;model&#39;)
+});
+
+// typically, this will be bound in a view
+var model = new Model({
+    id: 3
+}, {
+    onChange: function(){
+        this.store();
+    },
+    onFetch: function(){
+        var data = this.retrieve();
+
+        if (!Epitome.isEqual(data, this.toJSON)){
+            if (confirm(&#39;Local copy differs from server, use it?&#39;)) {
+                this.set(data);
+            }
+        }
+    }
+});
+
+// get latest
+model.fetch();</code></pre>
+<p>This pattern can be applied from views as well. Essentially, you are saying: when a model is fetched (and you already know the id), compare server-side version to what storage knows of this model. If a difference is found, you can either prompt the user to accept the client version and load it or you can automatically merge the changes into the model. Since a change always saves into storage, the client-side version will always have an upto date version of data. This is useful when a model is bound to a view and a user modifies it and then reloads the page or navigates away before saving.</p>
+<h3 id="examples/prototyping-views">Prototyping Views</h3>
+<p>It is sometimes useful to prototype the view, including the events that will be bound - as opposed to doing it in the instantiation.</p>
+<pre class="prettyprint linenums"><code class="lang-javascript">var myView = new Class({
+    Extends: Epitome.View,
+    options: {
+        events: {
+            // these relate to this.element. if an element is not passed, they won&#39;t matter
+            &#39;click:relay(button.save)&#39;: &#39;saveData&#39;
+        },
+        onSaveData: function(){
+            var data = {};
+            this.element.getElements(&#39;input&#39;).each(function(el){
+                data[el.get(&#39;name&#39;)] = el.get(&#39;value&#39;).stripScripts().clean()
+            });
+            // notice there is no onChange:model saving via sync, we save on demand
+            this.model.set(data);
+            this.model.save();
+        },
+        &#39;onChange:model&#39;: function(){
+            this.model.store(); // changes in-between go to storage
+        }
+    }
+});</code></pre>
+<p>For more examples, have a look inside of <code>example/js/</code></p>
+<h3 id="examples/todomvc-reference">TodoMVC reference</h3>
+<hr>
+<p>A standard <a href="http://todomvc.com/">TodoMVC</a> reference implementation has been provided here in both AMD and normal namespaced modules: <a href="https://github.com/DimitarChristoff/Epitome-todo">Epitome-todo</a>.</p>
+<p>You can view it in action here:
+<a href="http://fragged.org/Epitome/example/todo/epitome/#!/"><a href="http://fragged.org/Epitome/example/todo/epitome/#!/">http://fragged.org/Epitome/example/todo/epitome/#!/</a></a></p>
+<p>The todo app is also a submodule of Epitome so you can add it by doing this at the root of the repo:</p>
+<pre><code class="lang-sh">git submodule init
+git submodule update</code></pre>
+<p>And you can keep it updated by going to <code>~/example/todo/</code> and doing a pull</p>
+<p>A RequireJS version of the todo app is available here as a branch of the main todo app:
+<a href="http://fragged.org/Epitome/example/todo/epitome-amd/#!/">Epitome-todo AMD</a></p>
+<h2 id="download-building">Download + Building</h2>
+<p>You can check it out of the <a href="https://github.com/DimitarChristoff/Epitome/">github repo</a> or you can <a href="https://github.com/DimitarChristoff/Epitome/zipball/master">grab the zip</a> or simply download the minified <a href="https://raw.github.com/DimitarChristoff/Epitome/master/Epitome-min.js">Epitome-min.js</a>.</p>
+<p>All files are wrapped into <code>define</code> blocks, which means you can simply use <code>require.js</code> to ask for a component and all of its dependencies will be resolved automatically for you.</p>
+<p>You can create your own minified concatenated version of Epitome with the components you want. Have a look inside of the simple <code>app.build.js</code> you can use for <code>r.js</code> (require.js optimiser).</p>
+<p>Typically, you&#39;d create a new production build by running:</p>
+<pre><code class="lang-sh">&gt; r.js -o app.build.js
+
+Tracing dependencies for: epitome
+Uglifying file: /projects/Epitome/Epitome-min.js
+
+/projects/Epitome/Epitome-min.js
+----------------
+/projects/Epitome/src/epitome-events.js
+/projects/Epitome/src/epitome.js
+/projects/Epitome/src/epitome-isequal.js
+/projects/Epitome/src/epitome-model.js
+/projects/Epitome/src/epitome-model-sync.js
+/projects/Epitome/src/epitome-storage.js
+/projects/Epitome/src/epitome-collection.js
+/projects/Epitome/src/epitome-collection-sync.js
+/projects/Epitome/src/epitome-template.js
+/projects/Epitome/src/epitome-view.js
+/projects/Epitome/src/epitome-router.js</code></pre>
+<p>Install requirejs via npm, if you haven&#39;t:</p>
+<pre><code class="lang-sh">npm install -g requirejs</code></pre>
+<p>Alternatively, grab r.js and put it inside the project, then do <code>node r.js -o app.build.js</code></p>
+<p>An npm package is also available but is out of date:</p>
+<pre><code class="lang-sh">npm install epitome</code></pre>
+<p>Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you&#39;d have to move it within your web server root. require(&#39;epitome&#39;) should then return the contents of <code>main.js</code> in the source folder, which grabs all dependencies.</p>
+<h3 id="download-building/amd-builder">AMD Builder</h3>
+<hr>
+<div id="customDownload">You can use <a href="http://fragged.org:39170/" rel="nofollow"><a href="http://fragged.org:39170/?build=module1,module2">http://fragged.org:39170/?build=module1,module2</a></a> to create a custom build automatically. See the documentation page for more</div>
+
+<h2 id="testing">Testing</h2>
+<p>Tests are currently separated in 2 groups: node tests and browser tests. The distinction is that under node only,
+it uses <code>mootools-server</code> and lacks <code>Request</code> or <code>Element</code>, so only unit tests will run.</p>
+<p>Testing is run via <a href="http://busterjs.org">Buster.js</a> can be found in <code>/tests/</code> - check the README.md there for more info.</p>
+<div class="alert alert-error">
+<p>
+<em>Please note that as of buster 0.6.0, having browser and node test groups at the same time fails to terminate the buster-test process. node tests are temporary disabled</em>
+</p>
+</div>
+
+<h2 id="development-and-contribution">Development and contribution</h2>
+<p>Feel free to fork, play and contribute back to the project if you can, pull requests are more than welcome. Just make sure you
+create the request in a branch and write tests / fix existing tests before you send it. Oh, and make sure it does not break the build!</p>
+<p>The creation and logic employed in the writing of Epitome has been documented in several blog posts on the QMetric tech blog:</p>
+<ul>
+<li><a href="http://tech.qmetric.co.uk/creating-your-own-mvc-like-data-model-class-in-mootools_59.html">Creating the Model</a></li>
+<li><a href="http://tech.qmetric.co.uk/building-a-mootools-micro-mvc-part-2-adding-sync-to-your-model_132.html">Creating the Model.Sync</a></li>
+<li><a href="http://tech.qmetric.co.uk/epitome-template-a-lightweight-templating-engine-for-mootools-that-works_190.html">Adding the template</a></li>
+<li><a href="http://tech.qmetric.co.uk/automating-javascript-ci-with-buster-js-and-travisci_205.html">Testing it in CI via Travis CI</a></li>
+</ul>
+<h2 id="credits-and-licensing">Credits and licensing</h2>
+<p>Concept and development by <a href="http://twitter.com/D_mitar">Dimitar Christoff</a> with help from <a href="http://twitter.com/garrickcheung">Garrick Cheung</a>, <a href="http://twitter.com/jiggliemon">Chase Wilson</a> &amp; <a href="http://twitter.com/blinkdesign">Simon Smith</a></p>
+<p>Developed for use by QMetric Group Limited, kindly released with their permission.</p>
+<p>Released under the MIT license <a href="http://mootools.net/license.txt"><a href="http://mootools.net/license.txt">http://mootools.net/license.txt</a></a></p>
+<p>Documentation generated via <a href="http://documentup.com">DocumentUp</a>, with a local theme in the style of js garden and our <a href="https://github.com/DimitarChristoff/mootstrap-scrollspy">mootstrap scrollspy plugin</a></p>
+
+	
+		<h2 id="comments">Comments</h2>
+		<div class="alert" id="disqus_thread"></div>
+	
+</div>
+<script type="text/template" id="custom-download">
+	<div class="row">
+	<span class='span4'>
+		<h3>Customise your build of Epitome.</h3>
+		<div id='download'>
+			<a target="_blank" class="btn btn-large btn-primary download-link" href='#'>Download Epitome</a>
+		</div>
+		<p>
+			The list of AMD modules on the right will be passed to our builder, powered by <code>r.js</code> and built automatically.
+			Your build will get a small hash that can be used to download the same packaged Epitome release later on.</p>
+		<p>
+			The builder does not need all dependencies passed, eg. <code>?build=epitome-collection</code> will automatically pull in
+			any required modules.
+		</p>
+	</span>
+	<span class="span4">
+		<table id='builder' class='table table-striped table-bordered table-condensed'>
+			<tbody>
+			</tbody>
+		</table>
+	</span>
+	</div>
+</script>
+<script src="js/mootools-yui-compressed.js"></script>
+<script src="js/moostrap-scrollspy.js"></script>
+<script src="js/prettify.js"></script>
+<script src="js/lang-css.js"></script>
+<script src="js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/doctor.js"></script>
+	
+	<script type="text/javascript">
+		var disqus_shortname = 'epitome-mvc',
+				disqus_title = 'Epitome - MVC/MVP Framework for MooTools';
+
+
+		/* * * DON'T EDIT BELOW THIS LINE * * */
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	
+</body>
+</html>
