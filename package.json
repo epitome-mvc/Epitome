@@ -10,9 +10,6 @@
     "mvc",
     "mvp"
   ],
-  "contributors": [
-    "Garrick Cheung"
-  ],
   "scripts": {
     "test": "node_modules/.bin/buster-test -r specification"
   },
@@ -27,7 +24,10 @@
   "license": "MIT (http://mootools.net/license.txt)",
   "devDependencies": {
     "buster": ">=0.6.2",
-    "colors": "*"
+    "colors": "*",
+    "grunt": "~0.4.1",
+    "grunt-doctor-md": "~0.0.3",
+    "grunt-contrib-clean": "*"
   },
   "engines": {
     "node": ">=0.8.17"

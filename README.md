@@ -184,15 +184,15 @@ The `model` - if passed, sets the internal data hash to a new derefrenced object
 
 The `options` object is a standard MooTools class options override and is being merged with the `Epitome.Model.prototype.options` when a new model is created. It typically contains various event handlers in the form of:
 
-```javascript
-new Epitome.Model({}, {
-   onChange: function(key, value) {
-       console.log(key, value);
-   },
+```ace
+var model = new Epitome.Model({}, {
    defaults: {
        userTitle: 'admin'
    }
 });
+
+model.set('name', 'Bob');
+console.log(model.toJSON());
 ```
 
 Supported: `(Object) options.defaults` - allows initial values of the model to be set if they are not being passed to the model constructor.
@@ -378,7 +378,7 @@ This gives you great versatility but it does require some understanding of the i
 You can also include basic validators into your model. Validators are an object on the Model prototype that maps any expected key to a function that will return `true` if the validation passes or a `string` error message or `false` on failure.
 
 Here is an example:
-```javascript
+```ace
 var validUser = new Class({
     Extends: Epitome.Model,
     validators: {
@@ -545,7 +545,7 @@ _Events: `ready`_
 </div>
 
 The constructor method will accept a large variety of arguments. You can pass on either an Array of Models or an Array of Objects or a single Model or a single Object. You can also pass an empty Array and populate it later. Typical Collection prototype definition looks something like this:
-```javascript
+```ace
 var usersCollection = new Class({
     Extends: Epitome.Collection
     model: userModel // or Epitome.Model by default
@@ -731,7 +731,7 @@ This is an experimental API and is subject to change without notice. `Collection
  search through your Collection for Models by attributes and `#ids` like you would search in a CSS selector.
 
 For example:
-```javascript
+```ace
 var collection = new Epitome.Collection([{
     name: 'Bob',
     id: 2
@@ -913,53 +913,55 @@ _Events: `ready`_
 A single argument in the shape of an `options` Object is passed to the constructor of the View. It is expected to have special 'mutator'-like properties and key properties that it stores for future use.
 
 A simple example would look like this:
-```javascript
+```ace
 // define the View prototype
 var testView = new Class({
 
-	Extends: Epitome.View,
+    Extends: Epitome.View,
 
-	render: function() {
-	    // have a render.
-		this.empty();
+    render: function() {
+        // have a render.
+        this.empty();
         this.element.set('html', this.template(this.model.toJSON()));
-		this.parent();
-		return this;
-	},
+        this.parent();
+        return this;
+    },
 
-	doEmpty: function() {
-	    this.model.empty();
-	}
+    doEmpty: function() {
+        this.model.empty();
+        this.render();
+    }
 });
 
 
 var testInstance = new testView({
 
-	model: someModelInstance,
+    model: new Epitome.Model({name: 'View fun'}),
 
-	element: 'someid',
+    element: 'main',
 
-	template: document.id('test-template').get('html'),
+    template: 'I am a template and I am called <a href="#" class="task-remove"><%=name%></a><br/><button class="change-one">empty it</button>',
 
-	// event binding
-	events: {
-		'click:relay(a.task-remove)': 'emptyModel', // emit this event to instance
-		'click:relay(button.change-one)': 'changeModel'
-	},
+    // event binding
+    events: {
+        'click:relay(a.task-remove)': 'emptyModel', // emit this event to instance
+        'click:relay(button.change-one)': 'changeModel'
+    },
 
-	onReady: function() {
+    onReady: function() {
         this.render();
-	},
+    },
 
-	'onChange:model': function(){
-	    this.render();
-	},
+    'onChange:model': function(){
+        this.model.set('name', new Date().getTime());
+        this.render();
+    },
 
-	onEmptyModel: function(event, element) {
+    onEmptyModel: function(event, element) {
         event && event.stop && event.stop();
-        element; // a.task-remove
-	    this.doEmpty();
-	}
+        console.log(element); // a.task-remove
+        this.doEmpty();
+    }
 });
 ```
 

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IFRAME test for {{name}}</title>
+	<!-- via cssIncludes -->
+{{#cssIncludes}}	<link rel="stylesheet" href="css/{{.}}"/>
+{{/cssIncludes}}
+</head>
+<body>
+    <div id="main"></div>
+    <div class="content"></div>
+<script type="text/javascript" src="mootools-yui-compressed.js"></script>
+<script type="text/javascript" src="Epitome-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js"></script>
+<!-- via jsIncludes -->
+{{#jsIncludes}}<script type="text/javascript" src="{{.}}"></script>
+{{/jsIncludes}}
+</body>
+</html>
