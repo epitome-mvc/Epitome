@@ -570,6 +570,23 @@ _Please note that Collections **observe** and bubble **all** model events. For i
 </p>
 </div>
 
+### reset
+---
+<div class="alert">
+<p>
+_Expects arguments: `(Mixed) model(s)` , `(Boolean) quiet`_
+</p>
+<p>
+_Returns: `this`_
+</p>
+<p>
+_Events: `reset: function() {}`_
+</p>
+</div>
+
+Initial collection population and
+
+
 ### addModel
 ---
 <div class="alert">

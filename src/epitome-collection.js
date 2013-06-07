@@ -18,19 +18,23 @@
 
 			initialize: function(models, options){
 				this.setOptions(options);
-				models && this.setUp(models);
+				models && this.reset(models);
 				// collections should have an id for storage
 				this.id = this.options.id || String.uniqueID();
 
 				return this.trigger('ready');
 			},
 
-			setUp: function(models){
+			reset: function(models, supressEvent){
+				// adds model(s) to collection, typically initially.
+
 				models = Array.from(models);
 				Array.each(models, this.addModel.bind(this));
 
 				// if a model is destroyed, remove from the collection
 				this.on('destroy', this.removeModel.bind(this));
+
+				supressEvent || this.trigger('reset');
 
 				return this;
 			},
@@ -69,10 +73,6 @@
 
 				// let somebody know.
 				return this.trigger('add', [model, model.cid]).trigger('reset', [model, model.cid]);
-			},
-
-			modelEvent: function(){
-
 			},
 
 			removeModel: function(models, quiet){
