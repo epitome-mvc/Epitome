@@ -2,7 +2,6 @@
 	"node": false,
 	"browser": true,
 	"mootools": true,
-	"es5": true,
 	"esnext": false,
 	"evil": false,
 	"bitwise": false,
