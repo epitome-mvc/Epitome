@@ -174,6 +174,10 @@
 		// requires epitome object only.
 		define(['./epitome-isequal', './epitome-events'], wrap);
 	}
+	else if (typeof module !== 'undefined' && module.exports){
+		// CommonJS module is defined
+		module.exports = wrap(require('./epitome-isequal'), require('./epitome-events'));
+	}
 	else {
 		exports.Epitome || (exports.Epitome = {isEqual: {}, Events: {}});
 		exports.Epitome.Model = wrap(exports.Epitome.isEqual, exports.Epitome.Events);

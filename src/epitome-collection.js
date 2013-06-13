@@ -339,6 +339,10 @@
 		// requires epitome model and all its deps
 		define(['./epitome-model', './epitome-events'], wrap);
 	}
+	else if (typeof module !== 'undefined' && module.exports){
+		// CommonJS module is defined
+		module.exports = wrap(require('./epitome-model'), require('./epitome-events'));
+	}
 	else {
 		exports.Epitome || (exports.Epitome = {Model: {}, Events: {}});
 		exports.Epitome.Collection = wrap(exports.Epitome.Model, exports.Epitome.Events);

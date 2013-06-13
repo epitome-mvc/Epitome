@@ -149,6 +149,10 @@
 			return EpitomeEvents;
 		});
 	}
+	else if (typeof module !== 'undefined' && module.exports){
+		// CommonJS module is defined
+		module.exports = EpitomeEvents;
+	}
 	else {
 		exports.Epitome || (exports.Epitome = {});
 		exports.Epitome.Events = EpitomeEvents;

@@ -23,11 +23,14 @@
   "main": "./src/epitome-cjs.js",
   "license": "MIT (http://mootools.net/license.txt)",
   "devDependencies": {
-    "buster": ">=0.6.2",
+    "buster": "~0.6.2",
     "colors": "*",
     "grunt": "~0.4.1",
     "grunt-doctor-md": "~0.0.3",
-    "grunt-contrib-clean": "*"
+    "grunt-contrib-clean": "*",
+    "mootools": "~1.4.5",
+    "express": "*",
+    "socket.io": "*"
   },
   "engines": {
     "node": ">=0.8.17"

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example via socket.io</title>
+</head>
+<body>
+	In order to run this example, you need to:
+	<pre>
+		npm install
+		node nodejs-example-server.js
+	</pre>
+	Then visit <a href="http://localhost:3333/express-socket-client.html">http://localhost:3333/express-socket-client.html</a> and look at your console.
+
+<script type="text/javascript" src="js/socket.io.js"></script>
+<script type="text/javascript" src="lib/mootools-core.js"></script>
+<script type="text/javascript" src="js/Epitome-min.js"></script>
+<script>
+	(function(){
+		'use strict';
+
+		var socket = io.connect('ws://localhost:3333');
+
+		var User = new Class({
+
+			Extends: Epitome.Model,
+
+			options: {
+				defaults: {
+					title: 'Mr.'
+				}
+			}
+		});
+
+		var Users = new Class({
+
+			Extends: Epitome.Collection,
+
+			model: User
+
+		});
+
+		var users = new Users();
+
+		socket.on('connect', function(){
+
+			socket.on('data', function(data){
+				users.reset(data);
+				console.log(users.toJSON());
+
+				users.on('add', function(model){
+					console.log('sending new model to server', model.toJSON());
+					socket.emit('data:add', model.toJSON());
+				});
+
+				users.addModel({
+					name: 'Claire',
+					surname: 'Essex',
+					title: 'Miss'
+				});
+			});
+		});
+	}).call(this);
+</script>
+</body>
+</html>

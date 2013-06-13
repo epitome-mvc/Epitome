@@ -12,6 +12,10 @@
 		// returns an empty module
 		define(['./epitome-events'], wrap);
 	}
+	else if (typeof module !== 'undefined' && module.exports){
+		// CommonJS module is defined
+		module.exports = wrap(require('./epitome-events'));
+	}
 	else {
 		exports.Epitome = wrap(exports.Epitome.Events);
 	}
