@@ -1,6 +1,4 @@
-/*jshint mootools:true */
-;
-(function(exports){
+;(function(exports){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
@@ -34,7 +32,7 @@
 				case 'number':
 					// `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
 					// other numeric values.
-					return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
+					return a != +a ? b != +b : (a === 0 ? 1 / a == 1 / b : a == +b);
 				case 'date':
 				case 'boolean':
 					// Coerce dates and booleans to numeric primitive values. Dates are compared by their
@@ -110,6 +108,9 @@
 	}
 	else if (typeof module !== 'undefined' && module.exports){
 		// CommonJS module is defined
+		// load mootools-core npm
+		require('mootools');
+
 		module.exports = wrap();
 	}
 	else {

@@ -6,7 +6,7 @@
 	"evil": false,
 	"bitwise": false,
 	"curly": false,
-	"eqeqeq": true,
+	"eqeqeq": false,
 	"eqnull": true,
 	"immed": true,
 	"latedef": true,

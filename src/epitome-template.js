@@ -132,6 +132,10 @@
 		// requires epitome object only.
 		define(['./epitome'], wrap);
 	}
+	else if (typeof module !== 'undefined' && module.exports){
+		// CommonJS module is defined
+		module.exports = wrap();
+	}
 	else {
 		exports.Epitome || (exports.Epitome = {});
 		exports.Epitome.Template = wrap(exports.Epitome);

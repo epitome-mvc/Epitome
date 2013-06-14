@@ -1597,17 +1597,38 @@ npm install -g requirejs
 
 Alternatively, grab r.js and put it inside the project, then do `node r.js -o app.build.js`
 
-An npm package is also available but is out of date:
-
-```sh
-npm install epitome
-```
-
-Please note this will grab it inside of your node_modules and if you use browser components like view and sync, you'd have to move it within your web server root. require('epitome') should then return the contents of `main.js` in the source folder, which grabs all dependencies.
-
 ### AMD Builder
 ---
 <div id='customDownload'>You can use <a href='http://fragged.org:39170/' rel='nofollow'>http://fragged.org:39170/?build=module1,module2</a> to create a custom build automatically. See the documentation page for more</div>
+
+### CommonJS
+---
+You can now use Epitome under nodejs. The following modules are exported: `Model`, `Collection`, `Events`, `Template`, `isEqual`. You can either reference the files directly by requirting them (you also need to require `mootools` first) or you can require `epitome` directly.
+
+```sh
+$ npm install epitome
+...
+npm http GET https://registry.npmjs.org/mootools
+npm http 304 https://registry.npmjs.org/mootools
+epitome@0.4.0 node_modules/epitome
+└── mootools@1.4.5-2
+```
+
+and then in your nodejs app:
+```javascript
+// MooTools gloabls get loaded.
+var epitome = require('epitome');
+
+var model = new Class({
+	Extends: epitome.Model
+});
+
+var bob = new model({
+	name: 'Bob'
+});
+
+console.log(bob.toJSON());
+```
 
 ## Testing
 
