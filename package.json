@@ -29,7 +29,7 @@
     "buster": "~0.6.2",
     "colors": "*",
     "grunt": "~0.4.1",
-    "grunt-doctor-md": "~0.0.3",
+    "grunt-doctor-md": "~0.0.4",
     "grunt-contrib-clean": "*",
     "express": "*",
     "socket.io": "*"
