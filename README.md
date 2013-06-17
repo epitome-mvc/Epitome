@@ -27,6 +27,8 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
+- 0.4.0 (Exprimental)
+ - Added CommonJS suport to Model, Collection, Template, Events and isEqual, reliant on `mootools npm`
 - 0.3.1
  - Added `.jshintrc` and changed all files to pass linting settings
 - 0.3.0
