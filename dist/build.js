@@ -147,7 +147,7 @@ http.createServer(function(req, res){
 				});
 			};
 
-		console.log('bf:'.red + buildFile, appBuild);
+		// console.log('bf:'.red + buildFile, appBuild);
 
 		fs.writeFile(buildFile, JSON.stringify(appBuild), function(){
 			// what we will actually run now
