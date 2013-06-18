@@ -10,8 +10,7 @@ var http = require('http'),
 	path = require('path'),
 	host = '127.0.0.1',
 	port = 39170,
-	config,
-	appBuild = ({
+	appBuildMain = ({
 		baseUrl: '../../src/',
 		optimize: 'uglify2',
 		out: './Epitome-min.js',
@@ -49,10 +48,10 @@ function respond(res, code, contents){
 http.createServer(function(req, res){
 	var u = url.parse(req.url, true),
 		query = u['query'],
-		out = 'require([',
 		id = generateUID(),
 		file = './hash/epitome-' + id + '.js',
-		ip = req.connection.remoteAddress;
+		ip = req.connection.remoteAddress,
+		appBuild;
 
 	require('dns').reverse(ip, function(err, domains){
 		if (!err){
@@ -71,6 +70,8 @@ http.createServer(function(req, res){
 		var deps = [],
 			temp,
 			allowBuild = true;
+
+		appBuild = JSON.parse(JSON.stringify(appBuildMain));
 
 		// anything in the ?build= arg? needs to be comma separated.
 		if (query.build){
@@ -145,6 +146,8 @@ http.createServer(function(req, res){
 					});
 				});
 			};
+
+		console.log('bf:'.red + buildFile, appBuild);
 
 		fs.writeFile(buildFile, JSON.stringify(appBuild), function(){
 			// what we will actually run now
