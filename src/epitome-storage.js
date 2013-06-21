@@ -10,10 +10,10 @@
 			// feature detect if storage is available
 			var hasNativeStorage = !!(typeof exports.localStorage === 'object' && exports.localStorage.getItem),
 
-			// default storage method
+				// default storage method
 				localStorage = 'localStorage',
 
-			// alternative storage
+				// alternative storage
 				sessionStorage = 'sessionStorage',
 
 				setStorage = function(storageMethod){
@@ -30,7 +30,7 @@
 						try {
 							storage = JSON.decode(exports[storageMethod].getItem(privateKey)) || storage;
 						}
-						catch (e) {
+						catch (o_O) {
 							// session expired / multiple tabs error (security), downgrade.
 							hasNativeStorage = false;
 						}
@@ -68,7 +68,6 @@
 							retrieve: function(){
 								// return model from storage. don't set to Model!
 								var model = getItem([storagePrefix, this.get('id')].join(':')) || null;
-
 								this.trigger('retrieve', model);
 
 								return model;
@@ -90,7 +89,7 @@
 								try {
 									exports[storageMethod].setItem(privateKey, JSON.encode(storage));
 								}
-								catch (e) {
+								catch (o_O) {
 									// session expired / tabs error (security)
 								}
 							}
@@ -109,7 +108,7 @@
 								try {
 									exports[storageMethod].setItem(privateKey, JSON.encode(storage));
 								}
-								catch (e) {
+								catch (o_O) {
 									// session expired / tabs error (security)
 								}
 							}
