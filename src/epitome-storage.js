@@ -78,7 +78,7 @@
 					// internal methods to proxy working with storage and fallbacks
 						getItem = function(item){
 							// return from storage in memory
-							return storage[item] || null;
+							return item in storage ? storage[item] : null;
 						},
 
 						setItem = function(item, value){
