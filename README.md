@@ -548,10 +548,11 @@ _Events: `ready`_
 
 The constructor method will accept a large variety of arguments. You can pass on either an Array of Models or an Array of Objects or a single Model or a single Object. You can also pass an empty Array and populate it later. Typical Collection prototype definition looks something like this:
 ```ace
-var usersCollection = new Class({
-    Extends: Epitome.Collection
-    model: userModel // or Epitome.Model by default
-});
+var userModel = new Class({Extends: Epitome.Model}),
+	usersCollection = new Class({
+		Extends: Epitome.Collection,
+        model: userModel // or Epitome.Model by default
+	});
 
 var users = new usersCollection([{
     id: 'bob'
