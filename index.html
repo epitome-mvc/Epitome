@@ -732,6 +732,7 @@ users.sort(&#39;type,birthdate:desc&#39;);</code></pre>
 
 <p>This is an experimental API and is subject to change without notice. <code>Collection.find</code> is currently powered by the MooTools <code>Slick.parse</code> engine. This means you can
  search through your Collection for Models by attributes and <code>#ids</code> like you would search in a CSS selector.</p>
+<p><strong>NOTE: the CommonJS version of <code>Epitome.Collection</code> has no <code>.find</code> methods due to missing Slick export.</strong></p>
 <p>For example:</p>
 <pre class="prettyprint linenums"><code class="lang-ace">var collection = new Epitome.Collection([{
     name: &#39;Bob&#39;,
@@ -780,6 +781,7 @@ collection.find(&#39;permissions[edit=true]&#39;); // all where there edit is tr
 </div>
 
 <p>Useful for getting a single Model via the <code>.find</code>, this method will return the first matched Model or null if none found.</p>
+<p><strong>NOTE: the CommonJS version of <code>Epitome.Collection</code> has no <code>.find</code> methods due to missing Slick export.</strong></p>
 <pre class="prettyprint linenums"><code class="lang-javascript">var bob = collection.findOne(&#39;[name=bob]&#39;);
 // if found, set
 bob &amp;&amp; bob.set(&#39;name&#39;,&#39;Robert&#39;);</code></pre>
