@@ -749,6 +749,8 @@ _Returns: `(Array) MatchingModelObjects`_
 This is an experimental API and is subject to change without notice. `Collection.find` is currently powered by the MooTools `Slick.parse` engine. This means you can
  search through your Collection for Models by attributes and `#ids` like you would search in a CSS selector.
 
+**NOTE: the CommonJS version of `Epitome.Collection` has no `.find` methods due to missing Slick export.**
+
 For example:
 ```ace
 var collection = new Epitome.Collection([{
@@ -809,6 +811,8 @@ _Returns: `(Model) First matching Model instance or null`_
 </div>
 
 Useful for getting a single Model via the `.find`, this method will return the first matched Model or null if none found.
+
+**NOTE: the CommonJS version of `Epitome.Collection` has no `.find` methods due to missing Slick export.**
 
 ```javascript
 var bob = collection.findOne('[name=bob]');
