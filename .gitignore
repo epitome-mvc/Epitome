@@ -3,3 +3,4 @@ node_modules/*
 npm-debug.log
 dist/hash/*.js*
 dist/out/*.js
+bower_components
