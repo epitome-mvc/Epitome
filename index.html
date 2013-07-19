@@ -69,14 +69,18 @@
 <p>Strictly speaking, <code>Epitome.View</code> is closer to a <em>presenter</em> in a MVP implementation than a classic MVC one, with thin controller logic around the views. However, because <code>Epitome.View</code> is also very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.</p>
 <p>If you feel strongly about semantics of the patterns used, you should look at <a href="http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/">Digesting JavaScript MVC – Pattern Abuse Or Evolution?</a> by Addy Osmani, a talk he gave at London Ajax recently.</p>
 <p>Epitome&#39;s API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.</p>
-<p>Current version: <strong>0.3.1</strong></p>
+<p>Current version: <strong>0.4.1</strong></p>
 <p><a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a></p>
 <p>A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:</p>
 <pre class="prettyprint linenums"><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js&quot;&gt;&lt;/script&gt;</code></pre>
 <h2 id="changelog">Changelog</h2>
 <ul>
-<li>0.4.0 (Exprimental)<ul>
+<li>0.4.1<ul>
+<li>Updated <code>bower.json</code> and added a <code>.npmignore</code> to stop distributing docs and tests as component install</li>
+</ul>
+</li>
+<li>0.4.0<ul>
 <li>Added CommonJS suport to Model, Collection, Template, Events and isEqual, reliant on <code>mootools npm</code></li>
 </ul>
 </li>
