@@ -16,7 +16,7 @@ If you feel strongly about semantics of the patterns used, you should look at [D
 
 Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-Current version: **0.3.1**
+Current version: **0.4.1**
 
 <a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a>
@@ -27,7 +27,9 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
-- 0.4.0 (Exprimental)
+- 0.4.1
+ - Updated `bower.json` and added a `.npmignore` to stop distributing docs and tests as component install
+- 0.4.0
  - Added CommonJS suport to Model, Collection, Template, Events and isEqual, reliant on `mootools npm`
 - 0.3.1
  - Added `.jshintrc` and changed all files to pass linting settings
