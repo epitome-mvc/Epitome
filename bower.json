@@ -22,7 +22,7 @@
     "components",
     "dist",
     "example",
-    "test",
+    "test"
   ],
   "dependencies": {
     "mootools": "1.4.5"
