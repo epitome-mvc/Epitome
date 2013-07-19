@@ -1,11 +1,28 @@
 {
   "name": "Epitome",
-  "version": "0.3.1",
-  "main": "Epitome-min.js",
+  "version": "0.4.1",
+  "main": [
+      "Epitome-min.js",
+      "src/epitome.js",
+      "src/epitome-collection.js",
+      "src/epitome-collection-sync.js",
+      "src/epitome-events.js",
+      "src/epitome-isequal.js",
+      "src/epitome-model.js",
+      "src/epitome-model-sync.js",
+      "src/epitome-router.js",
+      "src/epitome-storage.js",
+      "src/epitome-template.js",
+      "src/epitome-view.js",
+      "src/main.js"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
-    "components"
+    "components",
+    "dist",
+    "example",
+    "test",
   ],
   "dependencies": {
     "mootools": "1.4.5"
