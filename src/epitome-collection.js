@@ -16,6 +16,8 @@
 
 			_models: [],
 
+			length: 0,
+
 			initialize: function(models, options){
 				this.setOptions(options);
 				models && this.reset(models);
