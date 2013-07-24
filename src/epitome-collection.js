@@ -30,6 +30,9 @@
 			reset: function(models, supressEvent){
 				// adds model(s) to collection, typically initially.
 
+				// empty models first, quietly.
+				this.removeModel(this._models, true);
+
 				models = Array.from(models);
 				Array.each(models, this.addModel.bind(this));
 

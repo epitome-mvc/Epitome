@@ -27,6 +27,9 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
+- 0.5.0
+ - BUGFIX: Collection needs `.length === 0` when instantiated w/o any models
+ - `Collection.reset` removes models first
 - 0.4.1
  - Updated `bower.json` and added a `.npmignore` to stop distributing docs and tests as component install
 - 0.4.0
