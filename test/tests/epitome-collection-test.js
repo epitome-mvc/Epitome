@@ -35,6 +35,10 @@ buster.testCase('Basic Epitome empty collection creation >', {
 		buster.assert.isTrue(instanceOf(this.collection, Epitome.Collection));
 	},
 
+	'Expect a collection to have legth of 0 >': function() {
+		buster.assert.equals(this.collection.length, 0);
+	},
+
 	'Expect adding models to collection to fire onAdd event >': function() {
 		var self = this;
 		this.collection.on('add', function(model) {
