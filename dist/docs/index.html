@@ -69,13 +69,18 @@
 <p>Strictly speaking, <code>Epitome.View</code> is closer to a <em>presenter</em> in a MVP implementation than a classic MVC one, with thin controller logic around the views. However, because <code>Epitome.View</code> is also very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.</p>
 <p>If you feel strongly about semantics of the patterns used, you should look at <a href="http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/">Digesting JavaScript MVC – Pattern Abuse Or Evolution?</a> by Addy Osmani, a talk he gave at London Ajax recently.</p>
 <p>Epitome&#39;s API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.</p>
-<p>Current version: <strong>0.4.1</strong></p>
+<p>Current version: <strong>0.6.0</strong></p>
 <p><a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a></p>
 <p>A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:</p>
 <pre class="prettyprint linenums"><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js&quot;&gt;&lt;/script&gt;</code></pre>
 <h2 id="changelog">Changelog</h2>
 <ul>
+<li>0.6.0<ul>
+<li>Breaking: enabled <code>Slick.parser</code> under <code>node.js</code> via <a href="http://npmjs/slicker/">slicker</a>. Collection.find methods now work
+just like they do in the browser.</li>
+</ul>
+</li>
 <li>0.5.0<ul>
 <li>BUGFIX: Collection needs <code>.length === 0</code> when instantiated w/o any models</li>
 <li><code>Collection.reset</code> removes models first</li>
@@ -742,7 +747,6 @@ users.sort(&#39;type,birthdate:desc&#39;);</code></pre>
 
 <p>This is an experimental API and is subject to change without notice. <code>Collection.find</code> is currently powered by the MooTools <code>Slick.parse</code> engine. This means you can
  search through your Collection for Models by attributes and <code>#ids</code> like you would search in a CSS selector.</p>
-<p><strong>NOTE: the CommonJS version of <code>Epitome.Collection</code> has no <code>.find</code> methods due to missing Slick export.</strong></p>
 <p>For example:</p>
 <pre class="prettyprint linenums"><code class="lang-ace">var collection = new Epitome.Collection([{
     name: &#39;Bob&#39;,
@@ -763,7 +767,7 @@ collection.find(&#39;#2[name=Bob],#3&#39;); // (name Bob AND id==2) OR id==3
 collection.find(&#39;[name=Bob][id=2]&#39;); // name Bob AND id==2</code></pre>
 <p>Supported operators are <code>=</code> (equals), <code>!=</code> (not equal), <code>*=</code> (contains), <code>$=</code> (ends on), <code>^=</code> (starts with). Currently, you cannot reverse a condition by adding <code>!</code> or <code>not:</code> - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use <code>filter</code> instead.</p>
 <p>A new &#39;feature&#39; has been added that alows you to quickly select deeper object properties by treating any parent keys as tags. For instance:</p>
-<pre class="prettyprint linenums"><code>var collection = new Epitome.Collection([{
+<pre class="prettyprint linenums"><code class="lang-javascript">var collection = new Epitome.Collection([{
     name: &#39;Bob&#39;,
     permissions: {
         edit: true
@@ -791,7 +795,6 @@ collection.find(&#39;permissions[edit=true]&#39;); // all where there edit is tr
 </div>
 
 <p>Useful for getting a single Model via the <code>.find</code>, this method will return the first matched Model or null if none found.</p>
-<p><strong>NOTE: the CommonJS version of <code>Epitome.Collection</code> has no <code>.find</code> methods due to missing Slick export.</strong></p>
 <pre class="prettyprint linenums"><code class="lang-javascript">var bob = collection.findOne(&#39;[name=bob]&#39;);
 // if found, set
 bob &amp;&amp; bob.set(&#39;name&#39;,&#39;Robert&#39;);</code></pre>

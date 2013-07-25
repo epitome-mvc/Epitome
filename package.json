@@ -23,7 +23,8 @@
   "main": "./src/epitome.js",
   "license": "MIT (http://mootools.net/license.txt)",
   "dependencies": {
-    "mootools": "~1.4.5"
+    "mootools": "~1.4.5",
+    "slicker": "0.0.1"
   },
   "devDependencies": {
     "buster": "~0.6.2",

@@ -2,9 +2,11 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var wrap = function(Model, Events){
-
+	var wrap = function(Model, Events, Slick){
 		var methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
+
+		// compat for nodejs, Slick gets passed separately
+		Slick || (Slick = exports.Slick);
 
 		// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
 		var collection = new Class({
@@ -221,7 +223,7 @@
 			find: function(expression){
 				/*jshint eqeqeq:false */
 				// experimental model search engine, powered by MooTools Slick.parse
-				var parsed = exports.Slick.parse(expression),
+				var parsed = Slick.parse(expression),
 					exported = [],
 					found = this,
 					map = {
@@ -346,7 +348,7 @@
 	}
 	else if (typeof module !== 'undefined' && module.exports){
 		// CommonJS module is defined
-		module.exports = wrap(require('./epitome-model'), require('./epitome-events'));
+		module.exports = wrap(require('./epitome-model'), require('./epitome-events'), require('slicker'));
 	}
 	else {
 		exports.Epitome || (exports.Epitome = {Model: {}, Events: {}});

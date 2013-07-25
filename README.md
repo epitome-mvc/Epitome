@@ -16,7 +16,7 @@ If you feel strongly about semantics of the patterns used, you should look at [D
 
 Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
 
-Current version: **0.4.1**
+Current version: **0.6.0**
 
 <a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a>
@@ -27,6 +27,9 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
+- 0.6.0
+ - Breaking: enabled `Slick.parser` under `node.js` via [slicker](http://npmjs/slicker/). Collection.find methods now work
+ just like they do in the browser.
 - 0.5.0
  - BUGFIX: Collection needs `.length === 0` when instantiated w/o any models
  - `Collection.reset` removes models first
@@ -755,8 +758,6 @@ _Returns: `(Array) MatchingModelObjects`_
 This is an experimental API and is subject to change without notice. `Collection.find` is currently powered by the MooTools `Slick.parse` engine. This means you can
  search through your Collection for Models by attributes and `#ids` like you would search in a CSS selector.
 
-**NOTE: the CommonJS version of `Epitome.Collection` has no `.find` methods due to missing Slick export.**
-
 For example:
 ```ace
 var collection = new Epitome.Collection([{
@@ -776,14 +777,13 @@ collection.find('[name=Bob],[name^=Angry]'); // name Bob OR starting with Angry.
 collection.find('[name=Bob][id]'); // name Bob AND to have an id
 collection.find('#2[name=Bob],#3'); // (name Bob AND id==2) OR id==3
 collection.find('[name=Bob][id=2]'); // name Bob AND id==2
-
 ```
 
 Supported operators are `=` (equals), `!=` (not equal), `*=` (contains), `$=` (ends on), `^=` (starts with). Currently, you cannot reverse a condition by adding `!` or `not:` - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use `filter` instead.
 
 A new 'feature' has been added that alows you to quickly select deeper object properties by treating any parent keys as tags. For instance:
 
-```
+```javascript
 var collection = new Epitome.Collection([{
     name: 'Bob',
     permissions: {
@@ -818,7 +818,6 @@ _Returns: `(Model) First matching Model instance or null`_
 
 Useful for getting a single Model via the `.find`, this method will return the first matched Model or null if none found.
 
-**NOTE: the CommonJS version of `Epitome.Collection` has no `.find` methods due to missing Slick export.**
 
 ```javascript
 var bob = collection.findOne('[name=bob]');
