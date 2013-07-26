@@ -1,4 +1,4 @@
-;(function(exports) {
+;(function(){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
@@ -117,12 +117,12 @@
 				Object.each(obj.$subscribers, function(value, key){
 					len = value.length;
 					if (typeof type !== 'undefined'){
-						if (key === type) while(len--)
+						if (key === type) while (len--)
 							(((fn && fn === value[len].fn) || !fn) && value[len].context === obj) && value.splice(len, 1);
 					}
 					else {
 						// no type, unsubscribe from all for that context object
-						while(len--) value[len].context === obj && value.splice(len, 1);
+						while (len--) value[len].context === obj && value.splice(len, 1);
 					}
 				});
 
@@ -131,7 +131,10 @@
 
 			setOptions: function(){
 				//refactored setOptions to use .on and not addEvent. auto-mixed in.
-				var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments)),
+				var options = this.options = Object.merge.apply(null, [
+						{},
+						this.options
+					].append(arguments)),
 					option;
 				for (option in options){
 					if (typeOf(options[option]) !== func || !(/^on[A-Z]/).test(option)) continue;
@@ -142,19 +145,16 @@
 			}
 		});
 
-	// wrap up
 	if (typeof define === 'function' && define.amd){
-		// returns an empty module
 		define(function(){
 			return EpitomeEvents;
 		});
 	}
 	else if (typeof module !== 'undefined' && module.exports){
-		// CommonJS module is defined
 		module.exports = EpitomeEvents;
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {});
-		exports.Epitome.Events = EpitomeEvents;
+		this.Epitome || (this.Epitome = {});
+		this.Epitome.Events = EpitomeEvents;
 	}
-}(this));
+}.call(this));

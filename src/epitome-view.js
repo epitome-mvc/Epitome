@@ -1,5 +1,5 @@
 /*jshint strict:false */
-;(function(exports){
+;(function(){
 	// 'use strict';  // breaks tests due to mootools reliance on args.callee and fireEvent
 
 	// wrapper function for requirejs or normal object
@@ -181,13 +181,11 @@
 		});
 	}; // end wrap
 
-
 	if (typeof define === 'function' && define.amd){
-		// requires epitome-template and at least eptiome-model and eptiome-collection for implementation
 		define(['./epitome-template', './epitome-model', './epitome-collection', './epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Template: {}, Model: {}, Collection: {}, Events: {}});
-		exports.Epitome.View = wrap(exports.Epitome.Template, exports.Epitome.Model, exports.Epitome.Collection, exports.Epitome.Events);
+		this.Epitome || (this.Epitome = {Template: {}, Model: {}, Collection: {}, Events: {}});
+		this.Epitome.View = wrap(this.Epitome.Template, this.Epitome.Model, this.Epitome.Collection, this.Epitome.Events);
 	}
-}(this));
+}.call(this));

@@ -1,4 +1,4 @@
-;(function(exports){
+;(function(){
 	'use strict';
 
 	var obj,
@@ -29,6 +29,6 @@
 		module.exports = obj;
 	}
 	else {
-		exports.Epitome = wrap(exports.Epitome.Events);
+		this.Epitome = wrap(this.Epitome.Events);
 	}
-}(this));
+}.call(this));

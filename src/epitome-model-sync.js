@@ -1,4 +1,4 @@
-;(function(exports){
+;(function(){
 	'use strict';
 
 	// re-implement Request.JSON correctly
@@ -281,11 +281,10 @@
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd){
-		// requires epitome object only.
 		define(['./epitome-model'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Model: {}});
-		exports.Epitome.Model.Sync = wrap(exports.Epitome.Model);
+		this.Epitome || (this.Epitome = {Model: {}});
+		this.Epitome.Model.Sync = wrap(this.Epitome.Model);
 	}
-}(this));
+}.call(this));

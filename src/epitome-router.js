@@ -1,4 +1,4 @@
-;(function(exports){
+;(function(){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
@@ -192,13 +192,11 @@
 		});
 	}; // end wrap
 
-
 	if (typeof define === 'function' && define.amd){
-		// requires epitome object only.
 		define(['./epitome-events'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Events:{}});
-		exports.Epitome.Router = wrap(exports.Epitome.Events);
+		this.Epitome || (this.Epitome = {Events:{}});
+		this.Epitome.Router = wrap(this.Epitome.Events);
 	}
-}(this));
+}.call(this));

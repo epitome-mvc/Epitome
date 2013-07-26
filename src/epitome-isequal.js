@@ -1,4 +1,4 @@
-;(function(exports){
+;(function(){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
@@ -103,18 +103,14 @@
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd){
-		// requires epitome object only.
 		define(['./epitome'], wrap);
 	}
 	else if (typeof module !== 'undefined' && module.exports){
-		// CommonJS module is defined
-		// load mootools-core npm
 		require('mootools');
-
 		module.exports = wrap();
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {});
-		exports.Epitome.isEqual = wrap(exports.Epitome);
+		this.Epitome || (this.Epitome = {});
+		this.Epitome.isEqual = wrap(this.Epitome);
 	}
-}(this));
+}.call(this));

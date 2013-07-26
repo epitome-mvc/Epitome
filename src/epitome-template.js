@@ -1,5 +1,5 @@
 /*jshint quotmark:false, evil:true */
-;(function(exports){
+;(function(){
 	'use strict';
 
 	(function(){
@@ -129,15 +129,13 @@
 
 
 	if (typeof define === 'function' && define.amd){
-		// requires epitome object only.
 		define(['./epitome'], wrap);
 	}
 	else if (typeof module !== 'undefined' && module.exports){
-		// CommonJS module is defined
 		module.exports = wrap();
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {});
-		exports.Epitome.Template = wrap(exports.Epitome);
+		this.Epitome || (this.Epitome = {});
+		this.Epitome.Template = wrap(this.Epitome);
 	}
-}(this));
+}.call(this));

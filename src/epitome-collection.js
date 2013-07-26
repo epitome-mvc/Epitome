@@ -1,4 +1,4 @@
-;(function(exports){
+;(function(){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
@@ -6,7 +6,7 @@
 		var methodMap = ['forEach', 'each', 'invoke', 'filter', 'map', 'some', 'indexOf', 'contains', 'getRandom', 'getLast'];
 
 		// compat for nodejs, Slick gets passed separately
-		Slick || (Slick = exports.Slick);
+		Slick || (Slick = this.Slick);
 
 		// decorator type, only not on the proto. exports.Function in a distant future? It's a Type...
 		var collection = new Class({
@@ -29,7 +29,7 @@
 				return this.trigger('ready');
 			},
 
-			reset: function(models, supressEvent){
+			reset: function(models, quiet){
 				// adds model(s) to collection, typically initially.
 
 				// empty models first, quietly.
@@ -41,7 +41,7 @@
 				// if a model is destroyed, remove from the collection
 				this.on('destroy', this.removeModel.bind(this));
 
-				supressEvent || this.trigger('reset');
+				quiet || this.trigger('reset');
 
 				return this;
 			},
@@ -343,15 +343,13 @@
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd){
-		// requires epitome model and all its deps
 		define(['./epitome-model', './epitome-events'], wrap);
 	}
 	else if (typeof module !== 'undefined' && module.exports){
-		// CommonJS module is defined
 		module.exports = wrap(require('./epitome-model'), require('./epitome-events'), require('slicker'));
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Model: {}, Events: {}});
-		exports.Epitome.Collection = wrap(exports.Epitome.Model, exports.Epitome.Events);
+		this.Epitome || (this.Epitome = {Model: {}, Events: {}});
+		this.Epitome.Collection = wrap.call(this, this.Epitome.Model, this.Epitome.Events, this.Slick);
 	}
-}(this));
+}.call(this));

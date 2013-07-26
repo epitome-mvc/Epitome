@@ -1,4 +1,4 @@
-;(function(exports){
+;(function(){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
@@ -171,15 +171,14 @@
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd){
-		// requires epitome object only.
 		define(['./epitome-isequal', './epitome-events'], wrap);
 	}
 	else if (typeof module !== 'undefined' && module.exports){
-		// CommonJS module is defined
+		require('mootools');
 		module.exports = wrap(require('./epitome-isequal'), require('./epitome-events'));
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {isEqual: {}, Events: {}});
-		exports.Epitome.Model = wrap(exports.Epitome.isEqual, exports.Epitome.Events);
+		this.Epitome || (this.Epitome = {isEqual: {}, Events: {}});
+		this.Epitome.Model = wrap(this.Epitome.isEqual, this.Epitome.Events);
 	}
-}(this));
+}.call(this));

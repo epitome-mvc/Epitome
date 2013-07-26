@@ -1,4 +1,4 @@
-;(function(exports){
+;(function(){
 	'use strict';
 
 	// wrapper function for requirejs or normal object
@@ -128,11 +128,10 @@
 	}; // end wrap
 
 	if (typeof define === 'function' && define.amd){
-		// requires epitome model and all its deps
 		define(['./epitome-collection'], wrap);
 	}
 	else {
-		exports.Epitome || (exports.Epitome = {Collection: {}});
-		exports.Epitome.Collection.Sync = wrap(exports.Epitome.Collection);
+		this.Epitome || (this.Epitome = {Collection: {}});
+		this.Epitome.Collection.Sync = wrap(this.Epitome.Collection);
 	}
-}(this));
+}.call(this));
