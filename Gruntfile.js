@@ -75,4 +75,9 @@ module.exports = function(grunt){
 	// By default, clean and generate docs
 	grunt.registerTask('default', ['clean','doctor']);
 	grunt.registerTask('test', ['doctor']);
+
+	var notifier = require('update-notifier')();
+	if (notifier.update){
+		notifier.notify();
+	}
 };

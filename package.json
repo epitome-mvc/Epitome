@@ -33,7 +33,8 @@
     "grunt-doctor-md": "~0.0.4",
     "grunt-contrib-clean": "*",
     "express": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "update-notifier": "~0.1.5"
   },
   "engines": {
     "node": "~0.8.24"
