@@ -129,6 +129,9 @@
 
 					return function(storageName){
 						storageName && (storagePrefix = storageName);
+						window.addEvent('storage', function(){
+							//todo: implement this to bubble on the instances
+						});
 						return new Class(Object.clone(Methods));
 					};
 
