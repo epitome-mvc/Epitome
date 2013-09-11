@@ -61,6 +61,8 @@
 				// if any properties did change, fire a change event with the array.
 				this.propertiesChanged.length && this.trigger('change', this.get(this.propertiesChanged));
 				this.validationFailed.length && this.trigger('error', [this.validationFailed]);
+
+				return this;
 			},
 
 			// private, real setter functions, not on prototype, see note above
