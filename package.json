@@ -11,7 +11,7 @@
     "mvp"
   ],
   "scripts": {
-    "test": "node_modules/.bin/buster-test -r specification"
+    "test": "node_modules/.bin/buster-test -r specification -s http://localhost:11111"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "slicker": "0.0.1"
   },
   "devDependencies": {
-    "buster": "~0.6.2",
+    "buster": "~0.7.6",
     "colors": "*",
     "grunt": "~0.4.1",
     "grunt-doctor-md": "~0.0.4",

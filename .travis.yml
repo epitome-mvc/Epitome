@@ -4,9 +4,9 @@ before_script:
   - export DISPLAY=:99.0
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24"
   - sleep 10
-  - node_modules/.bin/buster-server &
+  - node_modules/.bin/buster-server -p 11111 &
   - sleep 5
-  - firefox http://localhost:1111/capture &
+  - firefox http://localhost:11111/capture &
   - sleep 5
 
 
