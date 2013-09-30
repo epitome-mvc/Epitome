@@ -11,7 +11,7 @@
     "mvp"
   ],
   "scripts": {
-    "test": "node_modules/.bin/buster-test -r specification -s http://localhost:11111"
+    "test": "node_modules/buster/bin/buster-test -r specification -s http://localhost:11111"
   },
   "repository": {
     "type": "git",
