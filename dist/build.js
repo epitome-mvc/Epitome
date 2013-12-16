@@ -31,7 +31,7 @@ var http = require('http'),
 	}),
 	generateUID = function(){
 		var now = new Date();
-		return Math.floor(Math.random() * 10) + parseInt(now.getTime()).toString(36).toUpperCase();
+		return Math.floor(Math.random() * 10) + parseInt(now.getTime(),10).toString(36).toUpperCase();
 	};
 
 function respond(res, code, contents){
@@ -62,7 +62,7 @@ http.createServer(function(req, res){
 		}
 	});
 
-	req.on('close', function(err){
+	req.on('close', function(/*error*/){
 		res.end();
 	});
 

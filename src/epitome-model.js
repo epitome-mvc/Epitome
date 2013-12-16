@@ -144,7 +144,7 @@
 
 			empty: function(){
 				// empty the model and fire change event
-				var keys = Object.keys(this.toJSON()),
+				var keys = Object.keys(this._attributes),
 					self = this;
 
 				// let the instance know.
@@ -153,7 +153,7 @@
 				// fire change for all keys in the model.
 				Array.each(keys, function(key){
 					self.trigger('change:' + key, null);
-				}, this);
+				});
 
 				this._attributes = {};
 				this.trigger('empty');
