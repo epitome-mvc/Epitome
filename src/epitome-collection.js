@@ -90,10 +90,7 @@
 
 				Array.each(models, function(model){
 					model.collections.erase(self);
-					// restore `fireEvent` to one from prototype, aka, `Event.prototype.fireEvent`
-					// only if there are no collections left that are interested in this model's events
-					model.collections.length || delete model.fireEvent;
-
+					
 					// remove from collection of managed models
 					Array.erase(self._models, model);
 
