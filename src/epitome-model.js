@@ -71,8 +71,12 @@
 				if (!key || typeof value === 'undefined') return this;
 
 				// custom setter - see bit further down
-				if (this.properties[key] && this.properties[key]['set'])
-					return this.properties[key]['set'].call(this, value);
+				if (this.properties[key] && this.properties[key]['set']) {
+                    value = this.properties[key]['set'].call(this, value);//if value is returned by setter proceed to set the new value normally
+                    if(!value) {
+                        return;
+                    }
+                }
 
 				// no change? this is crude and works for primitives.
 				if (this._attributes[key] && isEqual(this._attributes[key], value))

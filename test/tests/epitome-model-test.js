@@ -224,7 +224,22 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 		});
 
 		this.model.empty();
-	}
+	},
+
+    'Expect model `set` with custom property setter to override value and continue setting if anything is returned  >': function() {
+        var spy = this.spy();
+
+        this.model.properties = Object.merge({
+            foo: {
+                set: function(val) {
+                    return 'my ' + val;
+                }
+            }
+        }, this.model.properties);
+
+        this.model.set('foo', 'bar');
+        buster.assert.same(this.model.get('foo'), 'my bar');
+    }
 
 });
 
