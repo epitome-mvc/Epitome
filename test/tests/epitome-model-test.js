@@ -226,20 +226,47 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 		this.model.empty();
 	},
 
-    'Expect model `set` with custom property setter to override value and continue setting if anything is returned  >': function() {
-        var spy = this.spy();
+	'Expect model `set` with custom property setter to override value and continue setting if anything is returned  >': function() {
+		var spy = this.spy();
 
-        this.model.properties = Object.merge({
-            foo: {
-                set: function(val) {
-                    return 'my ' + val;
-                }
-            }
-        }, this.model.properties);
+		var pre = this.model.get('foo');
+		this.model.properties = Object.merge(this.model.properties, {
+			foo: {
+				set: function(val) {
+					//do nothing so dont change
+				}
+			}
+		});
 
-        this.model.set('foo', 'bar');
-        buster.assert.same(this.model.get('foo'), 'my bar');
-    }
+		this.model.set('foo', 'something');
+		buster.assert.same(this.model.get('foo'), pre);
+
+		this.model.properties = Object.merge(this.model.properties, {
+			foo: {
+				set: function(val) {
+					return 'my ' + val;
+				}
+			}
+		});
+
+		this.model.set('foo', 'bar');
+		buster.assert.same(this.model.get('foo'), 'my bar');
+	},
+
+	'Expect returning a non truthy value (besides undef) to set the property >': function() {
+		var spy = this.spy();
+
+		this.model.properties = Object.merge({
+			foo: {
+				set: function(val) {
+					return false;
+				}
+			}
+		}, this.model.properties);
+
+		this.model.set('foo', 'bar');
+		buster.assert.same(this.model.get('foo'), false);
+	}
 
 });
 

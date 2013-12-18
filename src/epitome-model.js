@@ -2,6 +2,7 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
+	var undef = 'undefined';
 	var wrap = function(isEqual, Events){
 
 		return new Class({
@@ -68,12 +69,12 @@
 			// private, real setter functions, not on prototype, see note above
 			_set: function(key, value){
 				// needs to be bound the the instance.
-				if (!key || typeof value === 'undefined') return this;
+				if (!key || typeof value === undef) return this;
 
 				// custom setter - see bit further down
 				if (this.properties[key] && this.properties[key]['set']) {
 					value = this.properties[key]['set'].call(this, value);//if value is returned by setter proceed to set the new value normally
-					if(!value) {
+					if(typeof value === undef) {
 						return;
 					}
 				}
@@ -121,7 +122,7 @@
 				}
 
 				// else, return from attributes or return null when undefined.
-				return (key && typeof this._attributes[key] !== 'undefined') ? this._attributes[key] : null;
+				return (key && typeof this._attributes[key] !== undef) ? this._attributes[key] : null;
 			}.overloadGetter(),
 
 			unset: function(){
@@ -179,7 +180,7 @@
 	if (typeof define === 'function' && define.amd){
 		define(['./epitome-isequal', './epitome-events'], wrap);
 	}
-	else if (typeof module !== 'undefined' && module.exports){
+	else if (typeof module !== undef && module.exports){
 		require('mootools');
 		module.exports = wrap(require('./epitome-isequal'), require('./epitome-events'));
 	}
