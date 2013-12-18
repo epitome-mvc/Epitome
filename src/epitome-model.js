@@ -128,8 +128,8 @@
 			unset: function(){
 				// can remove keys from model, passed on as multiple string arguments or an array of string keys
 				var keys = Array.prototype.slice.apply(arguments),
-					obj = {},
-					len = keys.length;
+				obj = {},
+				len = keys.length;
 
 				if (!len)
 					return this;
@@ -150,7 +150,7 @@
 			empty: function(){
 				// empty the model and fire change event
 				var keys = Object.keys(this.toJSON()),
-					self = this;
+				self = this;
 
 				// let the instance know.
 				this.trigger('change', [keys]);
