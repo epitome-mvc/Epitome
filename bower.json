@@ -1,6 +1,6 @@
 {
   "name": "Epitome",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "main": [
       "Epitome-min.js",
       "src/epitome.js",
