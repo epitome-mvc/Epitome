@@ -69,13 +69,17 @@
 <p>Strictly speaking, <code>Epitome.View</code> is closer to a <em>presenter</em> in a MVP implementation than a classic MVC one, with thin controller logic around the views. However, because <code>Epitome.View</code> is also very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.</p>
 <p>If you feel strongly about semantics of the patterns used, you should look at <a href="http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/">Digesting JavaScript MVC – Pattern Abuse Or Evolution?</a> by Addy Osmani, a talk he gave at London Ajax recently.</p>
 <p>Epitome&#39;s API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.</p>
-<p>Current version: <strong>0.6.0</strong></p>
+<p>Current version: <strong>0.6.1</strong></p>
 <p><a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a></p>
 <p>A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:</p>
 <pre class="prettyprint linenums"><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js&quot;&gt;&lt;/script&gt;</code></pre>
 <h2 id="changelog">Changelog</h2>
 <ul>
+<li>0.6.0<ul>
+<li>Breaking: custom setters need to return a value only, not re-implement <code>_set</code> (see #14)</li>
+</ul>
+</li>
 <li>0.6.0<ul>
 <li>Breaking: enabled <code>Slick.parser</code> under <code>node.js</code> via <a href="http://npmjs/slicker/">slicker</a>. Collection.find methods now work
 just like they do in the browser.</li>
@@ -382,43 +386,21 @@ console.log(model.toJSON());</code></pre>
         },
         set: function(value) {
             // don&#39;t send this to the attributes, store in the instance directly.
-            // won&#39;t fire a traditional onChange
+            // won&#39;t fire a traditional onChange, you need to manually fire the events
             this.foo = value;
         }
     }
 }</code></pre>
 <p>In the example above, any calls to <code>model.set(&#39;foo&#39;, value)</code> and <code>model.get(&#39;foo&#39;)</code> are handled by custom functions. This is a pattern that allows you to use getters and setters for properties that are handled differently than normal ones. It can also be used as pre-processors for data. Make sure that you either set them on the instance directly or that you import the default ones for id in a custom prototype version as they are not merged like options.</p>
-<p>Keep in mind that if you want to use custom setters as transformers, you need to work with the low-level api and mock the default event system for compatibility. Although this gives you great control, it&#39;s not exactly API-friendly and can cause circular references if you are not being careful. For instance, decorating a property <code>price</code> with a currency sign:</p>
+<p>If you want, you can also use custom setters as transformers. For instance, decorating a property <code>price</code> with a currency sign:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">properties: {
     price: {
         set: function(value) {
-            // do NOT do this, it will create an infinite loop as it&#39;s calling self.
-            return this.set(&#39;price&#39;, &#39;$&#39; + value);
+            // failing to return a value here won&#39;t set anything.
+            return &#39;$&#39; + value; // will fire all the change events for you.
         }
     }
 }</code></pre>
-<p>Instead, you need to work with the <code>_attributes</code> object and mock the events:</p>
-<pre class="prettyprint linenums"><code class="lang-javascript">properties: {
-    price: {
-        set: function(value) {
-            // get current value and prep new value.
-            var currentValue = this.get(&#39;price&#39;),
-                newValue = &#39;$&#39; + value;
-
-            // store it in the attributes object
-            this._attributes[&#39;price&#39;] = newValue;
-
-            // see if we need to raise change events
-            if (!Epitome.isEqual(currentValue, newValue)) {
-                // individual event
-                this.trigger(&#39;change:price&#39;, newValue);
-                // if a part of a set({obj}), general change as well.
-                this.propertiesChanged.push(&#39;price&#39;);
-            }
-        }
-    }
-}</code></pre>
-<p>This gives you great versatility but it does require some understanding of the inner workings of Model. The important thing to remember is that the <code>set</code> method is a proxy and relies on the <strong>private</strong> setter <code>_set</code>, using the MooTools <a href="http://stackoverflow.com/a/4013500/126998">overloadSetter</a>. The same thing applies to <code>get</code>, which is overloaded through <code>overloadGetter</code>.</p>
 <h3 id="epitomemodel/model-validators">Model validators*</h3>
 <p>You can also include basic validators into your model. Validators are an object on the Model prototype that maps any expected key to a function that will return <code>true</code> if the validation passes or a <code>string</code> error message or <code>false</code> on failure.</p>
 <p>Here is an example:</p>
