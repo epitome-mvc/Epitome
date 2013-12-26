@@ -2,7 +2,6 @@
 	'use strict';
 
 	// wrapper function for requirejs or normal object
-	var undef = 'undefined';
 	var wrap = function(isEqual, Events){
 
 		return new Class({
@@ -72,10 +71,10 @@
 				if (!key || typeof value === undef) return this;
 
 				// custom setter - see bit further down
-				if (this.properties[key] && this.properties[key]['set']) {
-					value = this.properties[key]['set'].call(this, value);//if value is returned by setter proceed to set the new value normally
-					if(typeof value === undef) {
-						return;
+				if (this.properties[key] && this.properties[key].set){
+					value = this.properties[key].set.call(this, value);
+					if (typeof value === undef){
+						return this;
 					}
 				}
 
@@ -111,7 +110,7 @@
 				this.propertiesChanged.push(key);
 
 				return this;
-			}.overloadSetter(),   // mootools abstracts overloading to allow object iteration
+			}.overloadSetter(),
 
 			get: function(key){
 				// overload getter, 2 paths...
@@ -175,7 +174,8 @@
 				return (key in this.validators) ? this.validators[key].call(this, value) : true;
 			}
 		});
-	}; // end wrap
+	}, // end wrap
+	undef = 'undefined';
 
 	if (typeof define === 'function' && define.amd){
 		define(['./epitome-isequal', './epitome-events'], wrap);
