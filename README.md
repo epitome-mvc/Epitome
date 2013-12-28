@@ -27,7 +27,7 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 ```
 
 ## Changelog
-- 0.6.0
+- 0.6.1
  - Breaking: custom setters need to return a value only, not re-implement `_set` (see #14)
 - 0.6.0
  - Breaking: enabled `Slick.parser` under `node.js` via [slicker](http://npmjs/slicker/). Collection.find methods now work
