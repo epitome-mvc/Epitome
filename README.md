@@ -1079,7 +1079,7 @@ require(['epitome/epitome-view'], function(View){
 _Expects arguments: `(Boolean) soft`_
 </p>
 <p>
-_Returns: compiled template or function._
+_Returns: this._
 </p>
 <p>
 _Events: `empty`_
@@ -1095,7 +1095,7 @@ By default, it will empty the element through making innerHTML an empty string, 
 _Expects arguments: none_
 </p>
 <p>
-_Returns: compiled template or function._
+_Returns: this._
 </p>
 <p>
 _Events: `dispose`_
@@ -1111,7 +1111,7 @@ Will detach `this.element` from the DOM. It can be injected again later on.
 _Expects arguments: none_
 </p>
 <p>
-_Returns: compiled template or function._
+_Returns: this._
 </p>
 <p>
 _Events: `dispose`_
