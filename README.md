@@ -26,6 +26,9 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js"></script>
 ```
 
+> Going forward - due to MooTools' decline, Epitome will be supported only with bug fixes. You should look at [epik](https://github.com/DimitarChristoff/epik) instead, which is Epitome 2 without MooTools - built on top of [primish](https://github.com/DimitarChristoff/primish) and lodash.
+
+
 ## Changelog
 - 0.6.1
  - Breaking: custom setters need to return a value only, not re-implement `_set` (see #14)
