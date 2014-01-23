@@ -73,7 +73,8 @@
 <p><a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a></p>
 <p>A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com:</p>
-<pre class="prettyprint linenums"><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<pre class="prettyprint linenums"><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js&quot;&gt;&lt;/script&gt;
+</code></pre>
 <h2 id="changelog">Changelog</h2>
 <ul>
 <li>0.6.1<ul>
@@ -182,7 +183,8 @@ that will trigger the same callback function. Examples:</p>
 this.on(&#39;change&#39;, this.modelChange.bind(this));
 
 // multiple
-this.model.on(&#39;fetch change&#39;, this.render.bind(this));</code></pre>
+this.model.on(&#39;fetch change&#39;, this.render.bind(this));
+</code></pre>
 <h3 id="epitomeevents/off">off</h3>
 <hr>
 <div class="alert">
@@ -270,7 +272,8 @@ particular you&#39;d like to un-subscribe from.</p>
 });
 
 model.set(&#39;name&#39;, &#39;Bob&#39;);
-console.log(model.toJSON());</code></pre>
+console.log(model.toJSON());
+</code></pre>
 <p>Supported: <code>(Object) options.defaults</code> - allows initial values of the model to be set if they are not being passed to the model constructor.</p>
 <p>Of note, the Constructor fires an event called <code>ready</code> when done and setting the initial model does not fire a <code>change</code> event.</p>
 <h3 id="epitomemodel/set">set</h3>
@@ -360,22 +363,22 @@ console.log(model.toJSON());</code></pre>
 <p>Empties the model. No change event. Event is observed by Collections the model is a member of, where it triggers a <code>removeModel()</code></p>
 <h3 id="epitomemodel/model-properties">Model properties*</h3>
 <p>There are several additional properties each model instance will have.</p>
-<h4>_attributes: {}</h4>
+<h4 id="_attributes-">_attributes: {}</h4>
 <hr>
 <p>The attributes object is <strong>public</strong> (exposed to manipulation on the instance) and it holds the hash data for the model, based upon keys. It is de-referenced from the constructor object used when creating a model but should not be read directly (normally). Exported by <code>model.toJSON()</code>. Avoid changing this directly as it won&#39;t fire any change events at all.</p>
-<h4>collections: []</h4>
+<h4 id="collections-">collections: []</h4>
 <hr>
 <p>An array that contains references to all instances of Epitome.Collection that the model is currently a member of. Useful for iteration as well as utilised by collections that want to know if Event observers are required.</p>
-<h4>options: {}</h4>
+<h4 id="options-">options: {}</h4>
 <hr>
 <p>A MooTools default options set, which can be on the prototype of the Model constructor.</p>
-<h4>options.defaults: {}</h4>
+<h4 id="options-defaults-">options.defaults: {}</h4>
 <hr>
 <p>An object with default Model Attributes to use when instantiating. Merged with Model object when creating.</p>
-<h4>changedProperties: []</h4>
+<h4 id="changedproperties-">changedProperties: []</h4>
 <hr>
 <p>An array of all property keys that reflect the last <code>change</code> event. Available on all instances.</p>
-<h4>properties: {}</h4>
+<h4 id="properties-">properties: {}</h4>
 <hr>
 <p>A collection of custom accessors that override default <code>model.get</code> and <code>model.set</code> methods. For example:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">properties: {
@@ -390,7 +393,8 @@ console.log(model.toJSON());</code></pre>
             this.foo = value;
         }
     }
-}</code></pre>
+}
+</code></pre>
 <p>In the example above, any calls to <code>model.set(&#39;foo&#39;, value)</code> and <code>model.get(&#39;foo&#39;)</code> are handled by custom functions. This is a pattern that allows you to use getters and setters for properties that are handled differently than normal ones. It can also be used as pre-processors for data. Make sure that you either set them on the instance directly or that you import the default ones for id in a custom prototype version as they are not merged like options.</p>
 <p>If you want, you can also use custom setters as transformers. For instance, decorating a property <code>price</code> with a currency sign:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">properties: {
@@ -400,7 +404,8 @@ console.log(model.toJSON());</code></pre>
             return &#39;$&#39; + value; // will fire all the change events for you.
         }
     }
-}</code></pre>
+}
+</code></pre>
 <h3 id="epitomemodel/model-validators">Model validators*</h3>
 <p>You can also include basic validators into your model. Validators are an object on the Model prototype that maps any expected key to a function that will return <code>true</code> if the validation passes or a <code>string</code> error message or <code>false</code> on failure.</p>
 <p>Here is an example:</p>
@@ -423,7 +428,8 @@ var userInstance = new validUser({}, {
     }
 });
 
-userInstance.set(&#39;email&#39;, &#39;this will fail!&#39;);</code></pre>
+userInstance.set(&#39;email&#39;, &#39;this will fail!&#39;);
+</code></pre>
 <p>The <code>error</code> event is observed by collections and views and fires on all view and collection instances.</p>
 <h2 id="epitomemodelsync">Epitome.Model.Sync</h2>
 <p>This is an example implementation of RESTful module that extends the base Epitome.Model class and adds the ability to read, update and delete models with remote server. In terms of implementation, there are subtle differences. The API and methods are as the normal <a href="#epitomemodel">Model</a>, unless outlined below:</p>
@@ -480,7 +486,8 @@ otherwise, the save events may not fire. Additionally, try to ensure <code>appli
     // data comes back with decoration. split them first.
     this.meta = response.meta;
     return response.data;
-}</code></pre>
+}
+</code></pre>
 <h3 id="epitomemodelsync/save">save</h3>
 <hr>
 <div class="alert">
@@ -513,7 +520,8 @@ otherwise, the save events may not fire. Additionally, try to ensure <code>appli
     // remove local property &#39;meta&#39; which the server does not like.
     delete data.meta;
     return data;
-}</code></pre>
+}
+</code></pre>
 <h3 id="epitomemodelsync/fetch">fetch</h3>
 <hr>
 <div class="alert">
@@ -561,7 +569,8 @@ var users = new usersCollection([{
     onReady: function() {
         console.log(&#39;the collection is ready&#39;);
     }
-});</code></pre>
+});
+</code></pre>
 <p>For reference purposes, each Model that enters a collection needs to have a <code>cid</code> - collection id. If the Model has an <code>id</code>, that is preferred. Otherwise, a <code>cid</code> will be generated. If the Model gets an <code>id</code> later on, the <code>cid</code> will not be changed.</p>
 <div class="alert alert-info">
 <p>
@@ -699,7 +708,8 @@ var users = new usersCollection([{
 // descending order pseduo
 users.sort(&#39;name:desc&#39;);
 // by type and then birthdate in reverse order (oldest first)
-users.sort(&#39;type,birthdate:desc&#39;);</code></pre>
+users.sort(&#39;type,birthdate:desc&#39;);
+</code></pre>
 <p>Sorting also allows you to pass a function you define yourself as per the <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort">Array.prototype.sort</a> interface. When done, it will fire a <code>sort</code> event.</p>
 <h3 id="epitomecollection/reverse">reverse</h3>
 <hr>
@@ -746,7 +756,8 @@ collection.find(&#39;[name^=Bob]&#39;); // where name starts with Bob.
 collection.find(&#39;[name=Bob],[name^=Angry]&#39;); // name Bob OR starting with Angry.
 collection.find(&#39;[name=Bob][id]&#39;); // name Bob AND to have an id
 collection.find(&#39;#2[name=Bob],#3&#39;); // (name Bob AND id==2) OR id==3
-collection.find(&#39;[name=Bob][id=2]&#39;); // name Bob AND id==2</code></pre>
+collection.find(&#39;[name=Bob][id=2]&#39;); // name Bob AND id==2
+</code></pre>
 <p>Supported operators are <code>=</code> (equals), <code>!=</code> (not equal), <code>*=</code> (contains), <code>$=</code> (ends on), <code>^=</code> (starts with). Currently, you cannot reverse a condition by adding <code>!</code> or <code>not:</code> - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use <code>filter</code> instead.</p>
 <p>A new &#39;feature&#39; has been added that alows you to quickly select deeper object properties by treating any parent keys as tags. For instance:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">var collection = new Epitome.Collection([{
@@ -763,7 +774,8 @@ collection.find(&#39;[name=Bob][id=2]&#39;); // name Bob AND id==2</code></pre>
 
 
 collection.find(&#39;permissions[edit]&#39;); // all where there is an edit property
-collection.find(&#39;permissions[edit=true]&#39;); // all where there edit is true</code></pre>
+collection.find(&#39;permissions[edit=true]&#39;); // all where there edit is true
+</code></pre>
 <p>However, this is more of a syntactic sugar than convention. It won&#39;t allow you to do complex CSS-like selections as you cannot combine &#39;tag&#39; with properties. This means you cannot do <code>permissions[edit][name=Bob]</code> as the context changes to the permissions property. This kind of structure is possibly an anti-pattern anyway, try to keep your models flat.</p>
 <h3 id="epitomecollection/findone">findOne</h3>
 <hr>
@@ -779,7 +791,8 @@ collection.find(&#39;permissions[edit=true]&#39;); // all where there edit is tr
 <p>Useful for getting a single Model via the <code>.find</code>, this method will return the first matched Model or null if none found.</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">var bob = collection.findOne(&#39;[name=bob]&#39;);
 // if found, set
-bob &amp;&amp; bob.set(&#39;name&#39;,&#39;Robert&#39;);</code></pre>
+bob &amp;&amp; bob.set(&#39;name&#39;,&#39;Robert&#39;);
+</code></pre>
 <h3 id="epitomecollection/array-helpers">Array helpers</h3>
 <p>The following Array methods are also available directly on the Collection instances:</p>
 <ul>
@@ -796,13 +809,13 @@ bob &amp;&amp; bob.set(&#39;name&#39;,&#39;Robert&#39;);</code></pre>
 </ul>
 <p>For more information, see <a href="http://mootools.net/docs/core/Types/Array">Mootools Array Type</a></p>
 <h3 id="epitomecollection/collection-properties">Collection properties*</h3>
-<h4>_models</h4>
+<h4 id="_models">_models</h4>
 <hr>
 <p>Each Collection instance has an Array property called <code>_models</code> that contains all referenced Model instances. Even though it is not a real private property, it is recommended you do not alter it from outside of the API.</p>
-<h4>length</h4>
+<h4 id="length">length</h4>
 <hr>
 <p>Tries to always reference the length of <code>_models</code>.</p>
-<h4>model</h4>
+<h4 id="model">model</h4>
 <hr>
 <p>Each Collection prototype has that property that references a Model prototype constructor. When data is being received in raw format (so, simple Objects), Models are being created by instantiating the stored constructor object in <code>this.model</code>.</p>
 <h2 id="epitomecollectionsync">Epitome.Collection.Sync</h2>
@@ -857,7 +870,8 @@ bob &amp;&amp; bob.set(&#39;name&#39;,&#39;Robert&#39;);</code></pre>
     // { meta: { something: &#39;here&#39; }, models: [] }
     this.meta = response.meta;
     return response.models;
-}</code></pre>
+}
+</code></pre>
 <h2 id="epitomeview">Epitome.View</h2>
 <p>The view is a pretty loose binding around a HTMLElement, it does not try to do much by default. It essentially binds the element to either a Model or a Collection, listening and propagating events that they fire in order to be able to react to them. The expectation is that a <code>render</code> method will be defined that uses the data to output it in the browser. The render can be called based upon change or reset events as needed.</p>
 <h3 id="epitomeview/constructor-initialize">constructor (initialize)</h3>
@@ -924,7 +938,8 @@ var testInstance = new testView({
         console.log(element); // a.task-remove
         this.doEmpty();
     }
-});</code></pre>
+});
+</code></pre>
 <p>The key <code>options</code> are:</p>
 <ul>
 <li><code>element</code> - a String id or an element to bind events to and reference</li>
@@ -983,7 +998,8 @@ var testInstance = new testView({
     render: function() {
         this.element.set(&#39;html&#39;, this.template({name:&#39;there&#39;}, &#39;Hello {{name}}&#39;));
     }
-});</code></pre>
+});
+</code></pre>
 <p>You can change the View prototype to always have Mustache in your views. For example, via AMD/RequireJS, you could do a
 small module that deals with the prototyping of the default View constructor. Say, <code>epitome-view-mustache.js</code></p>
 <pre class="prettyprint linenums"><code class="lang-javascript">
@@ -999,7 +1015,8 @@ define([&#39;epitome/epitome-view&#39;], function(View){
         }
     });
 
-});</code></pre>
+});
+</code></pre>
 <p>In your Require config (loose example):</p>
 <pre class="prettyprint linenums"><code>require.config({
     paths: {
@@ -1013,8 +1030,8 @@ define([&#39;epitome/epitome-view&#39;], function(View){
 
 require([&#39;epitome/epitome-view&#39;], function(View){
     // View is now with the mustache template.
-});</code></pre>
-<h3 id="epitomeview/empty">empty</h3>
+});
+</code></pre><h3 id="epitomeview/empty">empty</h3>
 <hr>
 <div class="alert">
 <p>
@@ -1065,7 +1082,8 @@ require([&#39;epitome/epitome-view&#39;], function(View){
 <pre class="prettyprint linenums"><code class="lang-javascript">var user = new Class({
     Extends: Epitome.Model,
     Implements: Epitome.Storage.localStorage(&#39;model&#39;)
-});</code></pre>
+});
+</code></pre>
 <p>The code above will call the storage factory and enable <code>localStorage</code> within your model with a storage namespace key <code>model</code>. In the actual storage massive, data will appear under an <code>epitome-model</code> key.</p>
 <p>The following methods are added to your Class (identical to Element.Storage from MooTools):</p>
 <h3 id="epitomestorage/store">store</h3>
@@ -1105,7 +1123,8 @@ require([&#39;epitome/epitome-view&#39;], function(View){
 });
 
 // populate model from storage, if available.
-bob.set(bob.retrieve());</code></pre>
+bob.set(bob.retrieve());
+</code></pre>
 <p>Automatically populate:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">var bob = new user({
     id: &#39;bob&#39;
@@ -1113,7 +1132,8 @@ bob.set(bob.retrieve());</code></pre>
     onRetrieve: function(data) {
         this.set(data);
     }
-}).retrieve();</code></pre>
+}).retrieve();
+</code></pre>
 <h3 id="epitomestorage/eliminate">eliminate</h3>
 <hr>
 <div class="alert">
@@ -1136,7 +1156,8 @@ bob.set(bob.retrieve());</code></pre>
 <li>blocks can be used like so: <code>&lt;% if (foo) { %&gt;is foo&lt;% } else { %&gt;is not foo&lt;% } %&gt;</code></li>
 <li>conditional output can also work through <code>print</code> like this: </li>
 </ul>
-<pre class="prettyprint linenums"><code class="lang-javascript">&lt;%-address_1%&gt; &lt;% if(address_2){ print(&#39;, &#39;, address_2) } %&gt;</code></pre>
+<pre class="prettyprint linenums"><code class="lang-javascript">&lt;%-address_1%&gt; &lt;% if(address_2){ print(&#39;, &#39;, address_2) } %&gt;
+</code></pre>
 <p>You can modify the syntax for the tags by altering the regex in the constructor:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">options: {
     // evaluated logic syntax: &lt;% if (data.prop) { %&gt;
@@ -1145,7 +1166,8 @@ bob.set(bob.retrieve());</code></pre>
     normal: /&lt;%=([\s\S]+?)%&gt;/g,
     // DOM safe scripts and tags: &lt;%-property%&gt;
     escape: /&lt;%-([\s\S]+?)%&gt;/g
-}</code></pre>
+}
+</code></pre>
 <p>For more info, read the underscore.js documentation. We still recommend using Mustache or Handlebars instead.</p>
 <h2 id="eptiomerouter">Eptiome.Router</h2>
 <p>The Router Class is a hashbang controller, useful for single page applications. A direct import of <a href="https://github.com/DimitarChristoff/Router"><a href="https://github.com/DimitarChristoff/Router">https://github.com/DimitarChristoff/Router</a></a>.</p>
@@ -1239,7 +1261,8 @@ bob.set(bob.retrieve());</code></pre>
     &#39;onRoute:add&#39;: function(constructorObject) {
         console.log(constructorObject.id + &#39; was added as a new route&#39;);
     }
-});</code></pre>
+});
+</code></pre>
 <h3 id="eptiomerouter/addroute">addRoute</h3>
 <hr>
 <div class="alert">
@@ -1265,7 +1288,8 @@ bob.set(bob.retrieve());</code></pre>
                 this.removeRoute(&#39;#!dynamicRoute&#39;);
         }
     }
-});</code></pre>
+});
+</code></pre>
 <h3 id="eptiomerouter/removeroute">removeRoute</h3>
 <hr>
 <div class="alert">
@@ -1293,16 +1317,16 @@ require([&#39;epitome-model-sync&#39;], function(ModelSync) {
     var tweet = new Class({
         Extends: ModelSync
     });
-});</code></pre>
-<p>If you&#39;d like the whole project (all modules), you can require <code>main.js</code> (also exported via NPM):</p>
+});
+</code></pre><p>If you&#39;d like the whole project (all modules), you can require <code>main.js</code> (also exported via NPM):</p>
 <pre class="prettyprint linenums"><code>require([&#39;main&#39;], function(Epitome) {
     // Epitome is an object with all the submodules.
     var tweet = new Class({
         Extends: Epitome.Model.Sync,
         Implements: Epitome.Storage.sessionStorage()
     });
-});</code></pre>
-<p>an example skeleton of an Epitome-powered AMD app for RequireJS is available <a href="https://github.com/DimitarChristoff/epitome-skeleton-amd">here</a></p>
+});
+</code></pre><p>an example skeleton of an Epitome-powered AMD app for RequireJS is available <a href="https://github.com/DimitarChristoff/epitome-skeleton-amd">here</a></p>
 <p>When using it in a browser or after the Epitome Object contains all your modules, quick model creation with prototyping and <code>localStorage</code> can look something like this:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">// create a new user class prototype, basing it on Epitome.Model.Sync and implement storage
 var User = new Class({
@@ -1354,7 +1378,8 @@ else {
 }
 
 // go wild!
-userModel.save();</code></pre>
+userModel.save();
+</code></pre>
 <h3 id="examples/sync-and-storage">Sync and Storage</h3>
 <p>Here&#39;s an example pattern that allows you to use Storage and Sync on a model to reconcile data on the client and on the server. In a scenario where a model is being updated on the client with an implicit Save button that does the Sync but a <code>onChange</code> event that saves any changes in <code>localStorage</code> in the meanwhile, this is how you&#39;d reconcile the differences:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">var Model = new Class({
@@ -1383,7 +1408,8 @@ var model = new Model({
 });
 
 // get latest
-model.fetch();</code></pre>
+model.fetch();
+</code></pre>
 <p>This pattern can be applied from views as well. Essentially, you are saying: when a model is fetched (and you already know the id), compare server-side version to what storage knows of this model. If a difference is found, you can either prompt the user to accept the client version and load it or you can automatically merge the changes into the model. Since a change always saves into storage, the client-side version will always have an upto date version of data. This is useful when a model is bound to a view and a user modifies it and then reloads the page or navigates away before saving.</p>
 <h3 id="examples/prototyping-views">Prototyping Views</h3>
 <p>It is sometimes useful to prototype the view, including the events that will be bound - as opposed to doing it in the instantiation.</p>
@@ -1407,7 +1433,8 @@ model.fetch();</code></pre>
             this.model.store(); // changes in-between go to storage
         }
     }
-});</code></pre>
+});
+</code></pre>
 <p>For more examples, have a look inside of <code>example/js/</code></p>
 <h3 id="examples/todomvc-reference">TodoMVC reference</h3>
 <hr>
@@ -1416,7 +1443,8 @@ model.fetch();</code></pre>
 <a href="http://fragged.org/Epitome/example/todo/epitome/#!/"><a href="http://fragged.org/Epitome/example/todo/epitome/#!/">http://fragged.org/Epitome/example/todo/epitome/#!/</a></a></p>
 <p>The todo app is also a submodule of Epitome so you can add it by doing this at the root of the repo:</p>
 <pre><code class="lang-sh">git submodule init
-git submodule update</code></pre>
+git submodule update
+</code></pre>
 <p>And you can keep it updated by going to <code>~/example/todo/</code> and doing a pull</p>
 <p>A RequireJS version of the todo app is available here as a branch of the main todo app:
 <a href="http://fragged.org/Epitome/example/todo/epitome-amd/#!/">Epitome-todo AMD</a></p>
@@ -1442,9 +1470,11 @@ Uglifying file: /projects/Epitome/Epitome-min.js
 /projects/Epitome/src/epitome-collection-sync.js
 /projects/Epitome/src/epitome-template.js
 /projects/Epitome/src/epitome-view.js
-/projects/Epitome/src/epitome-router.js</code></pre>
+/projects/Epitome/src/epitome-router.js
+</code></pre>
 <p>Install requirejs via npm, if you haven&#39;t:</p>
-<pre><code class="lang-sh">npm install -g requirejs</code></pre>
+<pre><code class="lang-sh">npm install -g requirejs
+</code></pre>
 <p>Alternatively, grab r.js and put it inside the project, then do <code>node r.js -o app.build.js</code></p>
 <h3 id="download-building/amd-builder">AMD Builder</h3>
 <hr>
@@ -1458,7 +1488,8 @@ Uglifying file: /projects/Epitome/Epitome-min.js
 npm http GET https://registry.npmjs.org/mootools
 npm http 304 https://registry.npmjs.org/mootools
 epitome@0.4.0 node_modules/epitome
-└── mootools@1.4.5-2</code></pre>
+└── mootools@1.4.5-2
+</code></pre>
 <p>and then in your nodejs app:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">// MooTools gloabls get loaded.
 var epitome = require(&#39;epitome&#39;);
@@ -1471,7 +1502,8 @@ var bob = new model({
     name: &#39;Bob&#39;
 });
 
-console.log(bob.toJSON());</code></pre>
+console.log(bob.toJSON());
+</code></pre>
 <h2 id="testing">Testing</h2>
 <p>Tests are currently separated in 2 groups: node tests and browser tests. The distinction is that under node only,
 it uses <code>mootools-server</code> and lacks <code>Request</code> or <code>Element</code>, so only unit tests will run.</p>
