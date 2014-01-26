@@ -576,8 +576,7 @@ _Events: `reset: function() {}`_
 </p>
 </div>
 
-Initial collection population and
-
+Initial collection population and adding of models at a later stage. Accepts either a single model or an array. Fires a `reset` event.
 
 ### addModel
 ---
