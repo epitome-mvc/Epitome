@@ -2,19 +2,11 @@
 
 > _Epitome: a typical example of a characteristic or class; embodiment; personification; model_
 
-Epitome is a new extensible and modular open-source MVC* framework, built out of MooTools Classes and Events. See [credits and licensing](#credits-and-licensing)
+Epitome is a small extensible and modular open-source MVC* framework, built out of MooTools Classes and Events. See [credits and licensing](#credits-and-licensing)
 
 [![Build Status](https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master)](http://travis-ci.org/DimitarChristoff/Epitome)
 
-**BUT, IS IT REALLY MVC?**
-
-> &lt;jiggliemon> MVD, Model View Don'task
-
-Strictly speaking, `Epitome.View` is closer to a _presenter_ in a MVP implementation than a classic MVC one, with thin controller logic around the views. However, because `Epitome.View` is also very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.
-
-If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently.
-
-Epitome's API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.
+If you feel strongly about semantics of the patterns used, you should look at [Digesting JavaScript MVC – Pattern Abuse Or Evolution?](http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/) by Addy Osmani, a talk he gave at London Ajax recently. Epitome can be used as MVP or even classic MVC since you can create pure controllers out of MooTools Classes.
 
 Current version: **0.6.1**
 
@@ -26,7 +18,7 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com (
 <script src="//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js"></script>
 ```
 
-> Going forward - due to MooTools' decline, Epitome will be supported only with bug fixes. You should look at [epik](https://github.com/DimitarChristoff/epik) instead, which is Epitome 2 without MooTools - built on top of [primish](https://github.com/DimitarChristoff/primish) and lodash.
+> As of January 2014, going forward notice: due to MooTools' decline, Epitome will be supported only with bug fixes. You should look at [epik](https://github.com/DimitarChristoff/epik) instead, which is Epitome 2 without MooTools - built on top of [primish](https://github.com/DimitarChristoff/primish) and lodash.
 
 
 ## Changelog
