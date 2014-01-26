@@ -60,15 +60,9 @@
 <blockquote>
 <p><em>Epitome: a typical example of a characteristic or class; embodiment; personification; model</em></p>
 </blockquote>
-<p>Epitome is a new extensible and modular open-source MVC* framework, built out of MooTools Classes and Events. See <a href="#credits-and-licensing">credits and licensing</a></p>
+<p>Epitome is a small extensible and modular open-source MVC* framework, built out of MooTools Classes and Events. See <a href="#credits-and-licensing">credits and licensing</a></p>
 <p><a href="http://travis-ci.org/DimitarChristoff/Epitome"><img src="https://secure.travis-ci.org/DimitarChristoff/Epitome.png?branch=master" alt="Build Status"></a></p>
-<p><strong>BUT, IS IT REALLY MVC?</strong></p>
-<blockquote>
-<p>&lt;jiggliemon&gt; MVD, Model View Don&#39;task</p>
-</blockquote>
-<p>Strictly speaking, <code>Epitome.View</code> is closer to a <em>presenter</em> in a MVP implementation than a classic MVC one, with thin controller logic around the views. However, because <code>Epitome.View</code> is also very unassuming, it can be used in a more classical MVC pattern context for multiple purposes.</p>
-<p>If you feel strongly about semantics of the patterns used, you should look at <a href="http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/">Digesting JavaScript MVC – Pattern Abuse Or Evolution?</a> by Addy Osmani, a talk he gave at London Ajax recently.</p>
-<p>Epitome&#39;s API is still subject to small changes and improvements (mostly additions of events and bug fixes), which means documentation is not overly verbose. The non-minified code has a lot of inline comments to ease understanding and development.</p>
+<p>If you feel strongly about semantics of the patterns used, you should look at <a href="http://addyosmani.com/blog/digesting-javascript-mvc-pattern-abuse-or-evolution/">Digesting JavaScript MVC – Pattern Abuse Or Evolution?</a> by Addy Osmani, a talk he gave at London Ajax recently. Epitome can be used as MVP or even classic MVC since you can create pure controllers out of MooTools Classes.</p>
 <p>Current version: <strong>0.6.1</strong></p>
 <p><a class="btn btn-large btn-primary" href="#download-building">Epitome Builder</a>
 <a class="btn btn-large" href="https://epitomemvp.uservoice.com/" target="_blank">Issue / Discussion on UserVoice</a></p>
@@ -76,7 +70,7 @@
 <pre class="prettyprint linenums"><code class="lang-HTML">&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/epitome/0.3.0/Epitome-min.js&quot;&gt;&lt;/script&gt;
 </code></pre>
 <blockquote>
-<p>Going forward - due to MooTools&#39; decline, Epitome will be supported only with bug fixes. You should look at <a href="https://github.com/DimitarChristoff/epik">epik</a> instead, which is Epitome 2 without MooTools - built on top of <a href="https://github.com/DimitarChristoff/primish">primish</a> and lodash.</p>
+<p>As of January 2014, going forward notice: due to MooTools&#39; decline, Epitome will be supported only with bug fixes. You should look at <a href="https://github.com/DimitarChristoff/epik">epik</a> instead, which is Epitome 2 without MooTools - built on top of <a href="https://github.com/DimitarChristoff/primish">primish</a> and lodash.</p>
 </blockquote>
 <h2 id="changelog">Changelog</h2>
 <ul>
@@ -595,7 +589,7 @@ var users = new usersCollection([{
 </p>
 </div>
 
-<p>Initial collection population and</p>
+<p>Initial collection population and adding of models at a later stage. Accepts either a single model or an array. Fires a <code>reset</code> event.</p>
 <h3 id="epitomecollection/addmodel">addModel</h3>
 <hr>
 <div class="alert">
