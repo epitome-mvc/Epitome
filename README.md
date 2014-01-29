@@ -753,7 +753,7 @@ collection.find('[name=Bob][id=2]'); // name Bob AND id==2
 
 Supported operators are `=` (equals), `!=` (not equal), `*=` (contains), `$=` (ends on), `^=` (starts with). Currently, you cannot reverse a condition by adding `!` or `not:` - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use `filter` instead.
 
-A new 'feature' has been added that alows you to quickly select deeper object properties by treating any parent keys as tags. For instance:
+A new 'feature' has been added that allows you to quickly select deeper object properties by treating any parent keys as tags. For instance:
 
 ```javascript
 var collection = new Epitome.Collection([{
