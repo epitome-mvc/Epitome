@@ -756,7 +756,7 @@ collection.find(&#39;#2[name=Bob],#3&#39;); // (name Bob AND id==2) OR id==3
 collection.find(&#39;[name=Bob][id=2]&#39;); // name Bob AND id==2
 </code></pre>
 <p>Supported operators are <code>=</code> (equals), <code>!=</code> (not equal), <code>*=</code> (contains), <code>$=</code> (ends on), <code>^=</code> (starts with). Currently, you cannot reverse a condition by adding <code>!</code> or <code>not:</code> - in fact, pseudos are not supported yet. Find is just sugar and for more complicated stuff, you can either extend it or use <code>filter</code> instead.</p>
-<p>A new &#39;feature&#39; has been added that alows you to quickly select deeper object properties by treating any parent keys as tags. For instance:</p>
+<p>A new &#39;feature&#39; has been added that allows you to quickly select deeper object properties by treating any parent keys as tags. For instance:</p>
 <pre class="prettyprint linenums"><code class="lang-javascript">var collection = new Epitome.Collection([{
     name: &#39;Bob&#39;,
     permissions: {
