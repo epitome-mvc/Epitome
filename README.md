@@ -22,6 +22,8 @@ A quick-and-dirty way to add the whole minified library, courtesy of cdnjs.com (
 
 
 ## Changelog
+- 0.6.2
+ - BUGFIX: fixed change event fires in error when value is falsy and is not actually different
 - 0.6.1
  - Breaking: custom setters need to return a value only, not re-implement `_set` (see #14)
 - 0.6.0
