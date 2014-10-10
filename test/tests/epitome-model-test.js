@@ -163,6 +163,17 @@ buster.testCase('Basic Epitome model creation with initial data >', {
 		this.model.set(this.dataMany);
 	},
 
+	'Expect a model change not to fire if falsy values have not changed >': function(){
+		var spy = this.spy();
+		var model = this.model;
+		model.set('foo', 0);
+		model.on('change', function(){
+			spy();
+		});
+		model.set('foo', 0);
+		buster.refute.called(spy);
+	},
+
 	'Expect model accessor `get` to fire instead of normal model get >': function() {
 		var spy = this.spy();
 

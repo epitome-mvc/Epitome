@@ -70,16 +70,19 @@
 				// needs to be bound the the instance.
 				if (!key || typeof value === undef) return this;
 
+				var a = this._attributes,
+					p = this.properties;
+
 				// custom setter - see bit further down
-				if (this.properties[key] && this.properties[key].set){
-					value = this.properties[key].set.call(this, value);
+				if (p[key] && p[key].set){
+					value = p[key].set.call(this, value);
 					if (typeof value === undef){
 						return this;
 					}
 				}
 
 				// no change? this is crude and works for primitives.
-				if (this._attributes[key] && isEqual(this._attributes[key], value))
+				if (a.hasOwnProperty(key) && isEqual(a[key], value))
 					return this;
 
 				// basic validator support
@@ -97,10 +100,10 @@
 				}
 
 				if (value === null){
-					delete this._attributes[key]; // delete = null.
+					delete a[key]; // delete = null.
 				}
 				else {
-					this._attributes[key] = value;
+					a[key] = value;
 				}
 
 				// fire an event.

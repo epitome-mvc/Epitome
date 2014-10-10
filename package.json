@@ -27,16 +27,17 @@
     "slicker": "0.0.1"
   },
   "devDependencies": {
-    "buster": "~0.7.6",
+    "buster-amd": "~0.3.1",
+    "buster": "~0.7.13",
     "colors": "*",
-    "grunt": "~0.4.1",
-    "grunt-doctor-md": "~0.0.6",
+    "grunt": "~0.4.5",
+    "grunt-doctor-md": "0.1.1",
     "grunt-contrib-clean": "*",
     "express": "*",
     "socket.io": "*",
     "update-notifier": "~0.1.5"
   },
   "engines": {
-    "node": "~0.8.24"
+    "node": "^0.10.29"
   }
 }
